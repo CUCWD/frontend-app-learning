@@ -1,0 +1,17 @@
+#grade-preview {
+  height: 300px;
+  overflow-y: hidden;
+}
+
+#overlay {
+  position: absolute;
+  display: block;
+  width: 100%;
+  height: 299px;
+  transform-origin: top left;
+  margin-left: -16px;
+  margin-top: -16px;
+  background-color: rgba(255, 255, 255, 0.4);
+  z-index: 2;
+  cursor: pointer;
+}
