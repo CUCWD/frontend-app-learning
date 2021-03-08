@@ -51,6 +51,20 @@ const checkContentRedirect = memoize((courseId, sequenceStatus, sequenceId, sequ
   }
 });
 
+const checkSectionToSequenceRedirect = memoize((courseStatus, courseId, routedSection) => {
+  if (courseStatus === 'loaded' && routedSection) {
+    // This is a replace because we don't want this change saved in the browser's history.
+    const firstSequence = routedSection.sequences.length ? routedSection.sequences[0] : null;
+    if (firstSequence) {
+      // Try to go the first sequence in the section.
+      history.replace(`/course/${courseId}/${firstSequenceId}`);
+    } else {
+      // If the section is empty, just let the course root handle it.
+      history.replace(`/course/${courseId}`);
+    }
+  }
+});
+
 class CoursewareContainer extends Component {
   checkSaveSequencePosition = memoize((unitId) => {
     const {
@@ -113,8 +127,12 @@ class CoursewareContainer extends Component {
     // Redirect to the legacy experience for exams.
     checkExamRedirect(sequenceStatus, sequence);
 
+    // Determine if we need to redirect because the ID of a Section was specified in the
+    // URL where we expected the ID of a Subsection-level sequence.
+    checkSectionToSequenceRedirect(courseStatus, courseId, routedSection);
+
     // Determine if we need to redirect because our URL is incomplete.
-    checkContentRedirect(courseId, sequenceStatus, sequenceId, sequence, routeUnitId);
+    checkContentRedirect(courseId, sequenceStatus, sequenceId);
 
     // Determine if we can resume where we left off.
     checkResumeRedirect(courseStatus, courseId, sequenceId, firstSequenceId);
@@ -308,6 +326,12 @@ const currentSequenceSelector = createSelector(
   (sequencesById, sequenceId) => (sequencesById[sequenceId] ? sequencesById[sequenceId] : null),
 );
 
+const routedSectionSelector = createSelector(
+  (state) => state.models.sections || {},
+  (state) => state.courseware.sequenceId,
+  (sectionsById, sequenceId) => (sectionsById[sequenceId] ? sectionsById[sequenceId] : null),
+);
+
 const sequenceIdsSelector = createSelector(
   (state) => state.courseware.courseStatus,
   currentCourseSelector,
@@ -382,6 +406,7 @@ const mapStateToProps = (state) => {
     previousSequence: previousSequenceSelector(state),
     nextSequence: nextSequenceSelector(state),
     firstSequenceId: firstSequenceIdSelector(state),
+    routedSection: routedSectionSelector(state),
   };
 };
 

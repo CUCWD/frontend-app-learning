@@ -161,6 +161,12 @@ export async function getCourseMetadata(courseId) {
 }
 
 function normalizeSequenceMetadata(sequence) {
+  if (sequence.tag !== 'sequential') {
+    throw (
+      `Fetched sequence is of block type "${sequence.tag}";`
+      + 'expected type "sequential". Sequence metadata should be ignored.'
+    );
+  }
   return {
     sequence: {
       id: sequence.item_id,
