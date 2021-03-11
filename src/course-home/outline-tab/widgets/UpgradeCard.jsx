@@ -28,6 +28,7 @@ function UpgradeCard({ courseId, intl, onLearnMore }) {
     offer,
     verifiedMode,
     accessExpiration,
+    timeOffsetMillis,
   } = useModel('outline', courseId);
 
   // const {
@@ -35,9 +36,6 @@ function UpgradeCard({ courseId, intl, onLearnMore }) {
   //   userTimezone,
   // } = payload;
   // const timezoneFormatArgs = userTimezone ? { timeZone: userTimezone } : {};
-
-  const now = new Date();
-
 
   if (!verifiedMode) {
     return null;
@@ -143,13 +141,14 @@ function UpgradeCard({ courseId, intl, onLearnMore }) {
       </li>
     </ul>
 
+  const correctedTime = new Date(Date.now() + timeOffsetMillis);
 
   let upgradeCardHeaderText;
   let expirationBanner;
   let upsellMessage;
   if(!!offer){ // if there's a first purchase discount, show it
 
-    const hoursToDiscountExpiration = Math.floor((new Date(offer.expirationDate) - now) /1000/ 60 /60)
+    const hoursToDiscountExpiration = Math.floor((new Date(offer.expirationDate) - correctedTime) /1000/ 60 /60)
     
     upgradeCardHeaderText = <FormattedMessage
         id="learning.outline.alert.upgradecard.firstTimeLearnerDiscount"
@@ -165,7 +164,7 @@ function UpgradeCard({ courseId, intl, onLearnMore }) {
 
   } else if(!!accessExpiration){
     const accessExpirationDate = new Date(accessExpiration.expirationDate)
-    const hoursToAccessExpiration = Math.floor((accessExpirationDate - now) /1000/ 60 /60)
+    const hoursToAccessExpiration = Math.floor((accessExpirationDate - correctedTime) /1000/ 60 /60)
 
     if(hoursToAccessExpiration < (7*24)){ //more urgent messaging if access will expire in less than a week
       upgradeCardHeaderText = <FormattedMessage
