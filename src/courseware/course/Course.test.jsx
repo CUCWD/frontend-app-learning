@@ -84,6 +84,27 @@ describe('Course', () => {
     expect(screen.getByRole('button', { name: 'Learn About Verified Certificates' })).toBeInTheDocument();
   });
 
+  it('displays sidebar notification button', async () => {
+    const toggleSidebar = jest.fn();
+    const isSidebarVisible = jest.fn();
+
+    const courseMetadata = Factory.build('courseMetadata');
+    const testStore = await initializeTestStore({ courseMetadata, excludeFetchSequence: true }, false);
+    const testData = {
+      ...mockData,
+      toggleSidebar,
+      isSidebarVisible,
+    };
+    render(<Course {...testData} courseId={courseMetadata.id} />, { store: testStore });
+
+    const sidebarButton = screen.getByRole('button', { name: /Sidebar notification button/i });
+
+    fireEvent.click(sidebarButton);
+    expect(sidebarButton)
+      .toBeInTheDocument()
+      .toHaveClass('active');
+  });
+
   it('displays offer and expiration alert', async () => {
     const courseMetadata = Factory.build('courseMetadata', {
       access_expiration: {
