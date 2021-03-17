@@ -40,7 +40,7 @@ describe('Lock Paywall', () => {
     } = store.getState().models.coursewareMeta[mockData.courseId].verifiedMode;
     render(<LockPaywall {...mockData} />);
 
-    const upgradeLink = screen.getByRole('link', { name: `Upgrade to unlock (${currencySymbol}${price})` });
+    const upgradeLink = screen.getByRole('link', { name: `Upgrade for (${currencySymbol}${price})` });
     fireEvent.click(upgradeLink);
 
     expect(sendTrackEvent).toHaveBeenCalledTimes(1);
