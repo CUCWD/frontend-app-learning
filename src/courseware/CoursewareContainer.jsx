@@ -32,11 +32,11 @@ const checkReinterpretPositionRedirect = memoize(
     if (courseStatus === 'loaded' && sequenceStatus === 'failed' && routeSequenceId) {
       if (courseId === routeSequenceId) {
         history.replace(`/course/${courseId}`);
-      } else {
+      } else if (courseTree) {
         courseTree.forEach(sectionId => {
-          const sectionTree = courseTree[sectionId];
+          const sectionTree = courseTree[sectionId] || {};
           if (sectionId === routeSequenceId) {
-            if (sectionTree[sectionId]) {
+            if (sectionTree && sectionTree[sectionId]) {
               const firstSequenceInSectionId = sectionTree[sectionId][0];
               history.replace(`/course/${courseId}/${firstSequenceInSectionId}`);
             } else {
@@ -44,7 +44,7 @@ const checkReinterpretPositionRedirect = memoize(
             }
           } else {
             sectionTree.forEach(sequenceId => {
-              const sequenceTree = sectionTree[sectionId];
+              const sequenceTree = sectionTree[sectionId] || {};
               sequenceTree.forEach(unitId => {
                 if (unitId === routeSequenceId) {
                   history.replace(`/course/${courseId}/${sequenceId}/${unitId}`);
@@ -347,16 +347,18 @@ const currentCourseTreeSelector = createSelector(
   (state) => state.models.sequences,
   (course, sectionsById, sequencesById) => {
     const courseTree = {};
-    course.sectionIds.forEach(sectionId => {
-      courseTree[sectionId] = {};
-      const section = sectionsById[sectionId];
-      if (section) {
-        section.sequenceIds.forEach(sequenceId => {
-          const sequence = sequencesById[sequenceId];
-          courseTree[sectionId][sequenceId] = sequence ? sequence.unitIds : {};
-        });
-      }
-    });
+    if (course) {
+      course.sectionIds.forEach(sectionId => {
+        courseTree[sectionId] = {};
+        const section = sectionsById[sectionId];
+        if (section) {
+          section.sequenceIds.forEach(sequenceId => {
+            const sequence = sequencesById[sequenceId];
+            courseTree[sectionId][sequenceId] = sequence ? sequence.unitIds : {};
+          });
+        }
+      });
+    }
     return courseTree;
   },
 );
