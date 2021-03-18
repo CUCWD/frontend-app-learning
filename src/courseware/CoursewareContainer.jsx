@@ -27,6 +27,37 @@ const checkExamRedirect = memoize((sequenceStatus, sequence) => {
   }
 });
 
+const checkReinterpretPositionRedirect = memoize(
+  (courseStatus, courseId, sequenceStatus, routeSequenceId, courseTree) => {
+    if (courseStatus === 'loaded' && sequenceStatus === 'failed' && routeSequenceId) {
+      if (courseId === routeSequenceId) {
+        history.replace(`/course/${courseId}`);
+      } else {
+        courseTree.forEach(sectionId => {
+          const sectionTree = courseTree[sectionId];
+          if (sectionId === routeSequenceId) {
+            if (sectionTree[sectionId]) {
+              const firstSequenceInSectionId = sectionTree[sectionId][0];
+              history.replace(`/course/${courseId}/${firstSequenceInSectionId}`);
+            } else {
+              history.replace(`/course/${courseId}`);
+            }
+          } else {
+            sectionTree.forEach(sequenceId => {
+              const sequenceTree = sectionTree[sectionId];
+              sequenceTree.forEach(unitId => {
+                if (unitId === routeSequenceId) {
+                  history.replace(`/course/${courseId}/${sequenceId}/${unitId}`);
+                }
+              });
+            });
+          }
+        });
+      }
+    }
+  },
+);
+
 const checkResumeRedirect = memoize((courseStatus, courseId, sequenceId, firstSequenceId) => {
   if (courseStatus === 'loaded' && !sequenceId) {
     // Note that getResumeBlock is just an API call, not a redux thunk.
@@ -41,7 +72,7 @@ const checkResumeRedirect = memoize((courseStatus, courseId, sequenceId, firstSe
   }
 });
 
-const checkContentRedirect = memoize((courseId, sequenceStatus, sequenceId, sequence, unitId) => {
+const checkSequenceToUnitRedirect = memoize((courseId, sequenceStatus, sequenceId, sequence, unitId) => {
   if (sequenceStatus === 'loaded' && sequenceId && !unitId) {
     if (sequence.unitIds !== undefined && sequence.unitIds.length > 0) {
       const nextUnitId = sequence.unitIds[sequence.activeUnitIndex];
@@ -97,6 +128,7 @@ class CoursewareContainer extends Component {
       sequenceStatus,
       sequence,
       firstSequenceId,
+      currentCourseTree,
       match: {
         params: {
           courseId: routeCourseId,
@@ -110,11 +142,15 @@ class CoursewareContainer extends Component {
     this.checkFetchCourse(routeCourseId);
     this.checkFetchSequence(routeSequenceId);
 
+    // If the sequenceId was bad, perhaps we can recover by interpreting it as
+    // a courseId, sectionId, or unitId.
+    checkReinterpretPositionRedirect(courseStatus, courseId, sequenceStatus, routeSequenceId, currentCourseTree);
+
     // Redirect to the legacy experience for exams.
     checkExamRedirect(sequenceStatus, sequence);
 
-    // Determine if we need to redirect because our URL is incomplete.
-    checkContentRedirect(courseId, sequenceStatus, sequenceId, sequence, routeUnitId);
+    // Determine if we need to redirect because the URL gave a sequenceId but not a unitId.
+    checkSequenceToUnitRedirect(courseId, sequenceStatus, sequenceId, sequence, routeUnitId);
 
     // Determine if we can resume where we left off.
     checkResumeRedirect(courseStatus, courseId, sequenceId, firstSequenceId);
@@ -274,6 +310,8 @@ CoursewareContainer.propTypes = {
   courseId: PropTypes.string,
   sequenceId: PropTypes.string,
   firstSequenceId: PropTypes.string,
+  // eslint-disable-next-line react/forbid-prop-types
+  currentCourseTree: PropTypes.object,
   courseStatus: PropTypes.oneOf(['loaded', 'loading', 'failed', 'denied']).isRequired,
   sequenceStatus: PropTypes.oneOf(['loaded', 'loading', 'failed']).isRequired,
   nextSequence: sequenceShape,
@@ -294,6 +332,7 @@ CoursewareContainer.defaultProps = {
   previousSequence: null,
   course: null,
   sequence: null,
+  currentCourseTree: null,
 };
 
 const currentCourseSelector = createSelector(
@@ -302,13 +341,33 @@ const currentCourseSelector = createSelector(
   (coursesById, courseId) => (coursesById[courseId] ? coursesById[courseId] : null),
 );
 
+const currentCourseTreeSelector = createSelector(
+  currentCourseSelector,
+  (state) => state.models.sections,
+  (state) => state.models.sequences,
+  (course, sectionsById, sequencesById) => {
+    const courseTree = {};
+    course.sectionIds.forEach(sectionId => {
+      courseTree[sectionId] = {};
+      const section = sectionsById[sectionId];
+      if (section) {
+        section.sequenceIds.forEach(sequenceId => {
+          const sequence = sequencesById[sequenceId];
+          courseTree[sectionId][sequenceId] = sequence ? sequence.unitIds : {};
+        });
+      }
+    });
+    return courseTree;
+  },
+);
+
 const currentSequenceSelector = createSelector(
   (state) => state.models.sequences || {},
   (state) => state.courseware.sequenceId,
   (sequencesById, sequenceId) => (sequencesById[sequenceId] ? sequencesById[sequenceId] : null),
 );
 
-const sequenceIdsSelector = createSelector(
+const currentCourseSequenceIdsSelector = createSelector(
   (state) => state.courseware.courseStatus,
   currentCourseSelector,
   (state) => state.models.sections,
@@ -322,7 +381,7 @@ const sequenceIdsSelector = createSelector(
 );
 
 const previousSequenceSelector = createSelector(
-  sequenceIdsSelector,
+  currentCourseSequenceIdsSelector,
   (state) => state.models.sequences || {},
   (state) => state.courseware.sequenceId,
   (sequenceIds, sequencesById, sequenceId) => {
@@ -336,7 +395,7 @@ const previousSequenceSelector = createSelector(
 );
 
 const nextSequenceSelector = createSelector(
-  sequenceIdsSelector,
+  currentCourseSequenceIdsSelector,
   (state) => state.models.sequences || {},
   (state) => state.courseware.sequenceId,
   (sequenceIds, sequencesById, sequenceId) => {
@@ -382,6 +441,7 @@ const mapStateToProps = (state) => {
     previousSequence: previousSequenceSelector(state),
     nextSequence: nextSequenceSelector(state),
     firstSequenceId: firstSequenceIdSelector(state),
+    currentCourseTree: currentCourseTreeSelector(state),
   };
 };
 

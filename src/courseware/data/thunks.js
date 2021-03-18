@@ -93,15 +93,23 @@ export function fetchSequence(sequenceId) {
     dispatch(fetchSequenceRequest({ sequenceId }));
     try {
       const { sequence, units } = await getSequenceMetadata(sequenceId);
-      dispatch(updateModel({
-        modelType: 'sequences',
-        model: sequence,
-      }));
-      dispatch(updateModels({
-        modelType: 'units',
-        models: units,
-      }));
-      dispatch(fetchSequenceSuccess({ sequenceId }));
+      if (sequence.tag !== 'sequential') {
+        logError(
+          `Requested sequence '${sequenceId}' `
+          + `has block type '${sequence.tag}'; expected block type 'sequential'.`,
+        );
+        dispatch(fetchSequenceFailure({ sequenceId }));
+      } else {
+        dispatch(updateModel({
+          modelType: 'sequences',
+          model: sequence,
+        }));
+        dispatch(updateModels({
+          modelType: 'units',
+          models: units,
+        }));
+        dispatch(fetchSequenceSuccess({ sequenceId }));
+      }
     } catch (error) {
       logError(error);
       dispatch(fetchSequenceFailure({ sequenceId }));
