@@ -3,7 +3,6 @@ import { createSlice } from '@reduxjs/toolkit';
 
 export const LOADING = 'loading';
 export const LOADED = 'loaded';
-export const LOADED_SECTION = 'loadedSection';
 export const FAILED = 'failed';
 export const DENIED = 'denied';
 
@@ -35,10 +34,6 @@ const slice = createSlice({
     fetchSequenceRequest: (state, { payload }) => {
       state.sequenceId = payload.sequenceId;
       state.sequenceStatus = LOADING;
-    },
-    fetchSequenceResultWasSection: (state, { payload }) => {
-      state.sequenceId = payload.sequenceId;
-      state.sequenceStatus = LOADED_SECTION;
     },
     fetchSequenceSuccess: (state, { payload }) => {
       state.sequenceId = payload.sequenceId;

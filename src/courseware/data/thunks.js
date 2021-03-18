@@ -15,7 +15,6 @@ import {
   fetchCourseFailure,
   fetchCourseDenied,
   fetchSequenceRequest,
-  fetchSequenceResultWasSection,
   fetchSequenceSuccess,
   fetchSequenceFailure,
 } from './slice';
@@ -94,18 +93,14 @@ export function fetchSequence(sequenceId) {
     dispatch(fetchSequenceRequest({ sequenceId }));
     try {
       const { sequence, units } = await getSequenceMetadata(sequenceId);
-      if (sequence.tag === 'chapter') {
-        fetchSequenceResultWasSection({ sequenceId });
-      } else {
-        dispatch(updateModel({
-          modelType: 'sequences',
-          model: sequence,
-        }));
-        dispatch(updateModels({
-          modelType: 'units',
-          models: units,
-        }));
-      }
+      dispatch(updateModel({
+        modelType: 'sequences',
+        model: sequence,
+      }));
+      dispatch(updateModels({
+        modelType: 'units',
+        models: units,
+      }));
       dispatch(fetchSequenceSuccess({ sequenceId }));
     } catch (error) {
       logError(error);
