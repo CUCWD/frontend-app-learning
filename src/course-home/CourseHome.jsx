@@ -18,7 +18,7 @@ const LogistrationAlert = React.lazy(() => import('../logistration-alert'));
 export default function CourseHome() {
   const {
     courseId,
-  } = useSelector(state => state.courseware);
+  } = useSelector(state => state.courseHome);
 
   const {
     title,

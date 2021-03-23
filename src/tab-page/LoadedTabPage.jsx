@@ -36,7 +36,7 @@ function LoadedTabPage({
         />
       )}
       <main className="d-flex flex-column flex-grow-1">
-        <CourseTabsNavigation tabs={tabs} className="mb-3" activeTabSlug={activeTabSlug} />
+        {/* <CourseTabsNavigation tabs={tabs} className="mb-3" activeTabSlug={activeTabSlug} /> */}
         <div className="container-fluid">
           {children}
         </div>

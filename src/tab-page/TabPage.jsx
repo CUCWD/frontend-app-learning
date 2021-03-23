@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { injectIntl, intlShape } from '@edx/frontend-platform/i18n';
 import { useSelector } from 'react-redux';
 
@@ -11,11 +12,12 @@ import LoadedTabPage from './LoadedTabPage';
 
 function TabPage({
   intl,
+  courseStatus,
   ...passthroughProps
 }) {
   useLogistrationAlert();
 
-  const courseStatus = useSelector(state => state.courseware.courseStatus);
+  // const courseStatus = useSelector(state => state.courseware.courseStatus);
 
   if (courseStatus === 'loading') {
     return (
@@ -47,6 +49,7 @@ function TabPage({
 
 TabPage.propTypes = {
   intl: intlShape.isRequired,
+  courseStatus: PropTypes.string.isRequired,
 };
 
 export default injectIntl(TabPage);

@@ -21,9 +21,12 @@ import './assets/favicon.ico';
 import CourseHome from './course-home';
 import CoursewareContainer from './courseware';
 import CoursewareRedirect from './CoursewareRedirect';
+import BadgesTab from './course-home/badges-tab/BadgesTab';
 import { TabContainer } from './tab-page';
 
-import store from './store';
+import { fetchCourse } from './data'; // Todo: Need to update this later.
+import { fetchBadgesTab } from './course-home/data';
+import store from './store'; 
 
 subscribe(APP_READY, () => {
   ReactDOM.render(
@@ -31,19 +34,24 @@ subscribe(APP_READY, () => {
       <UserMessagesProvider>
         <Switch>
           <Route path="/redirect" component={CoursewareRedirect} />
-          <Route path="/course/:courseId/home">
-            <TabContainer tab="courseware">
+          {/* <Route path="/course/:courseId/home" fetch={fetchCourse}>
+            <TabContainer tab="courseware" fetch={fetchCourse}> 
               <CourseHome />
             </TabContainer>
+          </Route> */}
+          <Route path="/course/:courseId/badges">
+            <TabContainer tab="badges" fetch={fetchBadgesTab}>
+              <BadgesTab />
+            </TabContainer>
           </Route>
-          <Route
+          {/* <Route
             path={[
               '/course/:courseId/:sequenceId/:unitId',
               '/course/:courseId/:sequenceId',
               '/course/:courseId',
             ]}
             component={CoursewareContainer}
-          />
+          /> */}
         </Switch>
         <Footer />
       </UserMessagesProvider>
