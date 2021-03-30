@@ -18,7 +18,7 @@ import { UserMessagesProvider } from './user-messages';
 
 import './index.scss';
 import './assets/favicon.ico';
-import CourseHome from './course-home';
+import OutlineTab from './course-home/outline-tab';
 import CoursewareContainer from './courseware';
 import CoursewareRedirect from './CoursewareRedirect';
 import BadgesTab from './course-home/badges-tab/BadgesTab';
@@ -34,24 +34,24 @@ subscribe(APP_READY, () => {
       <UserMessagesProvider>
         <Switch>
           <Route path="/redirect" component={CoursewareRedirect} />
-          {/* <Route path="/course/:courseId/home" fetch={fetchCourse}>
-            <TabContainer tab="courseware" fetch={fetchCourse}> 
-              <CourseHome />
+          <Route path="/course/:courseId/home">
+            <TabContainer tab="outline" fetch={fetchCourse}> 
+              <OutlineTab />
             </TabContainer>
-          </Route> */}
+          </Route>
           <Route path="/course/:courseId/badges">
             <TabContainer tab="badges" fetch={fetchBadgesTab}>
               <BadgesTab />
             </TabContainer>
           </Route>
-          {/* <Route
+          <Route
             path={[
               '/course/:courseId/:sequenceId/:unitId',
               '/course/:courseId/:sequenceId',
               '/course/:courseId',
             ]}
             component={CoursewareContainer}
-          /> */}
+          />
         </Switch>
         <Footer />
       </UserMessagesProvider>

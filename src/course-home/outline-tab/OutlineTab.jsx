@@ -2,23 +2,23 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { Button } from '@edx/paragon';
 
-import { AlertList } from '../user-messages';
+import { AlertList } from '../../user-messages';
 
-import CourseDates from './CourseDates';
+import CourseDates from './widgets/CourseDates';
 import Section from './Section';
-import { useModel } from '../model-store';
+import { useModel } from '../../model-store';
 
 // Note that we import from the component files themselves in the enrollment-alert package.
 // This is because Reacy.lazy() requires that we import() from a file with a Component as it's
 // default export.
 // See React.lazy docs here: https://reactjs.org/docs/code-splitting.html#reactlazy
-const { EnrollmentAlert, StaffEnrollmentAlert } = React.lazy(() => import('../enrollment-alert'));
-const LogistrationAlert = React.lazy(() => import('../logistration-alert'));
+const { EnrollmentAlert, StaffEnrollmentAlert } = React.lazy(() => import('../../enrollment-alert'));
+const LogistrationAlert = React.lazy(() => import('../../logistration-alert'));
 
-export default function CourseHome() {
+export default function OutlineTab() {
   const {
     courseId,
-  } = useSelector(state => state.courseHome);
+  } = useSelector(state => state.courseware);
 
   const {
     title,
