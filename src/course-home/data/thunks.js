@@ -1,7 +1,8 @@
 import { logError } from '@edx/frontend-platform/logging';
 import {
   getCourseHomeCourseMetadata,
-  getBadgesTabData,
+  getBadgeProgressTabData,
+  getBadgeLeaderboardTabData,
   getDatesTabData,
   getOutlineTabData,
   getProgressTabData,
@@ -61,8 +62,12 @@ export function fetchTab(courseId, tab, getTabData) {
   };
 }
 
-export function fetchBadgesTab(courseId) {
-  return fetchTab(courseId, 'badges', getBadgesTabData);
+export function fetchBadgeProgressTab(courseId) {
+  return fetchTab(courseId, 'badge-progress', getBadgeProgressTabData);
+}
+
+export function fetchBadgeLeaderboardTab(courseId) {
+  return fetchTab(courseId, 'badge-leaderboard', getBadgeLeaderboardTabData);
 }
 
 export function fetchDatesTab(courseId) {

@@ -21,8 +21,25 @@ export async function getCourseHomeCourseMetadata(courseId) {
   return normalizeCourseHomeCourseMetadata(data);
 }
 
-export async function getBadgesTabData(courseId) {
+export async function getBadgeProgressTabData(courseId) {
   const url = `${getConfig().LMS_BASE_URL}/api/badges/v1/progress/courses/${courseId}`;
+  try {
+    const { data } = await getAuthenticatedHttpClient().get(url);
+    return camelCaseObject(data);
+  } catch (error) {
+    const { httpErrorStatus } = error && error.customAttributes;
+    if (httpErrorStatus === 404) {
+      // global.location.replace(`${getConfig().LMS_BASE_URL}/courses/${courseId}/badges/progress`);
+      return {};
+    }
+    throw error;
+  }
+}
+
+export async function getBadgeLeaderboardTabData(courseId) {
+  // Todo: Need to define an Badge Leaderboard API endpoint for the LMS
+  // and return the result.
+  const url = `${getConfig().LMS_BASE_URL}/api/badges/v1/leaderboard/courses/${courseId}`;
   try {
     const { data } = await getAuthenticatedHttpClient().get(url);
     return camelCaseObject(data);

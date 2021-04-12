@@ -1,5 +1,6 @@
 import { getConfig } from '@edx/frontend-platform';
 import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
+import { logError } from '@edx/frontend-platform/logging';
 
 const getSequenceXModuleHandlerUrl = (courseId, sequenceId) => `${getConfig().LMS_BASE_URL}/courses/${courseId}/xblock/${sequenceId}/handler/xmodule_handler`;
 

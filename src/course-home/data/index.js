@@ -1,5 +1,6 @@
 export {
-  fetchBadgesTab,
+  fetchBadgeProgressTab,
+  fetchBadgeLeaderboardTab,
   fetchDatesTab,
   fetchOutlineTab,
   fetchProgressTab,
