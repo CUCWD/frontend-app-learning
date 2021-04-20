@@ -1,5 +1,5 @@
 import { camelCaseObject, getConfig } from '@edx/frontend-platform';
-import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
+import { getAuthenticatedHttpClient, getAuthenticatedUser } from '@edx/frontend-platform/auth';
 // TODO: Pull this normalization function up so we're not reaching into courseware
 import { normalizeBlocks } from '../../courseware/data/api';
 
@@ -22,9 +22,16 @@ export async function getCourseHomeCourseMetadata(courseId) {
 }
 
 export async function getBadgeProgressTabData(courseId) {
-  const url = `${getConfig().LMS_BASE_URL}/api/badges/v1/progress/courses/${courseId}`;
+  const { administrator, username } = getAuthenticatedUser();
+  const getProgressApiEndPoint = () => (
+    administrator
+      ? `${getConfig().LMS_BASE_URL}/api/badges/v1/progress/courses/${courseId}`
+      : `${getConfig().LMS_BASE_URL}/api/badges/v1/progress/courses/${courseId}/user/${username}`
+  );
+
+  // const url = `${getConfig().LMS_BASE_URL}/api/badges/v1/progress/courses/${courseId}`;
   try {
-    const { data } = await getAuthenticatedHttpClient().get(url);
+    const { data } = await getAuthenticatedHttpClient().get(getProgressApiEndPoint());
     return camelCaseObject(data);
   } catch (error) {
     const { httpErrorStatus } = error && error.customAttributes;

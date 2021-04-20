@@ -8,7 +8,7 @@ export const FAILED = 'failed';
 const slice = createSlice({
   name: 'course-home',
   initialState: {
-    courseStatus: 'loading',
+    courseStatus: LOADING,
     courseId: null,
   },
   reducers: {
