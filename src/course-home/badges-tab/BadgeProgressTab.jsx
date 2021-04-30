@@ -60,6 +60,7 @@ function BadgeProgressTab() {
     if (hasInstructorStaffRights()) {
       return (
         <>
+          <BadgeTabsNavigation className="mb-3 py-2" activeTabSlug={activeTabSlug} />
           <BadgeProgressBanner
             hasProgress={hasBadgeProgress()}
             hasRights={hasInstructorStaffRights()}
@@ -72,6 +73,15 @@ function BadgeProgressTab() {
       );
     }
 
+    /*
+      <section>
+        <div className="mb-4">
+          the user is {username} and they are enrolled as an {enrollmentMode} learner
+          {administrator
+          && <div><p>the user is admin</p></div>}
+        </div>
+      </section>
+    */
     return (
       <>
         <div className="d-flex flex-column">
@@ -89,13 +99,6 @@ function BadgeProgressTab() {
                 )}
               </div>
             </section>
-            {/* <section>
-              <div className="mb-4">
-                the user is {username} and they are enrolled as an {enrollmentMode} learner
-                {administrator
-                && <div><p>the user is admin</p></div>}
-              </div>
-            </section> */}
           </div>
         </div>
       </>

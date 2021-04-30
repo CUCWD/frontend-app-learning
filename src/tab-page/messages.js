@@ -1,6 +1,6 @@
 import { defineMessages } from '@edx/frontend-platform/i18n';
 
-const messages = defineMessages({
+const messages3 = defineMessages({
   'learn.loading': {
     id: 'learn.loading',
     defaultMessage: 'Loading course page...',
@@ -13,4 +13,4 @@ const messages = defineMessages({
   },
 });
 
-export default messages;
+export default messages3;

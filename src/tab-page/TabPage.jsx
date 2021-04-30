@@ -8,6 +8,7 @@ import { useLogistrationAlert } from '../logistration-alert';
 import PageLoading from '../PageLoading';
 
 import messages from './messages';
+import messagesBadgeProgress from '../course-home/badges-tab/messages';
 import LoadedTabPage from './LoadedTabPage';
 
 function TabPage({
@@ -20,11 +21,21 @@ function TabPage({
   // const courseStatus = useSelector(state => state.courseware.courseStatus);
 
   if (courseStatus === 'loading') {
+    let notificationMessage;
+    switch (passthroughProps.activeTabSlug) {
+      case 'badge-progress':
+      case 'badge-leaderboard':
+        notificationMessage = messagesBadgeProgress['badge.progress.loading'];
+        break;
+      default:
+        notificationMessage = messages['learn.loading'];
+    }
+
     return (
       <>
         <Header />
         <PageLoading
-          srMessage={intl.formatMessage(messages['learn.loading'])}
+          srMessage={intl.formatMessage(notificationMessage)}
         />
       </>
     );
@@ -36,12 +47,22 @@ function TabPage({
     );
   }
 
+  let notificationMessage;
+  switch (passthroughProps.activeTabSlug) {
+    case 'badge-progress':
+    case 'badge-leaderboard':
+      notificationMessage = messagesBadgeProgress['badge.progress.loading.failure'];
+      break;
+    default:
+      notificationMessage = messages['learn.loading.failure'];
+  }
+
   // courseStatus 'failed' and any other unexpected course status.
   return (
     <>
       <Header />
       <p className="text-center py-5 mx-auto" style={{ maxWidth: '30em' }}>
-        {intl.formatMessage(messages['learn.loading.failure'])}
+        {intl.formatMessage(notificationMessage)}
       </p>
     </>
   );
