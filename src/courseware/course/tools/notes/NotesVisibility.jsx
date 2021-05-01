@@ -11,7 +11,6 @@ import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 import toggleNotes from '../data/api';
 import messages from './messages';
 
-
 class NotesVisibility extends Component {
   constructor(props) {
     super(props);

@@ -22,7 +22,6 @@ export default function ContentTools({
   );
 }
 
-
 ContentTools.propTypes = {
   course: PropTypes.shape({
     notes: PropTypes.shape({

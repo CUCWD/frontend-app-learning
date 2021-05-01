@@ -50,7 +50,6 @@ function useNextSequence(sequenceId) {
   return nextSequenceId !== null ? sequences[nextSequenceId] : null;
 }
 
-
 function useNextSequenceHandler(courseId, sequenceId) {
   const nextSequence = useNextSequence(sequenceId);
   const courseStatus = useSelector(state => state.courseware.courseStatus);

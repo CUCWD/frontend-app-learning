@@ -13,7 +13,7 @@ export default function SequenceNavigationDropdown({
 }) {
   return (
     <Dropdown className="sequence-navigation-dropdown">
-      <Dropdown.Button className="dropdown-button font-weight-normal w-100 border-right-0">
+      <Dropdown.Toggle className="dropdown-button font-weight-normal w-100 border-right-0">
         <FormattedMessage
           defaultMessage="{current} of {total}"
           description="The title of the mobile menu for sequence navigation of units"
@@ -23,7 +23,7 @@ export default function SequenceNavigationDropdown({
             total: unitIds.length,
           }}
         />
-      </Dropdown.Button>
+      </Dropdown.Toggle>
       <Dropdown.Menu className="w-100">
         {unitIds.map(buttonUnitId => (
           <UnitButton

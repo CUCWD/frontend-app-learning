@@ -69,7 +69,6 @@ export default function useIndexOfLastVisibleChild() {
         nextIndexOfLastVisibleChild: -1,
       });
 
-
     setIndexOfLastVisibleChild(nextIndexOfLastVisibleChild);
   }, [windowSize, containerElementRef.current]);
 
