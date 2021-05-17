@@ -173,6 +173,7 @@
 
 /* BadgeProgressCardDetailsModal 
    --------------------------------------- */
+   /*
   .modal-progress-details {
 
     .modal {
@@ -186,26 +187,36 @@
           padding: 15px;
   
           .modal-body {
+            */
   
             .progress-details {
                
               text-align: left;
   
               .progress-details-header {
+
+                background: #48555d !important;
+                color: white !important;
+
+                .pgn__modal-hero {
+                  background: inherit !important;
+                  color: inherit !important;
+                }
   
                 .progress-details-title {
   
                   h2 {
-                    font-size: 30px;
-                    font-weight: normal;
+                    font-size: 30px !important;
+                    font-weight: bold !important;
                   }
   
                 }
   
                 .progress-details-description {
   
-                  p {
-                    font-size: 16px;
+                  div, p {
+                    font-size: 16px !important;
+                    font-weight: normal !important;
                   }
   
                 }
@@ -411,7 +422,7 @@
               }
   
             }
-  
+/*  
           }
   
         }
@@ -421,4 +432,4 @@
     }
   
   }
-  
+*/ 

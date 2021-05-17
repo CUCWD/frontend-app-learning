@@ -58,7 +58,6 @@ function TabPage({
   }
 
   // courseStatus 'failed' and any other unexpected course status.
-  //       <Header />
   return (
     <>
       <p className="text-center py-5 mx-auto" style={{ maxWidth: '30em' }}>

@@ -1,8 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Table } from '@edx/paragon';
+import snakeCase from 'lodash.snakecase';
+import { DataTable, TextFilter } from '@edx/paragon';
 
-import BadgeProgressCourseListItem from './BadgeProgressCourseListItem';
+import BadgeProgressCard from '../card/BadgeProgressCard';
+import BadgeProgressCourseListTable from './BadgeProgressCourseListTable';
 
 const BadgeProgressCourseList = (props) => {
   const { data, headings } = props;
@@ -11,13 +13,15 @@ const BadgeProgressCourseList = (props) => {
     const results = [];
 
     data.forEach((item) => {
+      const itemUserName = item.userName;
       const learnerData = {
         username: `'${item.userName}' (${item.email})`,
       };
 
       item.progress.forEach((i) => {
-        learnerData[i.blockId] = (
-          <BadgeProgressCourseListItem key={`${learnerData.username}_${i.blockId}`} badge={i} />
+        const itemKey = snakeCase(`card ${i.blockDisplayName} ${itemUserName}`);
+        learnerData[snakeCase(i.blockDisplayName)] = (
+          <BadgeProgressCard key={`${itemKey}`} data={i} minimal="minimal" />
         );
       });
 
@@ -27,28 +31,32 @@ const BadgeProgressCourseList = (props) => {
     return results;
   };
 
-  // eslint-disable-next-line no-unused-vars
-  const sortProgressByCourseBlockOrder = (progress) => {
-    if (progress) {
-      return progress.sort((a, b) => {
-        if (a.block_order < b.block_order) { return -1; }
-        if (a.block_order > b.block_order) { return 1; }
-        return 0;
-      });
-    }
-    return 0;
+  const getLearnerCount = () => {
+    const results = [];
+    data.forEach((item) => results.push(item.userName));
+    return results.length;
   };
 
   return (
     <>
-      <div className="d-flex justify-content-center">
-        <Table
-          columns={headings}
-          data={getProgressCourseListData()}
-          rowHeaderColumnKey="username"
-          className="badge-progress-course-list table-responsive thead-overflow-hidden"
-        />
-      </div>
+      <DataTable
+        isFilterable
+        isPaginated
+        isSortable
+        defaultColumnValues={{ Filter: TextFilter }}
+        initialState={{
+          pageSize: 4,
+          pageIndex: 0,
+        }}
+        itemCount={getLearnerCount()}
+        fetchData={(currentState) => console.log(`This function will be called with the value: ${JSON.stringify(currentState)}}`)}
+        data={getProgressCourseListData()}
+        columns={headings}
+      >
+        <DataTable.TableControlBar />
+        <BadgeProgressCourseListTable />
+        <DataTable.TableFooter />
+      </DataTable>
     </>
   );
 };
