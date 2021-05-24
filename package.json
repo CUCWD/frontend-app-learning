@@ -47,6 +47,7 @@
     "@reduxjs/toolkit": "^1.2.3",
     "classnames": "^2.2.6",
     "core-js": "^3.6.2",
+    "iframe-resizer": "^4.3.2",
     "lodash.camelcase": "^4.3.0",
     "lodash.snakecase": "^4.1.1",
     "mime-types": "^2.1.30",

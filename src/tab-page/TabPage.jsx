@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { injectIntl, intlShape } from '@edx/frontend-platform/i18n';
 // import { useSelector } from 'react-redux';
 
-import { Header } from '../course-header';
+// import { Header } from '../course-header';
 import { useLogistrationAlert } from '../logistration-alert';
 import PageLoading from '../PageLoading';
 
@@ -31,9 +31,9 @@ function TabPage({
         notificationMessage = messages['learn.loading'];
     }
 
+    // <Header />
     return (
       <>
-        <Header />
         <PageLoading
           srMessage={intl.formatMessage(notificationMessage)}
         />

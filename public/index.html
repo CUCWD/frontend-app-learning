@@ -1,12 +1,45 @@
 <!doctype html>
 <html lang="en-us">
-  <head>
-      <title>Course | edX</title>
-      <meta charset="utf-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
-  </head>
-  <body>
-    <div id="root"></div>
-  </body>
+
+<head>
+  <title>Course | edX</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+</head>
+
+<body>
+  <!-- This script tag is being included for testing within -->
+  <!-- the studio frontend container locally.  This value will be -->
+  <!-- dynamically passed in from LMS backend when BFE is -->
+  <!-- run from within Platform. -->
+  <script type="text/javascript" id='lmsContext'>
+    /* eslint-disable no-unused-vars */
+    /* eslint-disable no-var */
+    /* eslint-disable quotes */
+    var lmsContext = {
+      course: {
+        lang: "en",
+        url_name: "course",
+        name: "Success Skills",
+        display_course_number: "",
+        num: "SS101",
+        org: "SCJRU",
+        id: "course-v1:SCJRU+SS101+BADGE_TESTING",
+        revision: "",
+        base_url: "http://edx.devstack.lms:18000",
+      },
+      user: {
+        username: "zach-trabookis.com",
+        email: "zach@trabookis.com",
+        is_staff: "True",
+        is_superuser: "True",
+        is_authenticated: "True"
+      }
+    };
+  </script>
+  <div id="root" class="BFE"></div>
+  <script src="/node_modules/iframe-resizer/js/iframeResizer.contentWindow.min.js"></script>
+</body>
+
 </html>

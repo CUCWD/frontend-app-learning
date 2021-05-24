@@ -6,8 +6,8 @@ import classNames from 'classnames';
 
 import messages from './messages';
 import Tabs from './Tabs';
-import LinkedLogo from '../logos';
-import logo from '../assets/logo-badgr-black.svg';
+// import LinkedLogo from '../logos';
+// import logo from '../assets/logo-badgr-black.svg';
 
 function BadgeTabsNavigation({
   activeTabSlug, className, intl,
@@ -38,13 +38,13 @@ function BadgeTabsNavigation({
           className="badge-nav-tabs"
           aria-label={intl.formatMessage(messages['learn.navigation.badge.tabs.label'])}
         >
-          <LinkedLogo
+          {/* <LinkedLogo
             className="logo"
             href="https://badgr.com/auth/login"
             src={logo}
             alt="Badgr"
             target="_blank"
-          />
+          /> */}
           {tabs.map(({
             url, title, slug, disabled,
           }) => (
