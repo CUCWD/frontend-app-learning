@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { Dropdown } from '@edx/paragon';
 import { getConfig } from '@edx/frontend-platform';
+import { injectIntl, intlShape } from '@edx/frontend-platform/i18n';
 import { AppContext } from '@edx/frontend-platform/react';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -28,8 +29,9 @@ LinkedLogo.propTypes = {
   alt: PropTypes.string.isRequired,
 };
 
-export default function Header({
-  courseOrg, courseNumber, courseTitle,
+function Header({
+  // eslint-disable-next-line no-unused-vars
+  courseOrg, courseNumber, courseTitle, intl,
 }) {
   const { authenticatedUser } = useContext(AppContext);
 
@@ -48,12 +50,12 @@ export default function Header({
         </div>
 
         <Dropdown className="user-dropdown">
-          <Dropdown.Button>
+          <Dropdown.Toggle>
             <FontAwesomeIcon icon={faUserCircle} className="d-md-none" size="lg" />
             <span className="d-none d-md-inline">
               {authenticatedUser.username}
             </span>
-          </Dropdown.Button>
+          </Dropdown.Toggle>
           <Dropdown.Menu className="dropdown-menu-right">
             <Dropdown.Item href={`${getConfig().LMS_BASE_URL}/dashboard`}>Dashboard</Dropdown.Item>
             <Dropdown.Item href={`${getConfig().LMS_BASE_URL}/u/${authenticatedUser.username}`}>Profile</Dropdown.Item>
@@ -71,6 +73,7 @@ Header.propTypes = {
   courseOrg: PropTypes.string,
   courseNumber: PropTypes.string,
   courseTitle: PropTypes.string,
+  intl: intlShape.isRequired,
 };
 
 Header.defaultProps = {
@@ -78,3 +81,5 @@ Header.defaultProps = {
   courseNumber: null,
   courseTitle: null,
 };
+
+export default injectIntl(Header);

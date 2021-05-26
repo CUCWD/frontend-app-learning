@@ -389,5 +389,4 @@ Calculator.propTypes = {
   intl: intlShape.isRequired,
 };
 
-
 export default injectIntl(Calculator);

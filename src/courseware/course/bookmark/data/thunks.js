@@ -1,4 +1,3 @@
-
 import { logError } from '@edx/frontend-platform/logging';
 import {
   createBookmark,

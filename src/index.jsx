@@ -18,11 +18,14 @@ import { UserMessagesProvider } from './user-messages';
 
 import './index.scss';
 import './assets/favicon.ico';
-import CourseHome from './course-home';
+import OutlineTab from './course-home/outline-tab';
 import CoursewareContainer from './courseware';
 import CoursewareRedirect from './CoursewareRedirect';
+import { BadgeProgressTab, BadgeLeaderboardTab } from './course-home/badges-tab';
 import { TabContainer } from './tab-page';
 
+import { fetchCourse } from './data'; // Todo: Need to update this later.
+import { fetchBadgeProgressTab, fetchBadgeLeaderboardTab } from './course-home/data';
 import store from './store';
 
 subscribe(APP_READY, () => {
@@ -32,8 +35,18 @@ subscribe(APP_READY, () => {
         <Switch>
           <Route path="/redirect" component={CoursewareRedirect} />
           <Route path="/course/:courseId/home">
-            <TabContainer tab="courseware">
-              <CourseHome />
+            <TabContainer tab="outline" fetch={fetchCourse}>
+              <OutlineTab />
+            </TabContainer>
+          </Route>
+          <Route path="/course/:courseId/badge/progress">
+            <TabContainer tab="badge-progress" fetch={fetchBadgeProgressTab}>
+              <BadgeProgressTab />
+            </TabContainer>
+          </Route>
+          <Route path="/course/:courseId/badge/leaderboard">
+            <TabContainer tab="badge-leaderboard" fetch={fetchBadgeLeaderboardTab}>
+              <BadgeLeaderboardTab />
             </TabContainer>
           </Route>
           <Route

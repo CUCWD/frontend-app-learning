@@ -136,7 +136,6 @@ export async function getCourseBlocks(courseId) {
   return normalizeBlocks(courseId, data.blocks);
 }
 
-
 function normalizeSequenceMetadata(sequence) {
   return {
     sequence: {

@@ -1,8 +1,12 @@
 $primary: #1176B2;
-@import '~@edx/paragon/scss/edx/theme.scss';
+// @import '~@edx/paragon/scss/edx/theme.scss';
+@import "@edx/brand/paragon/fonts";
+@import "@edx/brand/paragon/variables";
+@import "@edx/paragon/scss/core/core";
+@import "@edx/brand/paragon/overrides";
 
-@import "~@edx/frontend-component-header/dist/index";
-@import "~@edx/frontend-component-footer/dist/footer";
+@import "@edx/frontend-component-header/dist/index";
+@import "@edx/frontend-component-footer/dist/footer";
 
 // TODO: Fix .btn-outline-light style in paragon
 .btn-outline-light {
@@ -132,7 +136,7 @@ $primary: #1176B2;
     border-radius: 0;
     border: solid 1px #EAEAEA;
     border-left-width: 0;
-    position: relative;
+    position: relative; 
     font-weight: 400;
     padding: 0 .375rem;
     height: 3rem;
@@ -306,3 +310,6 @@ $primary: #1176B2;
     flex-basis: 25%;
   }
 }
+
+// Import component-specific sass files
+@import 'course-home/badges-tab/badge-progress/BadgeProgressTab.scss';
