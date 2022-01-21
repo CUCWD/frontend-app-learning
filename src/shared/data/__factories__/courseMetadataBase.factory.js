@@ -12,10 +12,10 @@ export default new Factory()
     original_user_is_staff: false,
     number: 'DemoX',
     org: 'edX',
-    verified_mode: {
-      upgrade_url: 'test',
+    verifiedMode: {
+      upgradeUrl: 'test',
       price: 10,
-      currency_symbol: '$',
+      currencySymbol: '$',
     },
   })
   .attr(

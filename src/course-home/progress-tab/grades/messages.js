@@ -89,10 +89,6 @@ const messages = defineMessages({
     id: 'progress.courseGrade.grades',
     defaultMessage: 'Grades',
   },
-  gradesAndCredit: {
-    id: 'progress.courseGrade.gradesAndCredit',
-    defaultMessage: 'Grades & Credit',
-  },
   gradeRangeTooltipAlt: {
     id: 'progress.courseGrade.gradeRange.Tooltip',
     defaultMessage: 'Grade range tooltip',

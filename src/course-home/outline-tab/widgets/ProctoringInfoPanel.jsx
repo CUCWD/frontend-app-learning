@@ -8,9 +8,7 @@ import { Button } from '@edx/paragon';
 import messages from '../messages';
 import { getProctoringInfoData } from '../../data/api';
 
-function ProctoringInfoPanel({
-  courseId, username, intl, isResolved,
-}) {
+function ProctoringInfoPanel({ courseId, username, intl }) {
   const [link, setLink] = useState('');
   const [onboardingPastDue, setOnboardingPastDue] = useState(false);
   const [showInfoPanel, setShowInfoPanel] = useState(false);
@@ -97,13 +95,7 @@ function ProctoringInfoPanel({
             setOnboardingPastDue(response.onboarding_past_due);
           }
         },
-      )
-      .catch(() => {
-        /* Do nothing. API throws 404 when class does not have proctoring */
-      })
-      .finally(() => {
-        isResolved();
-      });
+      );
   }, []);
 
   let onboardingExamButton = null;
@@ -194,7 +186,6 @@ ProctoringInfoPanel.propTypes = {
   courseId: PropTypes.string.isRequired,
   username: PropTypes.string,
   intl: intlShape.isRequired,
-  isResolved: PropTypes.func.isRequired,
 };
 
 ProctoringInfoPanel.defaultProps = {

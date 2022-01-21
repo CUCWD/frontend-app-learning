@@ -6,7 +6,6 @@ import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
 import MockAdapter from 'axios-mock-adapter';
 import Cookies from 'js-cookie';
 import userEvent from '@testing-library/user-event';
-import messages from './messages';
 
 import { buildMinimalCourseBlocks } from '../../shared/data/__factories__/courseBlocks.factory';
 import {
@@ -74,7 +73,7 @@ describe('Outline Tab', () => {
   describe('Course Outline', () => {
     it('displays link to start course', async () => {
       await fetchAndRender();
-      expect(screen.getByRole('link', { name: messages.start.defaultMessage })).toBeInTheDocument();
+      expect(screen.getByRole('link', { name: 'Start Course' })).toBeInTheDocument();
     });
 
     it('displays link to resume course', async () => {
@@ -414,157 +413,6 @@ describe('Outline Tab', () => {
     });
   });
 
-  describe('Start or Resume Course Card', () => {
-    it('renders startOrResumeCourseCard', async () => {
-      await fetchAndRender();
-      expect(screen.queryByTestId('start-resume-card')).toBeInTheDocument();
-    });
-  });
-
-  describe('Weekly Learning Goal', () => {
-    it('does not render weekly learning goal if weeklyLearningGoalEnabled is false', async () => {
-      await fetchAndRender();
-      expect(screen.queryByTestId('weekly-learning-goal-card')).not.toBeInTheDocument();
-    });
-
-    it('does not post goals while masquerading', async () => {
-      setMetadata({ is_enrolled: true, original_user_is_staff: true });
-      setTabData({
-        course_goals: {
-          weekly_learning_goal_enabled: true,
-        },
-      });
-      const spy = jest.spyOn(thunks, 'saveWeeklyLearningGoal');
-
-      await fetchAndRender();
-      const button = await screen.getByTestId('weekly-learning-goal-input-Regular');
-      fireEvent.click(button);
-      expect(spy).toHaveBeenCalledTimes(0);
-    });
-
-    describe('weekly learning goal is not set', () => {
-      beforeEach(async () => {
-        setTabData({
-          course_goals: {
-            weekly_learning_goal_enabled: true,
-          },
-        });
-        await fetchAndRender();
-      });
-
-      it('renders weekly learning goal card', async () => {
-        expect(screen.queryByTestId('weekly-learning-goal-card')).toBeInTheDocument();
-      });
-
-      it('disables the subscribe button if no goal is set', async () => {
-        expect(screen.getByLabelText(messages.setGoalReminder.defaultMessage)).toBeDisabled();
-      });
-
-      it('does not show the deprecated goals feature if WeeklyLearningGoal is enabled', async () => {
-        expect(screen.queryByTestId('course-goal-card')).not.toBeInTheDocument();
-        expect(screen.queryByLabelText('Goal')).not.toBeInTheDocument();
-        expect(screen.queryByTestId('edit-goal-selector')).not.toBeInTheDocument();
-      });
-
-      it.each`
-      level     | days 
-      ${'Casual'}  | ${1}
-      ${'Regular'} | ${3}
-      ${'Intense'} | ${5}
-        `('calls the API with a goal of $days when $level goal is clicked', async ({ level, days }) => {
-  // click on Casual goal
-  const button = await screen.queryByTestId(`weekly-learning-goal-input-${level}`);
-  fireEvent.click(button);
-  // Verify the request was made
-  await waitFor(() => {
-    expect(axiosMock.history.post[0].url).toMatch(goalUrl);
-    // subscribe is turned on automatically
-    expect(axiosMock.history.post[0].data).toMatch(`{"course_id":"${courseId}","days_per_week":${days},"subscribed_to_reminders":true}`);
-    // verify that the additional info about subscriptions shows up
-    expect(screen.queryByText(messages.goalReminderDetail.defaultMessage)).toBeInTheDocument();
-  });
-  expect(screen.getByLabelText(messages.setGoalReminder.defaultMessage)).toBeEnabled();
-});
-      it('shows and hides subscribe to reminders additional text', async () => {
-        const button = await screen.getByTestId('weekly-learning-goal-input-Regular');
-        fireEvent.click(button);
-        // Verify the request was made
-        await waitFor(() => {
-          expect(axiosMock.history.post[0].url).toMatch(goalUrl);
-          // subscribe is turned on automatically
-          expect(axiosMock.history.post[0].data).toMatch(`{"course_id":"${courseId}","days_per_week":3,"subscribed_to_reminders":true}`);
-          // verify that the additional info about subscriptions shows up
-          expect(screen.queryByText(messages.goalReminderDetail.defaultMessage)).toBeInTheDocument();
-        });
-        expect(screen.getByLabelText(messages.setGoalReminder.defaultMessage)).toBeEnabled();
-
-        // Click on subscribe to reminders toggle
-        const subscriptionSwitch = await screen.getByRole('switch', { name: messages.setGoalReminder.defaultMessage });
-        expect(subscriptionSwitch).toBeInTheDocument();
-
-        fireEvent.click(subscriptionSwitch);
-        await waitFor(() => {
-          expect(axiosMock.history.post[1].url).toMatch(goalUrl);
-          expect(axiosMock.history.post[1].data)
-            .toMatch(`{"course_id":"${courseId}","days_per_week":3,"subscribed_to_reminders":false}`);
-        });
-
-        // verify that the additional info about subscriptions gets hidden
-        expect(screen.queryByText(messages.goalReminderDetail.defaultMessage)).not.toBeInTheDocument();
-      });
-    });
-
-    it('has button for weekly learning goal selected', async () => {
-      setTabData({
-        course_goals: {
-          weekly_learning_goal_enabled: true,
-          selected_goal: {
-            subscribed_to_reminders: true,
-            days_per_week: 3,
-          },
-        },
-      });
-      await fetchAndRender();
-
-      const button = await screen.queryByTestId('weekly-learning-goal-input-Regular');
-      expect(button).toBeInTheDocument();
-      expect(button).toHaveClass('flag-button-selected');
-    });
-
-    it('renders weekly learning goal card if ProctoringInfoPanel is not shown', async () => {
-      setTabData({
-        course_goals: {
-          weekly_learning_goal_enabled: true,
-        },
-      });
-      axiosMock.onGet(proctoringInfoUrl).reply(404);
-      await fetchAndRender();
-      expect(screen.queryByTestId('weekly-learning-goal-card')).toBeInTheDocument();
-    });
-
-    it('renders weekly learning goal card if ProctoringInfoPanel is not enabled', async () => {
-      setTabData({
-        course_goals: {
-          weekly_learning_goal_enabled: true,
-          enableProctoredExams: false,
-        },
-      });
-      await fetchAndRender();
-      expect(screen.queryByTestId('weekly-learning-goal-card')).toBeInTheDocument();
-    });
-
-    it('renders weekly learning goal card if ProctoringInfoPanel is enabled', async () => {
-      setTabData({
-        course_goals: {
-          weekly_learning_goal_enabled: true,
-          enableProctoredExams: true,
-        },
-      });
-      await fetchAndRender();
-      expect(screen.queryByTestId('weekly-learning-goal-card')).toBeInTheDocument();
-    });
-  });
-
   describe('Course Handouts', () => {
     it('renders title when handouts are available', async () => {
       await fetchAndRender();
@@ -835,8 +683,8 @@ describe('Outline Tab', () => {
           ],
         });
         await fetchAndRender();
-        screen.getAllByText('You are not yet eligible for a certificate');
-        expect(screen.queryByText('You are not yet eligible for a certificate')).toBeInTheDocument();
+        screen.getAllByText('You are not eligible for a certificate');
+        expect(screen.queryByText('You are not eligible for a certificate')).toBeInTheDocument();
       });
       it('tracks request cert button', async () => {
         sendTrackEvent.mockClear();
@@ -1008,7 +856,7 @@ describe('Outline Tab', () => {
           ],
         });
         await fetchAndRender();
-        expect(screen.getByRole('link', { name: messages.start.defaultMessage })).toBeInTheDocument();
+        expect(screen.getByRole('link', { name: 'Start Course' })).toBeInTheDocument();
         expect(screen.queryByText('More content is coming soon!')).not.toBeInTheDocument();
       });
     });
@@ -1208,7 +1056,6 @@ describe('Outline Tab', () => {
 
     it('does not appear for 404', async () => {
       axiosMock.onGet(proctoringInfoUrl).reply(404);
-      await fetchAndRender();
       expect(screen.queryByRole('link', { name: 'Review instructions and system requirements' })).not.toBeInTheDocument();
     });
 

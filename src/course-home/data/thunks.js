@@ -6,10 +6,8 @@ import {
   getDatesTabData,
   getOutlineTabData,
   getProgressTabData,
-  getGlossaryTabData,
   postCourseDeadlines,
-  deprecatedPostCourseGoals,
-  postWeeklyLearningGoal,
+  postCourseGoals,
   postDismissWelcomeMessage,
   postRequestCert,
 } from './api';
@@ -80,12 +78,8 @@ export function fetchDatesTab(courseId) {
   return fetchTab(courseId, 'dates', getDatesTabData);
 }
 
-export function fetchProgressTab(courseId) {
+export function fetchProgressTab(courseId, targetUserId) {
   return fetchTab(courseId, 'progress', getProgressTabData, parseInt(targetUserId, 10) || targetUserId);
-}
-
-export function fetchGlossaryTab(courseId) {
-  return fetchTab(courseId, 'glossary', getGlossaryTabData);
 }
 
 export function fetchOutlineTab(courseId) {
@@ -115,12 +109,8 @@ export function resetDeadlines(courseId, model, getTabData) {
   };
 }
 
-export async function deprecatedSaveCourseGoal(courseId, goalKey) {
-  return deprecatedPostCourseGoals(courseId, goalKey);
-}
-
-export async function saveWeeklyLearningGoal(courseId, daysPerWeek, subscribedToReminders) {
-  return postWeeklyLearningGoal(courseId, daysPerWeek, subscribedToReminders);
+export async function saveCourseGoal(courseId, goalKey) {
+  return postCourseGoals(courseId, goalKey);
 }
 
 export function processEvent(eventData, getTabData) {

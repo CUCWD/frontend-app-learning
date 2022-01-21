@@ -64,7 +64,7 @@ function GradeSummaryTable({ intl, setAllOfSomeAssignmentTypeIsLocked }) {
       footnoteMarker = footnotes.length;
     }
 
-    const locked = !gradesFeatureIsFullyLocked && hasNoAccessToAssignmentsOfType(assignment.type);
+    const locked = !gradesFeatureIsFullyLocked && hasNoAccessToAssignmentsOfType(assignment.type) ? 'greyed-out' : '';
 
     return {
       type: {
