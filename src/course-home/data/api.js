@@ -280,6 +280,26 @@ export async function getProgressTabData(courseId, targetUserId) {
   }
 }
 
+export async function getGlossaryTabData(courseId) {
+  const url = `${getConfig().LMS_BASE_URL}/api/course_home/glossary/${courseId}`;
+  try {
+    const { data } = await getAuthenticatedHttpClient().get(url);
+    return camelCaseObject(data);
+  } catch (error) {
+    const { httpErrorStatus } = error && error.customAttributes;
+    if (httpErrorStatus === 404) {
+      global.location.replace(`${getConfig().LMS_BASE_URL}/courses/${courseId}/glossary`);
+      return {};
+    }
+    if (httpErrorStatus === 401) {
+      // The backend sends this for unenrolled and unauthenticated learners, but we handle those cases by examining
+      // courseAccess in the metadata call, so just ignore this status for now.
+      return {};
+    }
+    throw error;
+  }
+}
+
 export async function getProctoringInfoData(courseId, username) {
   let url = `${getConfig().LMS_BASE_URL}/api/edx_proctoring/v1/user_onboarding/status?is_learning_mfe=true&course_id=${encodeURIComponent(courseId)}`;
   if (username) {
@@ -343,6 +363,7 @@ export async function getOutlineTabData(courseId) {
   const courseTools = camelCaseObject(data.course_tools);
   const datesBannerInfo = camelCaseObject(data.dates_banner_info);
   const datesWidget = camelCaseObject(data.dates_widget);
+  const enableProctoredExams = data.enable_proctored_exams;
   const enrollAlert = camelCaseObject(data.enroll_alert);
   const enrollmentMode = data.enrollment_mode;
   const handoutsHtml = data.handouts_html;
@@ -366,6 +387,7 @@ export async function getOutlineTabData(courseId) {
     datesWidget,
     enrollAlert,
     enrollmentMode,
+    enableProctoredExams,
     handoutsHtml,
     hasScheduledContent,
     hasEnded,
@@ -386,9 +408,18 @@ export async function postCourseDeadlines(courseId, model) {
   });
 }
 
-export async function postCourseGoals(courseId, goalKey) {
+export async function deprecatedPostCourseGoals(courseId, goalKey) {
   const url = new URL(`${getConfig().LMS_BASE_URL}/api/course_home/save_course_goal`);
   return getAuthenticatedHttpClient().post(url.href, { course_id: courseId, goal_key: goalKey });
+}
+
+export async function postWeeklyLearningGoal(courseId, daysPerWeek, subscribedToReminders) {
+  const url = new URL(`${getConfig().LMS_BASE_URL}/api/course_home/save_course_goal`);
+  return getAuthenticatedHttpClient().post(url.href, {
+    course_id: courseId,
+    days_per_week: daysPerWeek,
+    subscribed_to_reminders: subscribedToReminders,
+  });
 }
 
 export async function postDismissWelcomeMessage(courseId) {

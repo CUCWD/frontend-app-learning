@@ -432,8 +432,11 @@ Object {
           },
         },
         "courseGoals": Object {
+          "daysPerWeek": null,
           "goalOptions": Array [],
           "selectedGoal": null,
+          "subscribedToReminders": null,
+          "weeklyLearningGoalEnabled": false,
         },
         "courseTools": Array [
           Object {
@@ -450,6 +453,7 @@ Object {
         "datesWidget": Object {
           "courseDateBlocks": Array [],
         },
+        "enableProctoredExams": undefined,
         "enrollAlert": Object {
           "canEnroll": true,
           "extraText": "Contact the administrator.",
@@ -578,6 +582,7 @@ Object {
           "visiblePercent": 1,
         },
         "courseId": "course-v1:edX+DemoX+Demo_Course_1",
+        "creditCourseRequirements": null,
         "end": "3027-03-31T00:00:00Z",
         "enrollmentMode": "audit",
         "gradesFeatureIsFullyLocked": false,
