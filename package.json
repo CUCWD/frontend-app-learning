@@ -36,12 +36,8 @@
     "@edx/frontend-enterprise-utils": "1.1.1",
     "@edx/frontend-lib-special-exams": "1.14.1",
     "@edx/frontend-platform": "1.14.3",
-<<<<<<< HEAD
     "@edx/paragon": "16.19.0",
     "@edx/frontend-component-header": "^2.4.3",
-=======
-    "@edx/paragon": "16.18.0",
->>>>>>> feature.maple/cgaber2045/L3J2Kx4XmEqqXHRyxgAfjmQAKi2y/LMS-Glossary
     "@fortawesome/fontawesome-svg-core": "1.2.36",
     "@fortawesome/free-brands-svg-icons": "5.15.4",
     "@fortawesome/free-regular-svg-icons": "5.15.4",
@@ -71,11 +67,7 @@
     "util": "0.12.4"
   },
   "devDependencies": {
-<<<<<<< HEAD
     "@edx/frontend-build": "9.0.5",
-=======
-    "@edx/frontend-build": "8.1.6",
->>>>>>> feature.maple/cgaber2045/L3J2Kx4XmEqqXHRyxgAfjmQAKi2y/LMS-Glossary
     "@testing-library/dom": "7.16.3",
     "@testing-library/jest-dom": "5.15.1",
     "@testing-library/react": "10.3.0",
