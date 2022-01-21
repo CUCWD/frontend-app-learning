@@ -36,9 +36,7 @@ function ResultPage({ courseTitle, error, intl }) {
     <>
       <UnsubscribeIcon className="text-primary" alt="" />
       <div role="heading" aria-level="1" className="h2">{header}</div>
-      <div className="row justify-content-center">
-        <div className="col-xl-7 col-12 p-0">{description}</div>
-      </div>
+      <div>{description}</div>
       <Button variant="brand" href={`${getConfig().LMS_BASE_URL}/dashboard`} className="mt-4">
         {intl.formatMessage(messages.goToDashboard)}
       </Button>

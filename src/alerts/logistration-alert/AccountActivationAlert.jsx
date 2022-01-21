@@ -9,13 +9,10 @@ import {
   Icon,
 } from '@edx/paragon';
 import { Check, ArrowForward } from '@edx/paragon/icons';
-import { FormattedMessage, injectIntl, intlShape } from '@edx/frontend-platform/i18n';
+import { FormattedMessage, injectIntl } from '@edx/frontend-platform/i18n';
 import { sendActivationEmail } from '../../courseware/data';
-import messages from './messages';
 
-function AccountActivationAlert({
-  intl,
-}) {
+function AccountActivationAlert() {
   const [showModal, setShowModal] = useState(false);
   const [showSpinner, setShowSpinner] = useState(false);
   const [showCheck, setShowCheck] = useState(false);
@@ -32,11 +29,21 @@ function AccountActivationAlert({
   if (showAccountActivationAlert !== undefined) {
     Cookies.remove('show-account-activation-popup', { path: '/', domain: process.env.SESSION_COOKIE_DOMAIN });
     // extra check to make sure cookie was removed before updating the state. Updating the state without removal
-    // of cookie would make it infinite rendering
+    // of cookie would make it infinit rendering
     if (Cookies.get('show-account-activation-popup') === undefined) {
       setShowModal(true);
     }
   }
+
+  const title = (
+    <h3>
+      <FormattedMessage
+        id="account-activation.alert.title"
+        defaultMessage="Activate your account so you can log back in"
+        description="Title for account activation alert which is shown after the registration"
+      />
+    </h3>
+  );
 
   const button = (
     <Button
@@ -57,7 +64,7 @@ function AccountActivationAlert({
   );
 
   const children = () => {
-    let bodyContent;
+    let bodyContent = null;
     const message = (
       <FormattedMessage
         id="account-activation.alert.message"
@@ -116,7 +123,7 @@ function AccountActivationAlert({
   return (
     <AlertModal
       isOpen={showModal}
-      title={intl.formatMessage(messages.accountActivationAlertTitle)}
+      title={title}
       footerNode={button}
       onClose={() => ({})}
     >
@@ -124,9 +131,5 @@ function AccountActivationAlert({
     </AlertModal>
   );
 }
-
-AccountActivationAlert.propTypes = {
-  intl: intlShape.isRequired,
-};
 
 export default injectIntl(AccountActivationAlert);

@@ -13,7 +13,7 @@ import { MMP2PFlyoverTrigger } from '../../experiments/mm-p2p';
 import JumpNavMenuItem from './JumpNavMenuItem';
 
 function CourseBreadcrumb({
-  content, withSeparator, courseId, sequenceId, unitId, isStaff,
+  content, withSeparator, courseId, unitId, isStaff,
 }) {
   const defaultContent = content.filter(destination => destination.default)[0] || { id: courseId, label: '' };
 
@@ -46,7 +46,6 @@ function CourseBreadcrumb({
                   sequences={item.sequences}
                   courseId={courseId}
                   title={item.label}
-                  currentSequence={sequenceId}
                   currentUnit={unitId}
                 />
               ))}
@@ -65,7 +64,6 @@ CourseBreadcrumb.propTypes = {
       label: PropTypes.string,
     }),
   ).isRequired,
-  sequenceId: PropTypes.string,
   unitId: PropTypes.string,
   withSeparator: PropTypes.bool,
   courseId: PropTypes.string,
@@ -74,7 +72,6 @@ CourseBreadcrumb.propTypes = {
 
 CourseBreadcrumb.defaultProps = {
   withSeparator: false,
-  sequenceId: null,
   unitId: null,
   courseId: null,
   isStaff: null,

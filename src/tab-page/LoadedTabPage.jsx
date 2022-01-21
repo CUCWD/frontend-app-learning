@@ -37,7 +37,7 @@ function LoadedTabPage({
   const activeTab = tabs.filter(tab => tab.slug === activeTabSlug)[0];
 
   const streakLengthToCelebrate = celebrations && celebrations.streakLengthToCelebrate;
-  const streakDiscountCouponEnabled = celebrations && celebrations.streakDiscountEnabled && verifiedMode;
+  const StreakDiscountCouponEnabled = celebrations && celebrations.streakDiscountEnabled && verifiedMode;
   const [isStreakCelebrationOpen,, closeStreakCelebration] = useToggle(streakLengthToCelebrate);
 
   return (
@@ -59,7 +59,7 @@ function LoadedTabPage({
         streakLengthToCelebrate={streakLengthToCelebrate}
         isStreakCelebrationOpen={!!isStreakCelebrationOpen}
         closeStreakCelebration={closeStreakCelebration}
-        streakDiscountCouponEnabled={streakDiscountCouponEnabled}
+        StreakDiscountCouponEnabled={StreakDiscountCouponEnabled}
         verifiedMode={verifiedMode}
       />
       <main id="main-content" className="d-flex flex-column flex-grow-1">

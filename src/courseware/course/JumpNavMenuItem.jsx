@@ -14,10 +14,10 @@ import { checkBlockCompletion } from '../data';
 export default function JumpNavMenuItem({
   title,
   courseId,
-  currentSequence,
   currentUnit,
   sequences,
   isDefault,
+
 }) {
   const dispatch = useDispatch();
   function logEvent(targetUrl) {
@@ -34,7 +34,7 @@ export default function JumpNavMenuItem({
 
   function lazyloadUrl() {
     if (isDefault) {
-      return `/course/${courseId}/${currentSequence}/${currentUnit}`;
+      return `/course/${courseId}/${currentUnit}`;
     }
     const destinationString = sequences.forEach(sequence => sequence.unitIds.forEach(unitId => {
       const complete = dispatch(checkBlockCompletion(
@@ -42,9 +42,9 @@ export default function JumpNavMenuItem({
         sequence.id, unitId,
       ))
         .then(value => value);
-      if (!complete) { return `/course/${courseId}/${sequence.id}/${unitId}`; }
+      if (!complete) { return `/course/${courseId}/${unitId}`; }
     }));
-    return destinationString || `/course/${courseId}/${sequences[0].id}/${sequences[0].unitIds[0]}`;
+    return destinationString || `/course/${courseId}/${sequences[0].unitIds[0]}`;
   }
   function handleClick() {
     const url = lazyloadUrl();
@@ -76,6 +76,5 @@ JumpNavMenuItem.propTypes = {
   sequences: PropTypes.arrayOf(sequenceShape).isRequired,
   isDefault: PropTypes.bool.isRequired,
   courseId: PropTypes.string.isRequired,
-  currentSequence: PropTypes.string.isRequired,
   currentUnit: PropTypes.string.isRequired,
 };

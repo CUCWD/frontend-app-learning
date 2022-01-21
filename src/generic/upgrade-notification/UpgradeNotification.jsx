@@ -1,33 +1,123 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import { faCheck } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 import { sendTrackEvent, sendTrackingLogEvent } from '@edx/frontend-platform/analytics';
 import { FormattedDate, FormattedMessage, injectIntl } from '@edx/frontend-platform/i18n';
+import { getConfig } from '@edx/frontend-platform';
 import { setLocalStorage } from '../../data/localStorage';
+
 import { UpgradeButton } from '../upgrade-button';
-import {
-  VerifiedCertBullet,
-  UnlockGradedBullet,
-  FullAccessBullet,
-  SupportMissionBullet,
-} from '../upsell-bullets/UpsellBullets';
 
 function UpsellNoFBECardContent() {
+  const verifiedCertLink = (
+    <a className="inline-link-underline font-weight-bold" rel="noopener noreferrer" target="_blank" href={`${getConfig().MARKETING_SITE_BASE_URL}/verified-certificate`}>
+      <FormattedMessage
+        id="learning.generic.upgradeNotification.verifiedCertLink"
+        defaultMessage="verified certificate"
+      />
+    </a>
+  );
+
   return (
     <ul className="fa-ul upgrade-notification-ul pt-0">
-      <VerifiedCertBullet />
-      <SupportMissionBullet />
+      <li>
+        <span className="fa-li upgrade-notification-li"><FontAwesomeIcon icon={faCheck} /></span>
+        <FormattedMessage
+          id="learning.generic.upgradeNotification.verifiedCertMessage"
+          defaultMessage="Earn a {verifiedCertLink} of completion to showcase on your resumé"
+          values={{ verifiedCertLink }}
+        />
+      </li>
+      <li>
+        <span className="fa-li upgrade-notification-li"><FontAwesomeIcon icon={faCheck} /></span>
+        <FormattedMessage
+          id="learning.generic.upgradeNotification.noFBE.nonProfitMission"
+          defaultMessage="Support our {nonProfitMission} at edX"
+          values={{
+            nonProfitMission: (
+              <span className="font-weight-bold">non-profit mission</span>
+            ),
+          }}
+        />
+      </li>
     </ul>
   );
 }
 
 function UpsellFBEFarAwayCardContent() {
+  const verifiedCertLink = (
+    <a className="inline-link-underline font-weight-bold" rel="noopener noreferrer" target="_blank" href={`${getConfig().MARKETING_SITE_BASE_URL}/verified-certificate`}>
+      <FormattedMessage
+        id="learning.generic.upgradeNotification.verifiedCertLink"
+        defaultMessage="verified certificate"
+      />
+    </a>
+  );
+
+  const gradedAssignments = (
+    <span className="font-weight-bold">
+      <FormattedMessage
+        id="learning.generic.upgradeNotification.gradedAssignments"
+        defaultMessage="graded assignments"
+      />
+    </span>
+  );
+
+  const fullAccess = (
+    <span className="font-weight-bold">
+      <FormattedMessage
+        id="learning.generic.upgradeNotification.verifiedCertLink.fullAccess"
+        defaultMessage="Full access"
+      />
+    </span>
+  );
+
+  const nonProfitMission = (
+    <span className="font-weight-bold">
+      <FormattedMessage
+        id="learning.generic.upgradeNotification.FBE.nonProfitMission"
+        defaultMessage="non-profit mission"
+      />
+    </span>
+  );
+
   return (
     <ul className="fa-ul upgrade-notification-ul">
-      <VerifiedCertBullet />
-      <UnlockGradedBullet />
-      <FullAccessBullet />
-      <SupportMissionBullet />
+      <li>
+        <span className="fa-li upgrade-notification-li"><FontAwesomeIcon icon={faCheck} /></span>
+        <FormattedMessage
+          id="learning.generic.upgradeNotification.verifiedCertMessage"
+          defaultMessage="Earn a {verifiedCertLink} of completion to showcase on your resumé"
+          values={{ verifiedCertLink }}
+        />
+      </li>
+      <li>
+        <span className="fa-li upgrade-notification-li"><FontAwesomeIcon icon={faCheck} /></span>
+        <FormattedMessage
+          id="learning.generic.upgradeNotification.unlockGraded"
+          defaultMessage="Unlock your access to all course activities, including {gradedAssignments}"
+          values={{ gradedAssignments }}
+        />
+      </li>
+      <li>
+        <span className="fa-li upgrade-notification-li"><FontAwesomeIcon icon={faCheck} /></span>
+        <FormattedMessage
+          id="learning.generic.upgradeNotification.fullAccess"
+          defaultMessage="{fullAccess} to course content and materials, even after the course ends"
+          values={{ fullAccess }}
+        />
+      </li>
+      <li>
+        <span className="fa-li upgrade-notification-li"><FontAwesomeIcon icon={faCheck} /></span>
+        <FormattedMessage
+          id="learning.generic.upgradeNotification.nonProfitMission"
+          defaultMessage="Support our {nonProfitMission} at edX"
+          values={{ nonProfitMission }}
+        />
+      </li>
     </ul>
   );
 }
@@ -95,20 +185,18 @@ UpsellFBESoonCardContent.defaultProps = {
   timezoneFormatArgs: {},
 };
 
-function ExpirationCountdown({
-  courseId, hoursToExpiration, setupgradeNotificationCurrentState, type,
-}) {
+function ExpirationCountdown({ hoursToExpiration, setupgradeNotificationCurrentState, type }) {
   let expirationText;
   if (hoursToExpiration >= 24) {
     // setupgradeNotificationCurrentState is available in NotificationTray (not course home)
     if (setupgradeNotificationCurrentState) {
       if (type === 'access') {
         setupgradeNotificationCurrentState('accessDaysLeft');
-        setLocalStorage(`upgradeNotificationCurrentState.${courseId}`, 'accessDaysLeft');
+        setLocalStorage('upgradeNotificationCurrentState', 'accessDaysLeft');
       }
       if (type === 'offer') {
         setupgradeNotificationCurrentState('FPDdaysLeft');
-        setLocalStorage(`upgradeNotificationCurrentState.${courseId}`, 'FPDdaysLeft');
+        setLocalStorage('upgradeNotificationCurrentState', 'FPDdaysLeft');
       }
     }
     expirationText = (
@@ -127,11 +215,11 @@ function ExpirationCountdown({
     if (setupgradeNotificationCurrentState) {
       if (type === 'access') {
         setupgradeNotificationCurrentState('accessHoursLeft');
-        setLocalStorage(`upgradeNotificationCurrentState.${courseId}`, 'accessHoursLeft');
+        setLocalStorage('upgradeNotificationCurrentState', 'accessHoursLeft');
       }
       if (type === 'offer') {
         setupgradeNotificationCurrentState('FPDHoursLeft');
-        setLocalStorage(`upgradeNotificationCurrentState.${courseId}`, 'FPDHoursLeft');
+        setLocalStorage('upgradeNotificationCurrentState', 'FPDHoursLeft');
       }
     }
     expirationText = (
@@ -150,11 +238,11 @@ function ExpirationCountdown({
     if (setupgradeNotificationCurrentState) {
       if (type === 'access') {
         setupgradeNotificationCurrentState('accessLastHour');
-        setLocalStorage(`upgradeNotificationCurrentState.${courseId}`, 'accessLastHour');
+        setLocalStorage('upgradeNotificationCurrentState', 'accessLastHour');
       }
       if (type === 'offer') {
         setupgradeNotificationCurrentState('FPDLastHour');
-        setLocalStorage(`upgradeNotificationCurrentState.${courseId}`, 'FPDLastHour');
+        setLocalStorage('upgradeNotificationCurrentState', 'FPDLastHour');
       }
     }
     expirationText = (
@@ -168,7 +256,6 @@ function ExpirationCountdown({
 }
 
 ExpirationCountdown.propTypes = {
-  courseId: PropTypes.string.isRequired,
   hoursToExpiration: PropTypes.number.isRequired,
   setupgradeNotificationCurrentState: PropTypes.func,
   type: PropTypes.string,
@@ -178,12 +265,10 @@ ExpirationCountdown.defaultProps = {
   type: null,
 };
 
-function AccessExpirationDateBanner({
-  courseId, accessExpirationDate, timezoneFormatArgs, setupgradeNotificationCurrentState,
-}) {
+function AccessExpirationDateBanner({ accessExpirationDate, timezoneFormatArgs, setupgradeNotificationCurrentState }) {
   if (setupgradeNotificationCurrentState) {
     setupgradeNotificationCurrentState('accessDateView');
-    setLocalStorage(`upgradeNotificationCurrentState.${courseId}`, 'accessDateView');
+    setLocalStorage('upgradeNotificationCurrentState', 'accessDateView');
   }
   return (
     <div className="upsell-warning-light">
@@ -207,7 +292,6 @@ function AccessExpirationDateBanner({
 }
 
 AccessExpirationDateBanner.propTypes = {
-  courseId: PropTypes.string.isRequired,
   accessExpirationDate: PropTypes.PropTypes.instanceOf(Date).isRequired,
   timezoneFormatArgs: PropTypes.shape({
     timeZone: PropTypes.string,
@@ -304,7 +388,6 @@ function UpgradeNotification({
         );
         expirationBanner = (
           <ExpirationCountdown
-            courseId={courseId}
             hoursToExpiration={hoursToDiscountExpiration}
             setupgradeNotificationCurrentState={setupgradeNotificationCurrentState}
             type="offer"
@@ -319,7 +402,6 @@ function UpgradeNotification({
         );
         expirationBanner = (
           <AccessExpirationDateBanner
-            courseId={courseId}
             accessExpirationDate={accessExpirationDate}
             timezoneFormatArgs={timezoneFormatArgs}
             setupgradeNotificationCurrentState={setupgradeNotificationCurrentState}
@@ -336,7 +418,6 @@ function UpgradeNotification({
       );
       expirationBanner = (
         <ExpirationCountdown
-          courseId={courseId}
           hoursToExpiration={hoursToAccessExpiration}
           setupgradeNotificationCurrentState={setupgradeNotificationCurrentState}
           type="access"

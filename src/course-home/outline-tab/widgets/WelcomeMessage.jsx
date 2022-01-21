@@ -37,7 +37,6 @@ function WelcomeMessage({ courseId, intl }) {
         setDisplay(false);
         dispatch(dismissWelcomeMessage(courseId));
       }}
-      className="shadow-sm border-0"
       actions={messageCanBeShortened ? [
         <Button
           onClick={() => setShowShortMessage(!showShortMessage)}

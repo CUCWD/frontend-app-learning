@@ -17,7 +17,7 @@ import BookmarkButton from '../bookmark/BookmarkButton';
 import { useModel } from '../../../generic/model-store';
 import PageLoading from '../../../generic/PageLoading';
 import { processEvent } from '../../../course-home/data/thunks';
-import { fetchCourse } from '../../data';
+import { fetchCourse } from '../../data/thunks';
 /** [MM-P2P] Experiment */
 import { MMP2PLockPaywall } from '../../../experiments/mm-p2p';
 
@@ -159,7 +159,6 @@ function Unit({
   return (
     <div className="unit">
       <h1 className="mb-0 h3">{unit.title}</h1>
-      <h2 className="sr-only">{intl.formatMessage(messages['learn.header.h2.placeholder'])}</h2>
       <BookmarkButton
         unitId={unit.id}
         isBookmarked={unit.bookmarked}

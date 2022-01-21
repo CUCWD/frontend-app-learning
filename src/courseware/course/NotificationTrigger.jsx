@@ -8,7 +8,7 @@ import NotificationIcon from './NotificationIcon';
 import messages from './messages';
 
 function NotificationTrigger({
-  courseId, intl, toggleNotificationTray, isNotificationTrayVisible, notificationStatus, setNotificationStatus,
+  intl, toggleNotificationTray, isNotificationTrayVisible, notificationStatus, setNotificationStatus,
   upgradeNotificationCurrentState,
 }) {
   /* Re-show a red dot beside the notification trigger for each of the 7 UpgradeNotification stages
@@ -16,10 +16,10 @@ function NotificationTrigger({
   compare with the last state they've seen, and if it's different then set dot back to red */
   function UpdateUpgradeNotificationLastSeen() {
     if (upgradeNotificationCurrentState) {
-      if (getLocalStorage(`upgradeNotificationLastSeen.${courseId}`) !== upgradeNotificationCurrentState) {
+      if (getLocalStorage('upgradeNotificationLastSeen') !== upgradeNotificationCurrentState) {
         setNotificationStatus('active');
-        setLocalStorage(`notificationStatus.${courseId}`, 'active');
-        setLocalStorage(`upgradeNotificationLastSeen.${courseId}`, upgradeNotificationCurrentState);
+        setLocalStorage('notificationStatus', 'active');
+        setLocalStorage('upgradeNotificationLastSeen', upgradeNotificationCurrentState);
       }
     }
   }
@@ -39,7 +39,6 @@ function NotificationTrigger({
 }
 
 NotificationTrigger.propTypes = {
-  courseId: PropTypes.string.isRequired,
   intl: intlShape.isRequired,
   toggleNotificationTray: PropTypes.func.isRequired,
   notificationStatus: PropTypes.string.isRequired,

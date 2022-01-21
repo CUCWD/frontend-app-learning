@@ -55,7 +55,7 @@ export const BlockModal = () => (
             &nbsp;including graded assignments, even after the course ends.
           </BulletList>
           <BulletList>
-            Support our mission at edx
+            Support our non-profit mission at edx
           </BulletList>
         </div>
 
