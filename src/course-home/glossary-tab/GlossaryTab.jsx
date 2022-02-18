@@ -1,21 +1,19 @@
-import React, { createContext } from 'react';
-import { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, createContext } from 'react';
 import { useSelector } from 'react-redux';
 import { injectIntl, intlShape } from '@edx/frontend-platform/i18n';
 import './GlossaryTab.scss';
 
-import messages from './messages';
-
 import {
   DropdownButton,
   Collapsible,
-  Button,
   Icon,
   ActionRow,
   SearchField,
   Pagination,
-  Form
+  Form, 
 } from '@edx/paragon';
+
+import messages from './messages';
 
 import { ExpandLess, ExpandMore } from '@edx/paragon/icons';
 
@@ -30,19 +28,21 @@ const paginationLength = 15;
 // Lists all resources
 function ResourceList() {
   const { resources } = useContext(KeyTermContext);
-  resources.sort((a, b) => a.friendly_name > b.friendly_name ? 1 : -1)
-  if (resources.length > 0) return (
-    <div className='ref-container flex-col'>
-      <b>References:</b>
-      {resources.map(function (resource) {
-        return (
-          <p>
-            <a key={resource.id} target="_blank" rel="noopener noreferrer" href={resource.resource_link}>{resource.friendly_name}</a>
-          </p>
-        );
-      })}
-    </div>
-  );
+  resources.sort((a, b) => { a.friendly_name > b.friendly_name ? 1 : -1 } );
+  if (resources.length > 0) {
+    return (
+      <div className="ref-container flex-col">
+        <b>References:</b>
+        {resources.map(resource => {
+          return (
+            <p>
+              <a key={resource.id} target="_blank" rel="noopener noreferrer" href={resource.resource_link}>{resource.friendly_name}</a>
+            </p>
+          );
+        })}
+      </div>
+    );
+  }
   return null;
 }
 
@@ -51,20 +51,37 @@ function Lessons() {
   const { lessons } = useContext(KeyTermContext);
   
   // Sorting list by module name then by lesson name
-  lessons.sort((a, b) => a.module_name === b.module_name ? (a.lesson_name > b.lesson_name ? 1: -1) : (a.module_name > b.module_name ? 1: -1))
-  if (lessons.length > 0) return (
-    <div className='lessons-container flex-col'>
-      <b>Lessons</b>
-      { 
-      lessons.map(function (lesson) {
-        return (
-          <Lesson lesson={lesson} />
-        );
-      }) 
+  lessons.sort((a, b) => { 
+    if (a.module_name === b.module_name) {
+      if (a.lesson_name > b.lesson_name) {
+        return 1;
+      } else {
+        return -1;
       }
-    </div>
-  );
+    } else {
+      if (a.module_name > b.module_name) {
+        return 1;
+      } 
+      else {
+        return -1;
+      }
+    } 
+  });
 
+  if (lessons.length > 0) {
+    return (
+      <div className='lessons-container flex-col'>
+        <b>Lessons</b>
+        {
+        lessons.map(lesson => {
+          return (
+            <Lesson lesson={lesson} />
+          );
+        })
+        }
+      </div>
+    );
+  }
   return null;
 }
 
@@ -74,7 +91,9 @@ function Lesson({ lesson }) {
   const encodedCourse = courseId.replace(" ", "+");
   return (
     <p>
-      <a key={lesson.id} target="_blank" rel="noopener noreferrer" href={`http://localhost:2000/course/${encodedCourse}/${lesson.lesson_link}`}> {lesson.module_name}&gt;{lesson.lesson_name}&gt;{lesson.unit_name}</a> &nbsp; &nbsp;
+      <a key={lesson.id} target="_blank" rel="noopener noreferrer" href={`http://localhost:2000/course/${encodedCourse}/${lesson.lesson_link}`}> 
+        {lesson.module_name}&gt;{lesson.lesson_name}&gt;{lesson.unit_name}
+      </a> &nbsp; &nbsp;
     </p>
   );
 }
@@ -101,7 +120,7 @@ function TextbookList() {
   if (textbooks.length > 0) return (
     <div className='textbook-container flex-col'>
       <b>Textbooks</b>
-      {textbooks.map(function (textbook) {
+      {textbooks.map(textbook => {
         return (
           <Textbook key={textbook.id} textbook={textbook} />
         );
@@ -118,7 +137,7 @@ function DefinitionsList() {
   if (definitions.length > 0) return (
     <div className='definitions-container flex-col'>
       <b>Definitions</b>
-      {definitions.map(function (descr) {
+      {definitions.map(descr => {
         return (
           <div className='definition'>
             <p key={descr.id} >{descr.description}</p>
@@ -172,13 +191,13 @@ function ModuleDropdown(termData) {
   var lessons = []
   var newSet = new Set()
 
-  termData["value"]["termData"].filter(function (keyTerm) {
+  termData["value"]["termData"].filter(keyTerm => {
     keyTerm.lessons.forEach(lesson => {
-      if (lessons.find(function(object) {return object.module_name === lesson.module_name}) === undefined) lessons.push(lesson)
+      if (lessons.find(object => {return object.module_name === lesson.module_name}) === undefined) lessons.push(lesson);
     });
   })
 
-  lessons.sort((a, b) => a.module_name > b.module_name ? 1 : -1)
+  lessons.sort((a, b) => {a.module_name > b.module_name ? 1 : -1});
 
   const handleChange = e => {
     filterModules.forEach(item => {newSet.add(item)});
@@ -208,12 +227,12 @@ function KeyTermList() {
   }
     
   const displayTerms = termData
-    .filter(function (keyTerm) {
+    .filter(keyTerm => {
       // Displaying filtered keyterms
-      if (filterModules.size == 0 || keyTerm.lessons.find(function(object) {return filterModules.has(object.module_name)}) !== undefined)
+      if (filterModules.size == 0 || keyTerm.lessons.find(object => { return filterModules.has(object.module_name) }) !== undefined)
         // Returns keyterms with names or definitions matching search query
         return keyTerm.key_name.toString().toLowerCase().includes(searchQuery.toLowerCase()) || 
-          keyTerm.definitions.find(function(object) {return object.description.toLowerCase().includes(searchQuery.toLowerCase())}) !== undefined;
+          keyTerm.definitions.find(object => { return object.description.toLowerCase().includes(searchQuery.toLowerCase()) }) !== undefined;
     })
     .sort(function compare(a, b) {
       if (a.key_name < b.key_name) return -1;
