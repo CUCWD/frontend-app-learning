@@ -345,6 +345,21 @@ export async function getGlossaryTabData(courseId) {
   }
 }
 
+export async function getGlossaryData(courseId) {
+  const encodedCourse = courseId.replace(' ', '+');
+  const url = `http://localhost:18500/api/v1/course_terms?course_id=${encodedCourse}`;
+  try {
+    const { data } = await getAuthenticatedHttpClient().get(url);
+    return data;
+  } catch (error) {
+    const { httpErrorStatus } = error && error.customAttributes;
+    if (httpErrorStatus === 404) {
+      return {};
+    }
+    throw error;
+  }
+}
+
 export async function getProctoringInfoData(courseId, username) {
   let url = `${getConfig().LMS_BASE_URL}/api/edx_proctoring/v1/user_onboarding/status?is_learning_mfe=true&course_id=${encodeURIComponent(courseId)}`;
   if (username) {
