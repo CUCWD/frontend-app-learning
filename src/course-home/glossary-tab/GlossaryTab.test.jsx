@@ -1,3 +1,5 @@
+import { screen } from '@testing-library/react';
+
 import {
   initializeMockApp,
 } from '../../setupTest';
