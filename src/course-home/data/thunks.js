@@ -3,6 +3,7 @@ import { camelCaseObject } from '@edx/frontend-platform';
 import {
   executePostFromPostEvent,
   getCourseHomeCourseMetadata,
+  getBadgeProgressTabData,
   getDatesTabData,
   getOutlineTabData,
   getProgressTabData,
@@ -23,6 +24,7 @@ import {
   fetchTabSuccess,
   setCallToActionToast,
 } from './slice';
+import { debug } from 'util';
 
 const eventTypes = {
   POST_EVENT: 'post_event',
@@ -71,7 +73,13 @@ export function fetchTab(courseId, tab, getTabData, targetUserId) {
         dispatch(fetchTabFailure({ courseId }));
       }
     });
+
+    
   };
+}
+
+export function fetchBadgeProgressTab(courseId) {
+  return fetchTab(courseId, 'badges-progress', getBadgeProgressTabData);
 }
 
 export function fetchDatesTab(courseId) {
