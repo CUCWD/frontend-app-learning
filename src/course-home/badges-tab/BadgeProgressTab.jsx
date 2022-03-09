@@ -4,7 +4,6 @@ import { useSelector } from 'react-redux';
 import { injectIntl, intlShape } from '@edx/frontend-platform/i18n';
 import { StatusAlert } from '@edx/paragon';
 import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
-// import { injectIntl, intlShape } from '@edx/frontend-platform/i18n';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 
@@ -12,9 +11,9 @@ import { useModel } from '../../generic/model-store';
 import { debug } from 'util';
 
 import { BadgeTabsNavigation } from './badge-header';
-import { BadgeProgressBanner } from './badge-progress';
+import { BadgeProgressBanner, BadgeProgressCard, BadgeProgressCourseList } from './badge-progress';
 
-// import { headingMapper } from './utils';
+import { headingMapper } from './utils';
 
 
 function BadgeProgressTab({ intl }) {
@@ -24,7 +23,6 @@ function BadgeProgressTab({ intl }) {
     courseId,
   } = useSelector(state => state.courseHome);
 
-  // username
   const { 
     administrator,
     username,
@@ -34,7 +32,6 @@ function BadgeProgressTab({ intl }) {
   const hasInstructorStaffRights = () => administrator;
 
   const [progress, setProgress] = useState([]);
-  // const badgeProgressState = useModel('badges-progress', courseId);
 
   const {
     id,
@@ -42,97 +39,68 @@ function BadgeProgressTab({ intl }) {
   } = useModel('badge-progress', courseId);
 
   const hasBadgeProgress = () => progress && progress.length > 0;
-
-  const checkBadgeProgressExists = ( progress ) => {
-    let _badgeProgressState = [];
-
-    debugger;
-    Object.values(progress).forEach(student => {
-      debugger;
-      if (typeof student === 'object' && Array.isArray(student.progress)) {
-        if (student.progress.length > 0) {
-          _badgeProgressState.push(student);
-        }
-      }
-    });
-
-    return _badgeProgressState;
-  }
-
   useEffect(() => {
-    let _badgeProgressState = checkBadgeProgressExists(badgeProgressState.value);
-
-    debugger;
-    if ( _badgeProgressState.length ) {
-      setProgress(_badgeProgressState);
+    let classProgressExists = 0;
+    if (hasInstructorStaffRights()) {
+      badgeProgressState.value.forEach(student => {
+        if (student.progress.length) {
+          classProgressExists += 1;
+        }
+      });
+      if (classProgressExists) {
+        setProgress(badgeProgressState.value);
+      }
     } else {
-       console.log("BadgeProgressTab: Could not find any course badge progress.");    
+      setProgress(badgeProgressState.value);
     }
+  }, [courseId, administrator]);
 
-    // if ( badgeProgressState ) {
-    //   let checkBadgeProgressExists = badgeProgressState.some(x => x.progress.length > 0);
-    //   debugger;
-    //   if ( checkBadgeProgressExists ) {
-    //     debugger;
-    //     setProgress(badgeProgressState);
-    //   }
-    // }
-
-    // setProgress(badgeProgressState);
-
-    // let classBadgeProgressExists = 0;
-    // let badgeProgressStateUpdated = [];
-    
-    // if (hasInstructorStaffRights()) {
-    //   // Loop through all student's and build new state by removing added course_id from fetchTabData.
-    //   debugger;
-    //   Object.values(badgeProgressState).forEach(student => {
-    //     if (typeof student === 'object' && Array.isArray(student.progress)) {
-    //       badgeProgressStateUpdated.push(student);
-    //       classBadgeProgressExists += student.progress.length;
-    //       debugger;
-    //     }
-    //   });
-    //   debugger;
-    //   if (classBadgeProgressExists) {
-    //     debugger;
-    //     setProgress(badgeProgressStateUpdated);
-    //   }
-    // } else {
-    //   // Loop through all student's and build new state by removing added course_id from fetchTabData.
-    //   Object.values(badgeProgressState).forEach(value => {
-    //     if (typeof value === 'object' && Array.isArray(value.progress)) {
-    //       badgeProgressStateUpdated.push(value);
-    //     }
-    //   });
-    //   setProgress(badgeProgressStateUpdated);
-    // }
-  }, []); //, courseId, administrator]);
-
-  const renderBadgeProgress = () => {
+const renderBadgeProgress = () => {
     const defaultAssignmentFilter = 'All';
 
-    const userRoleNames = roles ? roles.map(role => role.split(':')[0]) : [];
-
-    debugger;
+    if (hasInstructorStaffRights()) {
+      return (
+        <>
+          <BadgeTabsNavigation className="mb-3 py-2" activeTabSlug={activeTabSlug} />
+          <BadgeProgressBanner
+            hasProgress={hasBadgeProgress()}
+            hasRights={hasInstructorStaffRights()}
+          />
+          <BadgeProgressCourseList
+            data={progress}
+            headings={headingMapper(defaultAssignmentFilter, progress)(progress[0])}
+          />
+        </>
+      );
+    }
 
     return (
       <>
         <div className="d-flex flex-column">
           <BadgeTabsNavigation className="mb-3 py-2" activeTabSlug={activeTabSlug} />
-          <BadgeProgressBanner hasProgress={(hasBadgeProgress || false)} hasRights={administrator} />
+          <BadgeProgressBanner hasProgress={hasBadgeProgress()} hasRights={hasInstructorStaffRights()} />
           <div className="container-fluid">
-            <section>
-              <div className="mb-4">
-                the user is {username}
-                {administrator
-                && <div>the user is admin</div>}
-                {roles && <div>{userRoleNames}</div>}
+            <section className="row">
+              <div className="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                {progress && (
+                  <div className="row equal-col-height">
+                    {progress.map(learnerProgress => (
+                      <BadgeProgressCard key={learnerProgress.blockId} data={learnerProgress} />
+                    ))}
+                  </div>
+                )}
               </div>
             </section>
+            {/* <section>
+              <div className="mb-4">
+                the user is {username} and they are enrolled as an {enrollmentMode} learner
+                {administrator
+                && <div><p>the user is admin</p></div>}
+              </div>
+            </section> */}
           </div>
         </div>
-      </>    
+      </>
     );
   };
 
@@ -167,5 +135,3 @@ BadgeProgressTab.propTypes = {
 };
 
 export default injectIntl(BadgeProgressTab);
-// export default BadgeProgressTab;
-
