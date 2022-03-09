@@ -74,6 +74,15 @@ const renderBadgeProgress = () => {
       );
     }
 
+    /*
+      <section>
+        <div className="mb-4">
+          the user is {username} and they are enrolled as an {enrollmentMode} learner
+          {administrator
+          && <div><p>the user is admin</p></div>}
+        </div>
+      </section>
+    */
     return (
       <>
         <div className="d-flex flex-column">
@@ -91,13 +100,6 @@ const renderBadgeProgress = () => {
                 )}
               </div>
             </section>
-            {/* <section>
-              <div className="mb-4">
-                the user is {username} and they are enrolled as an {enrollmentMode} learner
-                {administrator
-                && <div><p>the user is admin</p></div>}
-              </div>
-            </section> */}
           </div>
         </div>
       </>

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { isEmptyObject } from '../../../../utils/empty';
 import BadgeProgressCardStatus from './BadgeProgressCardStatus';
-// import ProgressDetails from '../ProgressDetails';
+import BadgeProgressCardDetailsModal from './BadgeProgressCardDetailsModal';
 
 const BadgeProgressCard = (props) => {
   const { data, minimal } = props;
@@ -15,17 +15,25 @@ const BadgeProgressCard = (props) => {
     return data.assertion.imageUrl.length > 0;
   };
 
+  const getBadgeProgressCardDetails = (earned) => (
+    <>
+      <BadgeProgressCardStatus status={isProgressComplete()} title={data.blockDisplayName} earned={earned} />
+    </>
+  );
+
   const getBadgeImage = () => {
     const { assertionUrl } = data.assertion;
 
     return (
       <>
         {assertionUrl && (
-        /* <ProgressDetails
+          <BadgeProgressCardDetailsModal
             key={data.assertion.entityId}
             parentSelector=".modal-progress-details"
-            progress={data} minimal={minimal} /> */
-        <div>Assertion Url</div>
+            progress={data}
+            minimal={minimal}
+            badgeProgressCardStatus={getBadgeProgressCardDetails(data.assertion.issuedOn)}
+          />
         )}
         {!assertionUrl && (
           <img className={classNames('card-img-top not-asserted', minimal)} src={data.badgeClass.image} alt={data.badgeClass.displayName} />
@@ -85,6 +93,7 @@ BadgeProgressCard.propTypes = {
     }),
     assertion: PropTypes.shape({
       issuedOn: PropTypes.string,
+      entityId: PropTypes.string,
       expires: PropTypes.string,
       revoked: PropTypes.bool,
       imageUrl: PropTypes.string,

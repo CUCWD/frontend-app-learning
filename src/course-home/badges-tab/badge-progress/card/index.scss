@@ -170,3 +170,255 @@
   
   }
   
+
+/* BadgeProgressCardDetailsModal 
+   --------------------------------------- */
+  .modal-progress-details {
+
+    .modal {
+  
+      .modal-dialog {
+  
+        min-width: 60%;
+  
+        .modal-content {
+  
+          padding: 15px;
+  
+          .modal-body {
+  
+            .progress-details {
+               
+              text-align: left;
+  
+              .progress-details-header {
+  
+                .progress-details-title {
+  
+                  h2 {
+                    font-size: 30px;
+                    font-weight: normal;
+                  }
+  
+                }
+  
+                .progress-details-description {
+  
+                  p {
+                    font-size: 16px;
+                  }
+  
+                }
+  
+              }
+  
+              .progress-details-body {
+  
+                .progress-details-image {
+  
+                  img {
+                    max-width: 70%;
+                    margin: 0px 40px;
+                  }
+  
+                  button {
+                    max-width: 70%;
+                    width: 100%;
+                    margin: 5px 40px;
+                  }
+  
+                }
+  
+                .progress-details-meta {
+
+                  font-size: 16px;
+                  line-height: 8px;
+  
+                  .progress-details-meta-earned,
+                  .progress-details-meta-recipient,
+                  .progress-details-meta-criteria,
+                  .progress-details-meta-issuer {
+  
+                    h3 {
+                      color: #767676 !important;
+                      font-size: 18px;
+                    }
+  
+                    margin-bottom: 20px;
+  
+                  }
+  
+                  .progress-details-meta-earned {
+
+                    .card-status {
+                      position: relative;
+                      top: -5px;
+                      display: flex;
+                      align-items: center;
+                      margin: 0px 10px;
+                    
+                      .card-status-icon {
+                        display: inline-block;
+                        vertical-align: middle;
+                        width: 15%;
+                        margin: 16px 16px 16px 0px;
+                        //position: relative;
+                        //top: 5px;
+                    
+                        &.complete {
+                          color: rgb(0, 129, 0);
+                        }
+                    
+                        &.incomplete {
+                          color: rgb(165, 165, 165);
+                        }
+                    
+                      }
+                    
+                      /*
+                      h3 {
+                        max-width: 280px;
+                        display: inline-block;
+                        @include line-clamp(2,2);
+                      }
+                      */
+                      .card-status-title {
+                          position: relative;
+                          top: -8px;
+                          font-size: 14px;
+                          text-align: left;
+                          display: inline-block;
+                          vertical-align: middle;
+                          text-transform: uppercase;
+                          // @include multiLineEllipsis($lineCount: 3, $padding-right: 1rem)
+                      }
+
+                      .card-status-earned {
+                        display: block;
+                        position: relative;
+                        top: 12px;
+                        left: -90px;
+                        font-size: 14px;
+                        font-weight: normal;
+                        font-style: italic;
+                      }
+                    
+                    }
+
+                  }
+
+                  .progress-details-meta-issuer {
+  
+                    ul {
+  
+                      li {
+                        list-style: none;
+  
+                        img {
+                          width: 40px;
+                          height: 40px;
+                        }
+                      }
+  
+                    }
+  
+                  }
+  
+                }
+  
+              }
+  
+              .progress-details-share {
+  
+                background-color: #f2f2f2;
+  
+                a {
+                  font-weight: bold;
+                }
+  
+                .collapsible-trigger {
+                  background-color: bisque;
+                }
+
+                .progress-details-share-instructions {
+  
+                  padding-bottom: 0px !important;
+  
+                  .share-introduction {
+  
+                    hr {
+                      border-color: rgba(0,0,0,0.30);
+                    }
+  
+                  }
+  
+                }
+  
+                .progress-details-share-badgr-instructions {
+  
+                  padding: 0px 10px 10px 10px !important;
+  
+                  .badgr-instructions {
+  
+                    ol {
+                      padding-left: 20px;
+                      list-style: none;
+                      list-style-position: outside;
+                      display: table;
+                      margin: 1em 0;
+                      margin-block-start: 1em;
+                      margin-block-end: 1em;
+                      margin-inline-start: 0px;
+                      margin-inline-end: 0px;
+                      padding-inline-start: 40px;
+                      /*counter-reset: badgr-instr-counter;*/
+  
+                      li {
+                        //list-style: none;
+                        list-style-type: decimal;
+                        //counter-increment: badgr-instr-counter;
+  
+                        /*
+                        &:before {
+                          content: counter(badgr-instr-counter) ". ";
+                          color: #444444;
+                          font-weight: bold;
+                        }*/
+                      }
+  
+                    }
+  
+                  }
+  
+                  .badgr-image {
+  
+                    display: inline-block;
+                    background-color: #525dc7;
+                    padding: 10px;
+                    max-height: 120px;
+  
+                    img {
+                      width: 100%;
+                      height: 100%;
+                      position: relative;
+                      left: 18px;
+                    }
+  
+                  }
+  
+                }
+  
+              }
+  
+            }
+  
+          }
+  
+        }
+  
+      }
+  
+    }
+  
+  }
+  
