@@ -12,7 +12,7 @@ import { useModel } from '../../generic/model-store';
 import { debug } from 'util';
 
 import { BadgeTabsNavigation } from './badge-header';
-// import { BadgeProgressBanner, BadgeProgressCard, BadgeProgressCourseList } from './badge-progress';
+import { BadgeProgressBanner } from './badge-progress';
 
 // import { headingMapper } from './utils';
 
@@ -45,7 +45,10 @@ function BadgeProgressTab({ intl }) {
 
   const checkBadgeProgressExists = ( progress ) => {
     let _badgeProgressState = [];
+
+    debugger;
     Object.values(progress).forEach(student => {
+      debugger;
       if (typeof student === 'object' && Array.isArray(student.progress)) {
         if (student.progress.length > 0) {
           _badgeProgressState.push(student);
@@ -57,8 +60,9 @@ function BadgeProgressTab({ intl }) {
   }
 
   useEffect(() => {
-    let _badgeProgressState = checkBadgeProgressExists(badgeProgressState);
+    let _badgeProgressState = checkBadgeProgressExists(badgeProgressState.value);
 
+    debugger;
     if ( _badgeProgressState.length ) {
       setProgress(_badgeProgressState);
     } else {
@@ -110,10 +114,13 @@ function BadgeProgressTab({ intl }) {
 
     const userRoleNames = roles ? roles.map(role => role.split(':')[0]) : [];
 
+    debugger;
+
     return (
       <>
         <div className="d-flex flex-column">
           <BadgeTabsNavigation className="mb-3 py-2" activeTabSlug={activeTabSlug} />
+          <BadgeProgressBanner hasProgress={(hasBadgeProgress || false)} hasRights={administrator} />
           <div className="container-fluid">
             <section>
               <div className="mb-4">

@@ -58,7 +58,7 @@ export function fetchTab(courseId, tab, getTabData, targetUserId) {
           modelType: tab,
           model: {
             id: courseId,
-            ...tabDataResult.value,
+            ...tabDataResult,
           },
         }));
       } else {
