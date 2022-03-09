@@ -212,10 +212,28 @@ export async function getBadgeProgressTabData(courseId) {
   }
 }
 
+export async function getBadgeLeaderboardTabData(courseId) {
+  // Todo: Need to define an Badge Leaderboard API endpoint for the LMS
+  // and return the result.
+  const url = `${getConfig().LMS_BASE_URL}/api/badges/v1/leaderboard/courses/${courseId}`;
+  try {
+    const { data } = await getAuthenticatedHttpClient().get(url);
+    return camelCaseObject(data);
+  } catch (error) {
+    const { httpErrorStatus } = error && error.customAttributes;
+    if (httpErrorStatus === 404) {
+      // global.location.replace(`${getConfig().LMS_BASE_URL}/courses/${courseId}/badges/progress`);
+      return {};
+    }
+    throw error;
+  }
+}
+
 // For debugging purposes, you might like to see a fully loaded dates tab.
 // Just uncomment the next few lines and the immediate 'return' in the function below
 // import { Factory } from 'rosie';
 // import './__factories__';
+
 export async function getDatesTabData(courseId) {
   // return camelCaseObject(Factory.build('datesTabData'));
   const url = `${getConfig().LMS_BASE_URL}/api/course_home/dates/${courseId}`;

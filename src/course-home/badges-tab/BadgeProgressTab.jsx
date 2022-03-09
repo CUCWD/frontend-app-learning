@@ -11,15 +11,15 @@ import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 import { useModel } from '../../generic/model-store';
 import { debug } from 'util';
 
-// import { BadgeTabsNavigation } from './badge-header';
+import { BadgeTabsNavigation } from './badge-header';
 // import { BadgeProgressBanner, BadgeProgressCard, BadgeProgressCourseList } from './badge-progress';
 
 // import { headingMapper } from './utils';
 
 
 function BadgeProgressTab({ intl }) {
-  // const activeTabSlug = 'progress';
-
+  const activeTabSlug = 'progress';
+  
   const {
     courseId,
   } = useSelector(state => state.courseHome);
@@ -39,7 +39,7 @@ function BadgeProgressTab({ intl }) {
   const {
     id,
     ...badgeProgressState
-  } = useModel('badges-progress', courseId);
+  } = useModel('badge-progress', courseId);
 
   const hasBadgeProgress = () => progress && progress.length > 0;
 
@@ -58,6 +58,7 @@ function BadgeProgressTab({ intl }) {
 
   useEffect(() => {
     let _badgeProgressState = checkBadgeProgressExists(badgeProgressState);
+
     if ( _badgeProgressState.length ) {
       setProgress(_badgeProgressState);
     } else {
@@ -110,14 +111,21 @@ function BadgeProgressTab({ intl }) {
     const userRoleNames = roles ? roles.map(role => role.split(':')[0]) : [];
 
     return (
-      <section>
-        <h2 className="mb-4">
-          the user is {username}
-          {administrator
-          && <div>the user is admin</div>}
-          {roles && <div>{userRoleNames}</div>}
-        </h2>
-      </section>
+      <>
+        <div className="d-flex flex-column">
+          <BadgeTabsNavigation className="mb-3 py-2" activeTabSlug={activeTabSlug} />
+          <div className="container-fluid">
+            <section>
+              <div className="mb-4">
+                the user is {username}
+                {administrator
+                && <div>the user is admin</div>}
+                {roles && <div>{userRoleNames}</div>}
+              </div>
+            </section>
+          </div>
+        </div>
+      </>    
     );
   };
 
@@ -153,3 +161,4 @@ BadgeProgressTab.propTypes = {
 
 export default injectIntl(BadgeProgressTab);
 // export default BadgeProgressTab;
+
