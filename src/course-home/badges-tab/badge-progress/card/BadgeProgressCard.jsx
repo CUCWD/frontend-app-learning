@@ -17,7 +17,7 @@ const BadgeProgressCard = (props) => {
 
   const getBadgeProgressCardDetails = (earned) => (
     <>
-      <BadgeProgressCardStatus status={isProgressComplete()} title={data.blockDisplayName} earned={earned} />
+      <BadgeProgressCardStatus key={`card_status_${data.assertion.entityId}`} status={isProgressComplete()} title={data.blockDisplayName} earned={earned} />
     </>
   );
 
@@ -28,8 +28,7 @@ const BadgeProgressCard = (props) => {
       <>
         {assertionUrl && (
           <BadgeProgressCardDetailsModal
-            key={data.assertion.entityId}
-            parentSelector=".modal-progress-details"
+            key={`card_details_${data.assertion.entityId}`}
             progress={data}
             minimal={minimal}
             badgeProgressCardStatus={getBadgeProgressCardDetails(data.assertion.issuedOn)}
