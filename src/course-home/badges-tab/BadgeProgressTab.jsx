@@ -41,17 +41,18 @@ function BadgeProgressTab({ intl }) {
   const hasBadgeProgress = () => progress && progress.length > 0;
   useEffect(() => {
     let classProgressExists = 0;
+    let badgeProgress = Object.values(badgeProgressState);
     if (hasInstructorStaffRights()) {
-      badgeProgressState.value.forEach(student => {
+      badgeProgress.forEach(student => {
         if (student.progress.length) {
           classProgressExists += 1;
         }
       });
       if (classProgressExists) {
-        setProgress(badgeProgressState.value);
+        setProgress(badgeProgress);
       }
     } else {
-      setProgress(badgeProgressState.value);
+      setProgress(badgeProgress);
     }
   }, [courseId, administrator]);
 
