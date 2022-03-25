@@ -121,6 +121,7 @@ export function normalizeOutlineBlocks(courseId, blocks) {
 
       case 'chapter':
         models.sections[block.id] = {
+          badgeProgress: block.badge_progress,
           complete: block.complete,
           id: block.id,
           title: block.display_name,

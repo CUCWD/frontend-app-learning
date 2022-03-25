@@ -15,7 +15,7 @@ const BadgeProgressBanner = ({ hasProgress, hasRights }) => {
 
   // d-flex justify-content-left
   return (
-    <div className={[classNames('row', 'learningpath', indicatorProgress, 'mb-4', 'pt-4', 'pb-4', 'pr-5', 'pl-5')]}>
+    <div className={[classNames('row', 'learningpath', indicatorProgress, 'ml-0', 'mr-0', 'mb-4', 'pt-4', 'pb-4', 'pr-5', 'pl-5')]}>
       { hasProgress && (
         <>
           <div className="row w-100">
