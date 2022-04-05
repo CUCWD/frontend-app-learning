@@ -24,6 +24,7 @@ function Section({
     complete,
     sequenceIds,
     title,
+    estimatedTime,
   } = section;
   const {
     courseBlocks: {
@@ -42,6 +43,8 @@ function Section({
   }, []);
 
   const badgeProgressUrl = './badges/progress';
+
+  const estimatedTimeMinutes = parseInt(estimatedTime / 60, 10) + (estimatedTime % 60 > 0);
 
   const sectionTitle = (
     <div className="row w-100 m-0">
@@ -65,7 +68,13 @@ function Section({
         )}
       </div>
       <div className="col-10 ml-3 p-0 font-weight-bold text-dark-500">
-        <span className="align-middle">{title}</span>
+        <span className="align-middle" style={{ display: 'block' }}>{title}</span>
+        { (estimatedTime
+        && (
+        <span className="" style={{ display: 'block', fontSize: '12px', color: 'grey' }}>
+          Estimated Completion Time: { estimatedTimeMinutes } { estimatedTimeMinutes === 1 ? 'minute' : 'minutes' }
+        </span>
+        )) }
         <span className="sr-only">
           , {intl.formatMessage(complete ? messages.completedSection : messages.incompleteSection)}
         </span>

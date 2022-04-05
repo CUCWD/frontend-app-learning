@@ -20,6 +20,8 @@ export function normalizeBlocks(courseId, blocks) {
           title: block.display_name,
           sectionIds: block.children || [],
           hasScheduledContent: block.has_scheduled_content || false,
+          estimatedTime: block.estimated_time,
+          showEstimatedTime: block.show_estimated_time,
         };
         break;
       case 'chapter':
@@ -27,6 +29,8 @@ export function normalizeBlocks(courseId, blocks) {
           id: block.id,
           title: block.display_name,
           sequenceIds: block.children || [],
+          estimatedTime: block.estimated_time,
+          showEstimatedTime: block.show_estimated_time,
         };
         break;
 
@@ -38,6 +42,8 @@ export function normalizeBlocks(courseId, blocks) {
           title: block.display_name,
           legacyWebUrl: block.legacy_web_url,
           unitIds: block.children || [],
+          estimatedTime: block.estimated_time,
+          showEstimatedTime: block.show_estimated_time,
         };
         break;
       case 'vertical':
@@ -46,6 +52,8 @@ export function normalizeBlocks(courseId, blocks) {
           id: block.id,
           title: block.display_name,
           legacyWebUrl: block.legacy_web_url,
+          estimatedTime: block.estimated_time,
+          showEstimatedTime: block.show_estimated_time,
         };
         break;
       default:

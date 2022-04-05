@@ -159,6 +159,7 @@ function Unit({
   return (
     <div className="unit">
       <h1 className="mb-0 h3">{unit.title}</h1>
+      <h1 className="mb-0 h3">{unit.title} (Time to complete: {unit.estimatedTime})</h1>
       <BookmarkButton
         unitId={unit.id}
         isBookmarked={unit.bookmarked}

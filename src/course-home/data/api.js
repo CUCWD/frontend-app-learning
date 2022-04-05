@@ -116,6 +116,8 @@ export function normalizeOutlineBlocks(courseId, blocks) {
           title: block.display_name,
           sectionIds: block.children || [],
           hasScheduledContent: block.has_scheduled_content,
+          estimatedTime: block.estimated_time,
+          showEstimatedTime: block.show_time_estimate,
         };
         break;
 
@@ -127,6 +129,8 @@ export function normalizeOutlineBlocks(courseId, blocks) {
           title: block.display_name,
           resumeBlock: block.resume_block,
           sequenceIds: block.children || [],
+          estimatedTime: block.estimated_time,
+          showEstimatedTime: block.show_time_estimate,
         };
         break;
 
@@ -146,6 +150,8 @@ export function normalizeOutlineBlocks(courseId, blocks) {
           // link to the MFE ourselves).
           showLink: !!block.legacy_web_url,
           title: block.display_name,
+          estimatedTime: block.estimated_time,
+          showEstimatedTime: block.show_time_estimate,
         };
         break;
 

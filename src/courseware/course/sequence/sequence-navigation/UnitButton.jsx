@@ -19,10 +19,14 @@ function UnitButton({
   unitId,
   className,
   showTitle,
+  estimatedTime,
+  showEstimatedTime,
 }) {
   const handleClick = useCallback(() => {
     onClick(unitId);
   });
+
+  const estimatedTimeMinutes = parseInt(estimatedTime / 60, 10) + (estimatedTime % 60 > 0);
 
   return (
     <Button
@@ -43,6 +47,7 @@ function UnitButton({
           style={{ top: '-3px', right: '5px' }}
         />
       ) : null}
+      {estimatedTime && showEstimatedTime && <span className="ml-2"> ({estimatedTimeMinutes} {estimatedTimeMinutes === 1 ? 'min' : 'mins'}) </span>}
     </Button>
   );
 }
@@ -58,6 +63,8 @@ UnitButton.propTypes = {
   showTitle: PropTypes.bool,
   title: PropTypes.string.isRequired,
   unitId: PropTypes.string.isRequired,
+  estimatedTime: PropTypes.string,
+  showEstimatedTime: PropTypes.bool,
 };
 
 UnitButton.defaultProps = {
@@ -67,6 +74,8 @@ UnitButton.defaultProps = {
   complete: false,
   showTitle: false,
   showCompletion: true,
+  estimatedTime: '1',
+  showEstimatedTime: false,
 };
 
 const mapStateToProps = (state, props) => ({
