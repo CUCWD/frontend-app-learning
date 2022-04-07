@@ -117,7 +117,7 @@ export function normalizeOutlineBlocks(courseId, blocks) {
           sectionIds: block.children || [],
           hasScheduledContent: block.has_scheduled_content,
           estimatedTime: block.estimated_time,
-          showEstimatedTime: block.show_time_estimate,
+          showEstimatedTime: block.show_estimated_time,
         };
         break;
 
@@ -130,7 +130,7 @@ export function normalizeOutlineBlocks(courseId, blocks) {
           resumeBlock: block.resume_block,
           sequenceIds: block.children || [],
           estimatedTime: block.estimated_time,
-          showEstimatedTime: block.show_time_estimate,
+          showEstimatedTime: block.show_estimated_time,
         };
         break;
 
@@ -151,7 +151,7 @@ export function normalizeOutlineBlocks(courseId, blocks) {
           showLink: !!block.legacy_web_url,
           title: block.display_name,
           estimatedTime: block.estimated_time,
-          showEstimatedTime: block.show_time_estimate,
+          showEstimatedTime: block.show_estimated_time,
         };
         break;
 

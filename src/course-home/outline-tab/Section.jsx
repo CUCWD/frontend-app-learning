@@ -25,6 +25,7 @@ function Section({
     sequenceIds,
     title,
     estimatedTime,
+    showEstimatedTime,
   } = section;
   const {
     courseBlocks: {
@@ -70,7 +71,7 @@ function Section({
       <div className="col-10 ml-3 p-0 font-weight-bold text-dark-500">
         <span className="align-middle" style={{ display: 'block' }}>{title}</span>
         { (estimatedTime
-        && (
+        && showEstimatedTime && (
         <span className="" style={{ display: 'block', fontSize: '12px', color: 'grey' }}>
           Estimated Completion Time: { estimatedTimeMinutes } { estimatedTimeMinutes === 1 ? 'minute' : 'minutes' }
         </span>
