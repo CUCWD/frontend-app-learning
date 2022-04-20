@@ -26,7 +26,9 @@ import GoalUnsubscribe from './course-home/goal-unsubscribe';
 import ProgressTab from './course-home/progress-tab/ProgressTab';
 import { TabContainer } from './tab-page';
 
-import { fetchBadgeProgressTab, fetchBadgeLeaderboardTab, fetchDatesTab, fetchOutlineTab, fetchProgressTab } from './course-home/data';
+import {
+  fetchBadgeProgressTab, fetchBadgeLeaderboardTab, fetchDatesTab, fetchOutlineTab, fetchProgressTab,
+} from './course-home/data';
 import { fetchCourse } from './courseware/data';
 import initializeStore from './store';
 import NoticesProvider from './generic/notices';

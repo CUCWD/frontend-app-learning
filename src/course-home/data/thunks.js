@@ -25,7 +25,6 @@ import {
   fetchTabSuccess,
   setCallToActionToast,
 } from './slice';
-import { debug } from 'util';
 
 const eventTypes = {
   POST_EVENT: 'post_event',
@@ -74,8 +73,6 @@ export function fetchTab(courseId, tab, getTabData, targetUserId) {
         dispatch(fetchTabFailure({ courseId }));
       }
     });
-
-    
   };
 }
 

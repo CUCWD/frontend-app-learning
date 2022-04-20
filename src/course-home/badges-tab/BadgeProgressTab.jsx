@@ -9,25 +9,23 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 
 import { useModel } from '../../generic/model-store';
-import { debug } from 'util';
 
 import { BadgeTabsNavigation } from './badge-header';
 import { BadgeProgressBanner, BadgeProgressCard, BadgeProgressCourseList } from './badge-progress';
 
 import { headingMapper } from './utils';
 
-
-function BadgeProgressTab({ intl }) {
+function BadgeProgressTab({ intl }) { // eslint-disable-line no-unused-vars
   const activeTabSlug = 'progress';
-  
+
   const {
     courseId,
   } = useSelector(state => state.courseHome);
 
-  const { 
+  const {
     administrator,
     username,
-    roles
+    roles, // eslint-disable-line no-unused-vars
   } = getAuthenticatedUser();
 
   const hasInstructorStaffRights = () => administrator;
@@ -42,7 +40,7 @@ function BadgeProgressTab({ intl }) {
   const hasBadgeProgress = () => progress && progress.length > 0;
   useEffect(() => {
     let classProgressExists = 0;
-    let badgeProgress = Object.values(badgeProgressState);
+    const badgeProgress = Object.values(badgeProgressState);
     if (hasInstructorStaffRights()) {
       badgeProgress.forEach(student => {
         if (student.progress.length) {
@@ -57,7 +55,7 @@ function BadgeProgressTab({ intl }) {
     }
   }, [courseId, administrator]);
 
-const renderBadgeProgress = () => {
+  const renderBadgeProgress = () => {
     const defaultAssignmentFilter = 'All';
 
     if (hasInstructorStaffRights()) {
@@ -99,9 +97,8 @@ const renderBadgeProgress = () => {
                       const itemKey = snakeCase(`card ${learnerProgress.blockDisplayName} ${username}`);
                       return (
                         <BadgeProgressCard key={`${itemKey}`} data={learnerProgress} />
-                      )
-                    }
-                    )}
+                      );
+                    })}
                   </div>
                 )}
               </div>

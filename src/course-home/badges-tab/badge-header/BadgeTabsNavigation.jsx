@@ -6,8 +6,8 @@ import classNames from 'classnames';
 
 import messages from './messages';
 import Tabs from '../../../generic/tabs/Tabs';
-import LinkedLogo from '../logos';
-import logo from '../assets/logo-badgr-black.svg';
+import LinkedLogo from '../logos'; // eslint-disable-line no-unused-vars
+import logo from '../assets/logo-badgr-black.svg'; // eslint-disable-line no-unused-vars
 
 function BadgeTabsNavigation({
   activeTabSlug, className, intl,
