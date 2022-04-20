@@ -81,6 +81,16 @@ export default new Factory()
           },
           { courseId: id, host, path: 'dates' },
         ),
+        Factory.build(
+          'tab',
+          {
+            title: 'Badges',
+            priority: 6,
+            slug: 'badges-progress',
+            type: 'badges-progress',
+          },
+          { courseId: id, host, path: 'badges-progress' },
+        ),
       ];
 
       return tabs;

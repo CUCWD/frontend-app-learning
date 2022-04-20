@@ -20,12 +20,15 @@ import OutlineTab from './course-home/outline-tab';
 import { CourseExit } from './courseware/course/course-exit';
 import CoursewareContainer from './courseware';
 import CoursewareRedirectLandingPage from './courseware/CoursewareRedirectLandingPage';
+import { BadgeProgressTab, BadgeLeaderboardTab } from './course-home/badges-tab';
 import DatesTab from './course-home/dates-tab';
 import GoalUnsubscribe from './course-home/goal-unsubscribe';
 import ProgressTab from './course-home/progress-tab/ProgressTab';
 import { TabContainer } from './tab-page';
 
-import { fetchDatesTab, fetchOutlineTab, fetchProgressTab } from './course-home/data';
+import {
+  fetchBadgeProgressTab, fetchBadgeLeaderboardTab, fetchDatesTab, fetchOutlineTab, fetchProgressTab,
+} from './course-home/data';
 import { fetchCourse } from './courseware/data';
 import initializeStore from './store';
 import NoticesProvider from './generic/notices';
@@ -41,6 +44,16 @@ subscribe(APP_READY, () => {
             <PageRoute path="/course/:courseId/home">
               <TabContainer tab="outline" fetch={fetchOutlineTab} slice="courseHome">
                 <OutlineTab />
+              </TabContainer>
+            </PageRoute>
+            <PageRoute path="/course/:courseId/badges/progress">
+              <TabContainer tab="badges_progress" fetch={fetchBadgeProgressTab} slice="courseHome">
+                <BadgeProgressTab />
+              </TabContainer>
+            </PageRoute>
+            <PageRoute path="/course/:courseId/badges/leaderboard">
+              <TabContainer tab="badges_progress" fetch={fetchBadgeLeaderboardTab} slice="courseHome">
+                <BadgeLeaderboardTab />
               </TabContainer>
             </PageRoute>
             <PageRoute path="/course/:courseId/dates">

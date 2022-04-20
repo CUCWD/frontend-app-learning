@@ -9,7 +9,7 @@ export const DENIED = 'denied';
 const slice = createSlice({
   name: 'course-home',
   initialState: {
-    courseStatus: 'loading',
+    courseStatus: LOADING,
     courseId: null,
     toastBodyText: null,
     toastBodyLink: null,

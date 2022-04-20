@@ -1,5 +1,5 @@
 import { camelCaseObject, getConfig } from '@edx/frontend-platform';
-import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
+import { getAuthenticatedHttpClient, getAuthenticatedUser } from '@edx/frontend-platform/auth';
 import { logInfo } from '@edx/frontend-platform/logging';
 import { appendBrowserTimezoneToUrl } from '../../utils';
 
@@ -121,6 +121,7 @@ export function normalizeOutlineBlocks(courseId, blocks) {
 
       case 'chapter':
         models.sections[block.id] = {
+          badgeProgress: block.badge_progress,
           complete: block.complete,
           id: block.id,
           title: block.display_name,
@@ -186,10 +187,54 @@ export async function getCourseHomeCourseMetadata(courseId) {
   return normalizeCourseHomeCourseMetadata(data);
 }
 
+export async function getBadgeProgressTabData(courseId) {
+  const { administrator, username } = getAuthenticatedUser();
+  const getProgressApiEndPoint = () => (
+    administrator
+      ? `${getConfig().LMS_BASE_URL}/api/badges/v1/progress/${courseId}`
+      : `${getConfig().LMS_BASE_URL}/api/badges/v1/progress/${courseId}/user/${username}`
+  );
+
+  try {
+    const { data } = await getAuthenticatedHttpClient().get(getProgressApiEndPoint());
+    return camelCaseObject(data);
+  } catch (error) {
+    const { httpErrorStatus } = error && error.customAttributes;
+    if (httpErrorStatus === 404) {
+      global.location.replace(`${getConfig().LMS_BASE_URL}/courses/${courseId}/badges/progress`);
+      return {};
+    }
+    if (httpErrorStatus === 401) {
+      // The backend sends this for unenrolled and unauthenticated learners, but we handle those cases by examining
+      // courseAccess in the metadata call, so just ignore this status for now.
+      return {};
+    }
+    throw error;
+  }
+}
+
+export async function getBadgeLeaderboardTabData(courseId) {
+  // Todo: Need to define an Badge Leaderboard API endpoint for the LMS
+  // and return the result.
+  const url = `${getConfig().LMS_BASE_URL}/api/badges/v1/leaderboard/courses/${courseId}`;
+  try {
+    const { data } = await getAuthenticatedHttpClient().get(url);
+    return camelCaseObject(data);
+  } catch (error) {
+    const { httpErrorStatus } = error && error.customAttributes;
+    if (httpErrorStatus === 404) {
+      // global.location.replace(`${getConfig().LMS_BASE_URL}/courses/${courseId}/badges/progress`);
+      return {};
+    }
+    throw error;
+  }
+}
+
 // For debugging purposes, you might like to see a fully loaded dates tab.
 // Just uncomment the next few lines and the immediate 'return' in the function below
 // import { Factory } from 'rosie';
 // import './__factories__';
+
 export async function getDatesTabData(courseId) {
   // return camelCaseObject(Factory.build('datesTabData'));
   const url = `${getConfig().LMS_BASE_URL}/api/course_home/dates/${courseId}`;
