@@ -8,6 +8,7 @@ import {
   getDatesTabData,
   getOutlineTabData,
   getProgressTabData,
+  getGlossaryTabData,
   postCourseDeadlines,
   postCourseGoals,
   postDismissWelcomeMessage,
@@ -90,6 +91,10 @@ export function fetchDatesTab(courseId) {
 
 export function fetchProgressTab(courseId, targetUserId) {
   return fetchTab(courseId, 'progress', getProgressTabData, parseInt(targetUserId, 10) || targetUserId);
+}
+
+export function fetchGlossaryTab(courseId) {
+  return fetchTab(courseId, 'glossary', getGlossaryTabData);
 }
 
 export function fetchOutlineTab(courseId) {
