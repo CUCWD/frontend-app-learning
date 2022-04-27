@@ -28,7 +28,7 @@ import GlossaryTab from './course-home/glossary-tab';
 import { TabContainer } from './tab-page';
 
 import {
-  fetchBadgeProgressTab, fetchBadgeLeaderboardTab, fetchDatesTab, fetchOutlineTab, fetchProgressTab, fetchGlossaryTab
+  fetchBadgeProgressTab, fetchBadgeLeaderboardTab, fetchDatesTab, fetchOutlineTab, fetchProgressTab, fetchGlossaryTab,
 } from './course-home/data';
 import { fetchCourse } from './courseware/data';
 import initializeStore from './store';
