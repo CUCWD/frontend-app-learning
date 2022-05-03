@@ -167,18 +167,18 @@ function Unit({
         isProcessing={unit.bookmarkedUpdateState === 'loading'}
       />
 
-      { unit.estimatedTime && unit.showEstimatedTime  && 
-        <span class="d-flex align-items-center" style={{ display: 'block', fontSize: '14px', color: '#0A3055' }}>
-          <span class="pgn__stateful-btn-icon">
-            <svg class="svg-inline--fa fa-bookmark fa-w-12 text-primary" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="60 0 384 512">
-              <path d="M245,0C109.5,0,0,109.5,0,245s109.5,245,245,245s245-109.5,245-245S380.5,0,245,0z M245,449.3    c-112.6,0-204.3-91.7-204.3-204.3S132.4,40.7,245,40.7S449.3,132.4,449.3,245S357.6,449.3,245,449.3z"/>
-              <path d="M290.9,224.1h-25v-95.9c0-11.5-9.4-20.9-20.9-20.9s-20.9,9.4-20.9,20.9V245c0,11.5,9.4,20.9,20.9,20.9h45.9    c11.5,0,20.9-9.4,20.9-20.9S302.3,224.1,290.9,224.1z"/>
+      { unit.estimatedTime && unit.showEstimatedTime
+        && (
+        <span className="d-flex align-items-center" style={{ display: 'block', fontSize: '14px', color: '#0A3055' }}>
+          <span className="pgn__stateful-btn-icon">
+            <svg className="svg-inline--fa fa-bookmark fa-w-12 text-primary" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="60 0 384 512">
+              <path d="M245,0C109.5,0,0,109.5,0,245s109.5,245,245,245s245-109.5,245-245S380.5,0,245,0z M245,449.3    c-112.6,0-204.3-91.7-204.3-204.3S132.4,40.7,245,40.7S449.3,132.4,449.3,245S357.6,449.3,245,449.3z" />
+              <path d="M290.9,224.1h-25v-95.9c0-11.5-9.4-20.9-20.9-20.9s-20.9,9.4-20.9,20.9V245c0,11.5,9.4,20.9,20.9,20.9h45.9    c11.5,0,20.9-9.4,20.9-20.9S302.3,224.1,290.9,224.1z" />
             </svg>
-          </span> 
-          Estimated Completion Time: {estimatedTimeMinutes} {estimatedTimeMinutes === 1 ? 'min' : 'mins'} 
+          </span>
+          Estimated Completion Time: {estimatedTimeMinutes} {estimatedTimeMinutes === 1 ? 'min' : 'mins'}
         </span>
-      
-      }
+        )}
       { !mmp2p.state.isEnabled && contentTypeGatingEnabled && unit.containsContentTypeGatedContent && (
         <Suspense
           fallback={(

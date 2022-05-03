@@ -66,7 +66,7 @@ function OutlineTab({ intl }) {
     offer,
     timeOffsetMillis,
     verifiedMode,
-    estimatedTime
+    estimatedTime,
   } = useModel('outline', courseId);
 
   const [courseGoalToDisplay, setCourseGoalToDisplay] = useState(selectedGoal);
@@ -134,7 +134,12 @@ function OutlineTab({ intl }) {
           <div role="heading" aria-level="1" className="h2">{title}</div>
           { (estimatedTime
           && (
-          <span className="" style={{ display: 'block', fontSize: '12px', color: 'grey', fontWeight:'bold' }}>
+          <span
+            className=""
+            style={{
+              display: 'block', fontSize: '12px', color: 'grey', fontWeight: 'bold',
+            }}
+          >
             Estimated Completion Time: { estimatedTimeMinutes } { estimatedTimeMinutes === 1 ? 'minute' : 'minutes' }
           </span>
           )) }

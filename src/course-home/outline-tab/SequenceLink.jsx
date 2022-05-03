@@ -76,7 +76,7 @@ function SequenceLink({
           </div>
           <div className="col-10 p-0 ml-3 text-break">
             <span className="align-middle" style={{ display: 'block' }}>{displayTitle}</span>
-            { (estimatedTime  && (
+            { (estimatedTime && (
             <span className="" style={{ display: 'block', fontSize: '12px', color: 'grey' }}>
               Estimated Completion Time: { estimatedTimeMinutes } { estimatedTimeMinutes === 1 ? 'minute' : 'minutes' }
             </span>
