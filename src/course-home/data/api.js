@@ -439,6 +439,7 @@ export async function getOutlineTabData(courseId) {
   const userHasPassingGrade = data.user_has_passing_grade;
   const verifiedMode = camelCaseObject(data.verified_mode);
   const welcomeMessageHtml = data.welcome_message_html;
+  const estimatedTime = courseBlocks["courses"][Object.keys(courseBlocks["courses"])[0]].estimatedTime;
 
   return {
     accessExpiration,
@@ -460,6 +461,7 @@ export async function getOutlineTabData(courseId) {
     userHasPassingGrade,
     verifiedMode,
     welcomeMessageHtml,
+    estimatedTime
   };
 }
 

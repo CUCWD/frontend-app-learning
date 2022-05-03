@@ -66,6 +66,7 @@ function OutlineTab({ intl }) {
     offer,
     timeOffsetMillis,
     verifiedMode,
+    estimatedTime
   } = useModel('outline', courseId);
 
   const [courseGoalToDisplay, setCourseGoalToDisplay] = useState(selectedGoal);
@@ -91,7 +92,7 @@ function OutlineTab({ intl }) {
   const certificateAvailableAlert = useCertificateAvailableAlert(courseId);
   const privateCourseAlert = usePrivateCourseAlert(courseId);
   const scheduledContentAlert = useScheduledContentAlert(courseId);
-
+  const estimatedTimeMinutes = parseInt(estimatedTime / 60, 10) + (estimatedTime % 60 > 0);
   const rootCourseId = courses && Object.keys(courses)[0];
 
   const hasDeadlines = courseDateBlocks && courseDateBlocks.some(x => x.dateType === 'assignment-due-date');
@@ -131,6 +132,12 @@ function OutlineTab({ intl }) {
       <div data-learner-type={learnerType} className="row w-100 mx-0 my-3 justify-content-between">
         <div className="col-12 col-sm-auto p-0">
           <div role="heading" aria-level="1" className="h2">{title}</div>
+          { (estimatedTime
+          && (
+          <span className="" style={{ display: 'block', fontSize: '12px', color: 'grey', fontWeight:'bold' }}>
+            Estimated Completion Time: { estimatedTimeMinutes } { estimatedTimeMinutes === 1 ? 'minute' : 'minutes' }
+          </span>
+          )) }
         </div>
         {resumeCourseUrl && (
           <div className="col-12 col-sm-auto p-0">

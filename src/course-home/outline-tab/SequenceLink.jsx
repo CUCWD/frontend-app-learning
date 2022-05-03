@@ -31,6 +31,7 @@ function SequenceLink({
     legacyWebUrl,
     showLink,
     title,
+    estimatedTime,
   } = sequence;
   const {
     userTimezone,
@@ -48,6 +49,7 @@ function SequenceLink({
       : <Hyperlink destination={legacyWebUrl}>{title}</Hyperlink>
   );
   const displayTitle = showLink ? coursewareUrl : title;
+  const estimatedTimeMinutes = parseInt(estimatedTime / 60, 10) + (estimatedTime % 60 > 0);
 
   return (
     <li>
@@ -73,7 +75,12 @@ function SequenceLink({
             )}
           </div>
           <div className="col-10 p-0 ml-3 text-break">
-            <span className="align-middle">{displayTitle}</span>
+            <span className="align-middle" style={{ display: 'block' }}>{displayTitle}</span>
+            { (estimatedTime  && (
+            <span className="" style={{ display: 'block', fontSize: '12px', color: 'grey' }}>
+              Estimated Completion Time: { estimatedTimeMinutes } { estimatedTimeMinutes === 1 ? 'minute' : 'minutes' }
+            </span>
+            )) }
             <span className="sr-only">
               , {intl.formatMessage(complete ? messages.completedAssignment : messages.incompleteAssignment)}
             </span>
