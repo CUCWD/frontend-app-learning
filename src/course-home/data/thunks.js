@@ -3,9 +3,12 @@ import { camelCaseObject } from '@edx/frontend-platform';
 import {
   executePostFromPostEvent,
   getCourseHomeCourseMetadata,
+  getBadgeProgressTabData,
+  getBadgeLeaderboardTabData,
   getDatesTabData,
   getOutlineTabData,
   getProgressTabData,
+  getGlossaryTabData,
   postCourseDeadlines,
   postCourseGoals,
   postDismissWelcomeMessage,
@@ -74,12 +77,24 @@ export function fetchTab(courseId, tab, getTabData, targetUserId) {
   };
 }
 
+export function fetchBadgeProgressTab(courseId) {
+  return fetchTab(courseId, 'badge-progress', getBadgeProgressTabData);
+}
+
+export function fetchBadgeLeaderboardTab(courseId) {
+  return fetchTab(courseId, 'badge-leaderboard', getBadgeLeaderboardTabData);
+}
+
 export function fetchDatesTab(courseId) {
   return fetchTab(courseId, 'dates', getDatesTabData);
 }
 
 export function fetchProgressTab(courseId, targetUserId) {
   return fetchTab(courseId, 'progress', getProgressTabData, parseInt(targetUserId, 10) || targetUserId);
+}
+
+export function fetchGlossaryTab(courseId) {
+  return fetchTab(courseId, 'glossary', getGlossaryTabData);
 }
 
 export function fetchOutlineTab(courseId) {

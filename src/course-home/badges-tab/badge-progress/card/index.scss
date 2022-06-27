@@ -1,0 +1,435 @@
+// https://stackoverflow.com/questions/11989546/wrap-a-text-within-only-two-lines-inside-div
+@mixin multiLineEllipsis($lineHeight: 1.2rem, $lineCount: 2, $bgColor: white, $padding-right: 0.3125rem, $width: 1rem, $ellipsis-right: 0) {
+    overflow: hidden; /* hide text if it is more than $lineCount lines  */
+    position: relative; /* for set '...' in absolute position */
+    line-height: $lineHeight; /* use this value to count block height */
+    max-height: $lineHeight * $lineCount; /* max-height = line-height * lines max number */
+    padding-right: $padding-right; /* place for '...' */
+    white-space: normal; /* overwrite any white-space styles */
+    // word-break: break-all; /* will break each letter in word */
+    text-overflow: ellipsis; /* show ellipsis if text is broken */
+  
+    &::before {
+      content: '...'; /* create the '...'' points in the end */
+      position: absolute;
+      right: $ellipsis-right;
+      bottom: 0;
+    }
+  
+    &::after {
+      content: ''; /* hide '...'' if we have text, which is less than or equal to max lines and add $bgColor */
+      position: absolute;
+      right: 0;
+      width: $width;
+      height: 1rem * $lineCount;
+      margin-top: 0.2rem;
+      background: $bgColor; /* because we are cutting off the diff we need to add the color back. */
+    }
+}
+
+/* BadgeProgressCard 
+   --------------------------------------- */
+.card {
+    //border-radius: 1rem;
+    border: none;
+  
+    .card-header {
+      padding: 0.5rem 0.5rem;
+      background-color: transparent;
+      border-radius: 5px;
+      box-shadow: 1px 1px 5px 0 rgba(46,61,73,.2);
+      font-weight: bold;
+      height: 85px; /* 120px */
+      overflow: hidden;
+      line-height: 1.2;
+    }
+  
+    .card-badge {
+  
+      border-radius: 5px;
+      box-shadow: 1px 1px 5px 0 rgba(46,61,73,.2);
+      height: 100%;
+  
+      .card-img-top {
+        width: 100%;
+        height: 12vw;
+        object-fit: contain;
+        margin: 5px 0px;
+  
+        @media only screen and (min-width: 320px) {
+          height: 50vw;
+        }
+        @media only screen and (min-width: 768px) {
+          height: 16vw;
+        }
+        @media only screen and (min-width: 1024px) {
+          height: 12vw;
+        }
+        @media only screen and (min-width: 1200px) {
+          height: 10vw;
+        }
+        @media only screen and (min-width: 1400px) {
+          height: 8vw;
+        }
+        @media only screen and (min-width: 2560px) {
+          height: 5vw;
+        }
+      }
+  
+      .minimal {
+        height: 70px;
+      }
+  
+      .card-body {
+        padding: .75rem 1.25rem;
+        border-top: 1px solid #8080805c;
+        // height: 40px;
+        text-align: center;
+        background-color: rgba(237,237,237,1);
+
+        .card-title {
+            font-size: 0.90rem;
+            // text-overflow: ellipsis;
+            // overflow: hidden;
+            // white-space: nowrap;
+            @include multiLineEllipsis($lineCount: 2, $bgColor: rgba(237,237,237,1));
+            padding: 0px 10px !important;
+            min-height: 40px;
+        }
+
+      }
+  
+    }
+  
+  }
+  
+  .asserted {
+    color: rgba(0,0,0,1);
+  
+    &:hover {
+      background-color: rgba(13,129,1,0.2);
+    }
+  }
+  
+  .not-asserted {
+    /* https://stackoverflow.com/questions/35374021/css-grayscale-filter-changing-logos-to-different-shades */
+  
+    //color: rgba(132, 132, 132, 0.15);
+    -webkit-filter: grayscale(100%) brightness(60%) contrast(100%); /* Safari 6.0 - 9.0 */
+    filter: grayscale(100%) brightness(60%) contrast(100%);
+    filter: alpha(opacity=50);
+    opacity: 0.50 !important;
+    //filter: alpha(opacity=15);
+  }
+  
+  
+
+/* BadgeProgressCardStatus 
+   --------------------------------------- */
+
+.card-status {
+    position: relative;
+    top: -5px;
+    display: flex;
+    align-items: center;
+    margin: 0px 10px;
+  
+    .card-status-icon {
+      display: inline-block;
+      vertical-align: middle;
+      width: 15%;
+      margin: 16px 16px 16px 0px;
+      //position: relative;
+      //top: 5px;
+  
+      &.complete {
+        color: rgb(0, 129, 0);
+      }
+  
+      &.incomplete {
+        color: rgb(165, 165, 165);
+      }
+  
+    }
+  
+    /*
+    h3 {
+      max-width: 280px;
+      display: inline-block;
+      @include line-clamp(2,2);
+    }
+    */
+    .card-status-title {
+        font-size: 14px;
+        text-align: left;
+        display: inline-block;
+        vertical-align: middle;
+        text-transform: uppercase;
+        @include multiLineEllipsis($lineCount: 3, $padding-right: 1rem)
+    }
+  
+  }
+  
+
+/* BadgeProgressCardDetailsModal 
+   --------------------------------------- */
+   /*
+  .modal-progress-details {
+
+    .modal {
+  
+      .modal-dialog {
+  
+        min-width: 60%;
+  
+        .modal-content {
+  
+          padding: 15px;
+  
+          .modal-body {
+            */
+  
+            .progress-details {
+               
+              text-align: left;
+  
+              .progress-details-header {
+
+                background: #48555d !important;
+                color: white !important;
+
+                .pgn__modal-hero {
+                  background: inherit !important;
+                  color: inherit !important;
+                }
+  
+                .progress-details-title {
+  
+                  h2 {
+                    font-size: 30px !important;
+                    font-weight: bold !important;
+                  }
+  
+                }
+  
+                .progress-details-description {
+  
+                  div, p {
+                    font-size: 16px !important;
+                    font-weight: normal !important;
+                  }
+  
+                }
+  
+              }
+  
+              .progress-details-body {
+  
+                .progress-details-image {
+  
+                  img {
+                    max-width: 70%;
+                    margin: 0px 40px;
+                  }
+  
+                  button {
+                    max-width: 70%;
+                    width: 100%;
+                    margin: 5px 40px;
+                  }
+  
+                }
+  
+                .progress-details-meta {
+
+                  font-size: 16px;
+                  line-height: 8px;
+  
+                  .progress-details-meta-earned,
+                  .progress-details-meta-recipient,
+                  .progress-details-meta-criteria,
+                  .progress-details-meta-issuer {
+  
+                    h3 {
+                      color: #767676 !important;
+                      font-size: 18px;
+                    }
+  
+                    margin-bottom: 20px;
+  
+                  }
+  
+                  .progress-details-meta-earned {
+
+                    .card-status {
+                      position: relative;
+                      top: -5px;
+                      display: flex;
+                      align-items: center;
+                      margin: 0px 10px;
+                    
+                      .card-status-icon {
+                        display: inline-block;
+                        vertical-align: middle;
+                        width: 15%;
+                        margin: 16px 16px 16px 0px;
+                        //position: relative;
+                        //top: 5px;
+                    
+                        &.complete {
+                          color: rgb(0, 129, 0);
+                        }
+                    
+                        &.incomplete {
+                          color: rgb(165, 165, 165);
+                        }
+                    
+                      }
+                    
+                      /*
+                      h3 {
+                        max-width: 280px;
+                        display: inline-block;
+                        @include line-clamp(2,2);
+                      }
+                      */
+                      .card-status-title {
+                          position: relative;
+                          top: -8px;
+                          font-size: 14px;
+                          text-align: left;
+                          display: inline-block;
+                          vertical-align: middle;
+                          text-transform: uppercase;
+                          // @include multiLineEllipsis($lineCount: 3, $padding-right: 1rem)
+                      }
+
+                      .card-status-earned {
+                        display: block;
+                        position: relative;
+                        top: 12px;
+                        left: -90px;
+                        font-size: 14px;
+                        font-weight: normal;
+                        font-style: italic;
+                      }
+                    
+                    }
+
+                  }
+
+                  .progress-details-meta-issuer {
+  
+                    ul {
+  
+                      li {
+                        list-style: none;
+  
+                        img {
+                          width: 40px;
+                          height: 40px;
+                        }
+                      }
+  
+                    }
+  
+                  }
+  
+                }
+  
+              }
+  
+              .progress-details-share {
+  
+                background-color: #f2f2f2;
+  
+                a {
+                  font-weight: bold;
+                }
+  
+                .collapsible-trigger {
+                  background-color: bisque;
+                }
+
+                .progress-details-share-instructions {
+  
+                  padding-bottom: 0px !important;
+  
+                  .share-introduction {
+  
+                    hr {
+                      border-color: rgba(0,0,0,0.30);
+                    }
+  
+                  }
+  
+                }
+  
+                .progress-details-share-badgr-instructions {
+  
+                  padding: 0px 10px 10px 10px !important;
+  
+                  .badgr-instructions {
+  
+                    ol {
+                      padding-left: 20px;
+                      list-style: none;
+                      list-style-position: outside;
+                      display: table;
+                      margin: 1em 0;
+                      margin-block-start: 1em;
+                      margin-block-end: 1em;
+                      margin-inline-start: 0px;
+                      margin-inline-end: 0px;
+                      padding-inline-start: 40px;
+                      /*counter-reset: badgr-instr-counter;*/
+  
+                      li {
+                        //list-style: none;
+                        list-style-type: decimal;
+                        //counter-increment: badgr-instr-counter;
+  
+                        /*
+                        &:before {
+                          content: counter(badgr-instr-counter) ". ";
+                          color: #444444;
+                          font-weight: bold;
+                        }*/
+                      }
+  
+                    }
+  
+                  }
+  
+                  .badgr-image {
+  
+                    display: inline-block;
+                    background-color: #525dc7;
+                    padding: 10px;
+                    max-height: 120px;
+  
+                    img {
+                      width: 100%;
+                      height: 100%;
+                      position: relative;
+                      left: 18px;
+                    }
+  
+                  }
+  
+                }
+  
+              }
+  
+            }
+/*  
+          }
+  
+        }
+  
+      }
+  
+    }
+  
+  }
+*/ 

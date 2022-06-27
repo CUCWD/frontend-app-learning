@@ -13,6 +13,7 @@ import { useModel } from '../generic/model-store';
 
 import genericMessages from '../generic/messages';
 import messages from './messages';
+import messagesBadgeProgress from '../course-home/badges-tab/messages';
 import LoadedTabPage from './LoadedTabPage';
 import { setCallToActionToast } from '../course-home/data/slice';
 
@@ -39,11 +40,20 @@ function TabPage({ intl, ...props }) {
   } = useModel(metadataModel, courseId);
 
   if (courseStatus === 'loading') {
+    let notificationMessage;
+    switch (activeTabSlug) {
+      case 'badge_progress':
+        notificationMessage = messagesBadgeProgress.loading;
+        break;
+      default:
+        notificationMessage = messages.loading;
+    }
+
     return (
       <>
         <Header />
         <PageLoading
-          srMessage={intl.formatMessage(messages.loading)}
+          srMessage={intl.formatMessage(notificationMessage)}
         />
         <Footer />
       </>
@@ -84,12 +94,21 @@ function TabPage({ intl, ...props }) {
     );
   }
 
+  let notificationMessage;
+  switch (activeTabSlug) {
+    case 'badge_progress':
+      notificationMessage = messagesBadgeProgress.failure;
+      break;
+    default:
+      notificationMessage = messages.failure;
+  }
+
   // courseStatus 'failed' and any other unexpected course status.
   return (
     <>
       <Header />
       <p className="text-center py-5 mx-auto" style={{ maxWidth: '30em' }}>
-        {intl.formatMessage(messages.failure)}
+        {intl.formatMessage(notificationMessage)}
       </p>
       <Footer />
     </>

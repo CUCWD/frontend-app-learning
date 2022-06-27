@@ -20,12 +20,16 @@ import OutlineTab from './course-home/outline-tab';
 import { CourseExit } from './courseware/course/course-exit';
 import CoursewareContainer from './courseware';
 import CoursewareRedirectLandingPage from './courseware/CoursewareRedirectLandingPage';
+import { BadgeProgressTab, BadgeLeaderboardTab } from './course-home/badges-tab';
 import DatesTab from './course-home/dates-tab';
 import GoalUnsubscribe from './course-home/goal-unsubscribe';
 import ProgressTab from './course-home/progress-tab/ProgressTab';
+import GlossaryTab from './course-home/glossary-tab';
 import { TabContainer } from './tab-page';
 
-import { fetchDatesTab, fetchOutlineTab, fetchProgressTab } from './course-home/data';
+import {
+  fetchBadgeProgressTab, fetchBadgeLeaderboardTab, fetchDatesTab, fetchOutlineTab, fetchProgressTab, fetchGlossaryTab,
+} from './course-home/data';
 import { fetchCourse } from './courseware/data';
 import initializeStore from './store';
 import NoticesProvider from './generic/notices';
@@ -43,9 +47,24 @@ subscribe(APP_READY, () => {
                 <OutlineTab />
               </TabContainer>
             </PageRoute>
+            <PageRoute path="/course/:courseId/badges/progress">
+              <TabContainer tab="badges_progress" fetch={fetchBadgeProgressTab} slice="courseHome">
+                <BadgeProgressTab />
+              </TabContainer>
+            </PageRoute>
+            <PageRoute path="/course/:courseId/badges/leaderboard">
+              <TabContainer tab="badges_progress" fetch={fetchBadgeLeaderboardTab} slice="courseHome">
+                <BadgeLeaderboardTab />
+              </TabContainer>
+            </PageRoute>
             <PageRoute path="/course/:courseId/dates">
               <TabContainer tab="dates" fetch={fetchDatesTab} slice="courseHome">
                 <DatesTab />
+              </TabContainer>
+            </PageRoute>
+            <PageRoute path="/course/:courseId/glossary">
+              <TabContainer tab="glossary" fetch={fetchGlossaryTab} slice="courseHome">
+                <GlossaryTab />
               </TabContainer>
             </PageRoute>
             <PageRoute
