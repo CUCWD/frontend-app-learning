@@ -194,7 +194,7 @@ function ModuleDropdown(termData) {
   const lessons = [];
   const newSet = new Set();
 
-  termData.value.termData.filter(keyTerm => keyTerm.lessons.forEach(lesson => {
+  termData.value.termData.filter((keyTerm) => keyTerm.lessons.forEach(lesson => {
     if (lessons.find(object => object.module_name === lesson.module_name) === undefined) { lessons.push(lesson); }
   }));
 
@@ -271,7 +271,7 @@ function GlossaryTab({ intl }) {
 
   useEffect(() => {
     getGlossaryData(courseId)
-      .then((keytermData) => setTermData(keytermData));
+      .then((termData) => setTermData(termData));
   }, []);
 
   return (
