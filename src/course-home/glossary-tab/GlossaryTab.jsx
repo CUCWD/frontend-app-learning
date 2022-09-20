@@ -194,7 +194,8 @@ function ModuleDropdown(termData) {
   const lessons = [];
   const newSet = new Set();
 
-  termData.value.termData.filter(keyTerm => keyTerm.lessons.forEach(lesson => {
+  // termData.value.termData.filter((keyTerm) => keyTerm.lessons.forEach(lesson => {
+  termData.filter((keyTerm) => keyTerm.lessons.forEach(lesson => {
     if (lessons.find(object => object.module_name === lesson.module_name) === undefined) { lessons.push(lesson); }
   }));
 
