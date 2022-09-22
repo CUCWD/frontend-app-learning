@@ -9,6 +9,7 @@ import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import { injectIntl, intlShape } from '@edx/frontend-platform/i18n';
 import './GlossaryTab.scss';
+import { getConfig } from '@edx/frontend-platform';
 
 import {
   DropdownButton,
@@ -91,7 +92,7 @@ function Lesson({ lesson }) {
   const encodedCourse = courseId.replace(' ', '+');
   return (
     <p>
-      <a key={lesson.id} target="_blank" rel="noopener noreferrer" href={`http://localhost:2000/course/${encodedCourse}/${lesson.lesson_link}`}>
+      <a key={lesson.id} target="_blank" rel="noopener noreferrer" href={`${process.env.LEARNING_FME_BASE_URL}/course/${encodedCourse}/${lesson.lesson_link}`}>
         {lesson.module_name}&gt;{lesson.lesson_name}&gt;{lesson.unit_name}
       </a> &nbsp; &nbsp;
     </p>
@@ -103,7 +104,7 @@ function Textbook({ textbook }) {
   const { courseId } = useContext(CourseContext);
   const assetId = courseId.replace('course', 'asset');
 
-  const lmsTextbookLink = `http://localhost:18000/${assetId}+type@asset+block@${textbook.textbook_link}#page=${textbook.page_num}`;
+  const lmsTextbookLink = `${getConfig().LMS_BASE_URL}/${assetId}+type@asset+block@${textbook.textbook_link}#page=${textbook.page_num}`;
 
   return (
     <p>
