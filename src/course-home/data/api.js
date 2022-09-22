@@ -346,7 +346,7 @@ export async function getGlossaryTabData(courseId) {
 }
 
 export async function getGlossaryData(courseId) {
-  const url = `${getConfig().KEYTERMS_API_BASE_URL}/api/v1/course_terms?course_id=${courseId}`;
+  const url = `${process.env.KEYTERMS_API_BASE_URL}/api/v1/course_terms?course_id=${courseId}`;
   try {
     const { data } = await getAuthenticatedHttpClient().get(url);
     return data;
