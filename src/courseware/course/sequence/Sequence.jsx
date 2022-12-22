@@ -1,6 +1,6 @@
 /* eslint-disable no-use-before-define */
 import React, {
-  useEffect, useState,
+  useEffect, useState, useContext,
 } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
@@ -14,6 +14,8 @@ import { history } from '@edx/frontend-platform';
 import SequenceExamWrapper from '@edx/frontend-lib-special-exams';
 import { breakpoints, useWindowSize } from '@edx/paragon';
 
+import SidebarContext from 'courseware/course/sidebar/SidebarContext';
+import { ID } from 'courseware/course/sidebar/sidebars/outline/OutlineTrigger';
 import PageLoading from '../../../generic/PageLoading';
 import { useModel } from '../../../generic/model-store';
 import { useSequenceBannerTextAlert, useSequenceEntranceExamAlert } from '../../../alerts/sequence-alerts/hooks';
@@ -148,8 +150,14 @@ function Sequence({
     history.push(`/course/${courseId}/course-end`);
   };
 
+  const {
+    currentSidebar,
+  } = useContext(SidebarContext);
+  const isOutlineActive = currentSidebar === ID;
+
   const defaultContent = (
     <div className="sequence-container d-inline-flex flex-row">
+      {isOutlineActive ? <Sidebar /> : null}
       <div className={classNames('sequence w-100', { 'position-relative': shouldDisplayNotificationTriggerInSequence })}>
         <SequenceNavigation
           sequenceId={sequenceId}
@@ -202,7 +210,7 @@ function Sequence({
           )}
         </div>
       </div>
-      <Sidebar />
+      {isOutlineActive ? null : <Sidebar />}
 
       {/** [MM-P2P] Experiment */}
       {(mmp2p.state.isEnabled && mmp2p.flyover.isVisible) && (

@@ -14,6 +14,7 @@ import ContentTools from './content-tools';
 import CourseBreadcrumbs from './CourseBreadcrumbs';
 import SidebarProvider from './sidebar/SidebarContextProvider';
 import SidebarTriggers from './sidebar/SidebarTriggers';
+import SidebarOutlineTrigger from './sidebar/SidebarOutlineTrigger';
 
 import { useModel } from '../../generic/model-store';
 import { getSessionStorage, setSessionStorage } from '../../data/sessionStorage';
@@ -88,7 +89,7 @@ function Course({
       <Helmet>
         <title>{`${pageTitleBreadCrumbs.join(' | ')} | ${getConfig().SITE_NAME}`}</title>
       </Helmet>
-      <div className="position-relative d-flex align-items-start">
+      <section className="position-relative d-flex align-items-start">
         <CourseBreadcrumbs
           courseId={courseId}
           sectionId={section ? section.id : null}
@@ -101,7 +102,12 @@ function Course({
         {shouldDisplayTriggers && (
           <SidebarTriggers />
         )}
-      </div>
+      </section>
+      <section className="d-flex mr-auto p-2">
+        {shouldDisplayTriggers && (
+          <SidebarOutlineTrigger />
+        )}
+      </section>
 
       <AlertList topic="sequence" />
       <Sequence

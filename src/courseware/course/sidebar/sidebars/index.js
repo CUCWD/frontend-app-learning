@@ -1,7 +1,13 @@
-import * as notifications from './notifications';
-import * as discusssions from './discussions';
+import * as outline from 'courseware/course/sidebar/sidebars/outline';
+import * as notifications from 'courseware/course/sidebar/sidebars/notifications';
+import * as discusssions from 'courseware/course/sidebar/sidebars/discussions';
 
 export const SIDEBARS = {
+  [outline.ID]: {
+    ID: outline.ID,
+    Sidebar: outline.Sidebar,
+    Trigger: outline.Trigger,
+  },
   [notifications.ID]: {
     ID: notifications.ID,
     Sidebar: notifications.Sidebar,

@@ -54,6 +54,7 @@ export function initializeMockApp() {
   mergeConfig({
     CONTACT_URL: process.env.CONTACT_URL || null,
     DISCUSSIONS_MFE_BASE_URL: process.env.DISCUSSIONS_MFE_BASE_URL || null,
+    SIDEBAR_MFE_BASE_URL: process.env.SIDEBAR_MFE_BASE_URL || null,
     INSIGHTS_BASE_URL: process.env.INSIGHTS_BASE_URL || null,
     STUDIO_BASE_URL: process.env.STUDIO_BASE_URL || null,
     TWITTER_URL: process.env.TWITTER_URL || null,

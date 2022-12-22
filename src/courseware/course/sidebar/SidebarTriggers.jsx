@@ -1,29 +1,14 @@
-import classNames from 'classnames';
-import React, { useContext } from 'react';
-import SidebarContext from './SidebarContext';
-import { SIDEBAR_ORDER, SIDEBARS } from './sidebars';
+import React from 'react';
+import { SIDEBAR_ORDER } from 'courseware/course/sidebar/sidebars';
+import TriggerButton from 'courseware/course/sidebar/TriggerButton';
 
 function SidebarTriggers() {
-  const {
-    toggleSidebar,
-    currentSidebar,
-  } = useContext(SidebarContext);
   return (
-    <div className="d-flex ml-auto">
-      {SIDEBAR_ORDER.map((sidebarId) => {
-        const { Trigger } = SIDEBARS[sidebarId];
-        const isActive = sidebarId === currentSidebar;
-        return (
-          <div
-            className={classNames('mt-3', { 'border-primary-700': isActive })}
-            style={{ borderBottom: isActive ? '2px solid' : null }}
-            key={sidebarId}
-          >
-            <Trigger onClick={() => toggleSidebar(sidebarId)} key={sidebarId} />
-          </div>
-        );
-      })}
-    </div>
+    <section className="d-flex ml-auto">
+      {SIDEBAR_ORDER.map((sidebarId) => (
+        <TriggerButton sidebarId={sidebarId} />
+      ))}
+    </section>
   );
 }
 

@@ -1,11 +1,9 @@
 name: validate
 on:
   push:
-    branches:
-    - master
+    branches: [pearson-release/olive.master]
   pull_request:
-    branches:
-    - '**'
+    branches: [pearson-release/olive.master]
 jobs:
   tests:
     runs-on: ubuntu-latest
@@ -20,5 +18,3 @@ jobs:
     - run: make validate.ci
     - name: Upload coverage
       uses: codecov/codecov-action@v3
-      with:
-        fail_ci_if_error: true
