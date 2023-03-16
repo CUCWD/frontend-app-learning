@@ -28,7 +28,7 @@ import GlossaryTab from './course-home/glossary-tab';
 import { TabContainer } from './tab-page';
 
 import {
-  fetchBadgeProgressTab, fetchBadgeLeaderboardTab, fetchDatesTab, fetchOutlineTab, fetchProgressTab, fetchGlossaryTab,
+  fetchDatesTab, fetchOutlineTab, fetchProgressTab, fetchGlossaryTab,
 } from './course-home/data';
 import { fetchCourse } from './courseware/data';
 import initializeStore from './store';
@@ -38,53 +38,25 @@ import PathFixesProvider from './generic/path-fixes';
 subscribe(APP_READY, () => {
   ReactDOM.render(
     <AppProvider store={initializeStore()}>
-      <NoticesProvider>
-        <UserMessagesProvider>
-          <Switch>
-            <PageRoute exact path="/goal-unsubscribe/:token" component={GoalUnsubscribe} />
-            <PageRoute path="/redirect" component={CoursewareRedirectLandingPage} />
-            <PageRoute path="/course/:courseId/home">
-              <TabContainer tab="outline" fetch={fetchOutlineTab} slice="courseHome">
-                <OutlineTab />
-              </TabContainer>
-            </PageRoute>
-            <PageRoute path="/course/:courseId/badges/progress">
-              <TabContainer tab="badges_progress" fetch={fetchBadgeProgressTab} slice="courseHome">
-                <BadgeProgressTab />
-              </TabContainer>
-            </PageRoute>
-            <PageRoute path="/course/:courseId/badges/leaderboard">
-              <TabContainer tab="badges_progress" fetch={fetchBadgeLeaderboardTab} slice="courseHome">
-                <BadgeLeaderboardTab />
-              </TabContainer>
-            </PageRoute>
-            <PageRoute path="/course/:courseId/dates">
-              <TabContainer tab="dates" fetch={fetchDatesTab} slice="courseHome">
-                <DatesTab />
-              </TabContainer>
-            </PageRoute>
-            <PageRoute path="/course/:courseId/glossary">
-              <TabContainer tab="glossary" fetch={fetchGlossaryTab} slice="courseHome">
-                <GlossaryTab />
-              </TabContainer>
-            </PageRoute>
-            <PageRoute
-              path={[
-                '/course/:courseId/progress/:targetUserId/',
-                '/course/:courseId/progress',
-              ]}
-              render={({ match }) => (
-                <TabContainer
-                  tab="progress"
-                  fetch={(courseId) => fetchProgressTab(courseId, match.params.targetUserId)}
-                  slice="courseHome"
-                >
-                  <ProgressTab />
+      <PathFixesProvider>
+        <NoticesProvider>
+          <UserMessagesProvider>
+            <Switch>
+              <PageRoute exact path="/goal-unsubscribe/:token" component={GoalUnsubscribe} />
+              <PageRoute path="/redirect" component={CoursewareRedirectLandingPage} />
+              <PageRoute path="/course/:courseId/home">
+                <TabContainer tab="outline" fetch={fetchOutlineTab} slice="courseHome">
+                  <OutlineTab />
                 </TabContainer>
               </PageRoute>
               <PageRoute path="/course/:courseId/dates">
                 <TabContainer tab="dates" fetch={fetchDatesTab} slice="courseHome">
                   <DatesTab />
+                </TabContainer>
+              </PageRoute>
+              <PageRoute path="/course/:courseId/glossary">
+                <TabContainer tab="glossary" fetch={fetchGlossaryTab} slice="courseHome">
+                  <GlossaryTab />
                 </TabContainer>
               </PageRoute>
               <PageRoute
