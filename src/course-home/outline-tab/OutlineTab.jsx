@@ -10,6 +10,7 @@ import { AlertList } from '../../generic/user-messages';
 import CourseDates from './widgets/CourseDates';
 import CourseGoalCard from './widgets/CourseGoalCard';
 import CourseHandouts from './widgets/CourseHandouts';
+import CourseRevision from './widgets/CourseRevision';
 import CourseTools from './widgets/CourseTools';
 import { fetchOutlineTab } from '../data';
 import genericMessages from '../../generic/messages';
@@ -246,6 +247,9 @@ function OutlineTab({ intl }) {
               mmp2p={MMP2P}
             />
             <CourseHandouts
+              courseId={courseId}
+            />
+            <CourseRevision
               courseId={courseId}
             />
           </div>

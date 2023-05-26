@@ -420,6 +420,7 @@ export async function getOutlineTabData(courseId) {
   const courseBlocks = data.course_blocks ? normalizeOutlineBlocks(courseId, data.course_blocks.blocks) : {};
   const courseGoals = camelCaseObject(data.course_goals);
   const courseTools = camelCaseObject(data.course_tools);
+  const courseRevision = camelCaseObject(data.course_revision);
   const datesBannerInfo = camelCaseObject(data.dates_banner_info);
   const datesWidget = camelCaseObject(data.dates_widget);
   const enrollAlert = camelCaseObject(data.enroll_alert);
@@ -441,6 +442,7 @@ export async function getOutlineTabData(courseId) {
     courseBlocks,
     courseGoals,
     courseTools,
+    courseRevision,
     datesBannerInfo,
     datesWidget,
     enrollAlert,
