@@ -4,6 +4,7 @@ import {
   executePostFromPostEvent,
   getCourseHomeCourseMetadata,
   getBadgeProgressTabData,
+  getBadgeLeaderboardTabData,
   getDatesTabData,
   getOutlineTabData,
   getProgressTabData,
@@ -81,7 +82,11 @@ export function fetchTab(courseId, tab, getTabData, targetUserId) {
 }
 
 export function fetchBadgeProgressTab(courseId) {
-  return fetchTab(courseId, 'badges-progress', getBadgeProgressTabData);
+  return fetchTab(courseId, 'badge-progress', getBadgeProgressTabData);
+}
+
+export function fetchBadgeLeaderboardTab(courseId) {
+  return fetchTab(courseId, 'badge-leaderboard', getBadgeLeaderboardTabData);
 }
 
 export function fetchDatesTab(courseId) {

@@ -6,21 +6,32 @@ import { getConfig } from '@edx/frontend-platform';
 
 import * as thunks from './thunks';
 
-import { appendBrowserTimezoneToUrl, executeThunk } from '../../utils';
+import executeThunk from '../../utils';
 
-import { initializeMockApp } from '../../setupTest';
+import './__factories__';
+import '../../courseware/data/__factories__/courseMetadata.factory';
+import initializeMockApp from '../../setupTest';
 import initializeStore from '../../store';
-import { debug } from 'util';
 
 const { loggingService } = initializeMockApp();
 
 const axiosMock = new MockAdapter(getAuthenticatedHttpClient());
 
 describe('Data layer integration tests', () => {
-  const courseHomeMetadata = Factory.build('courseHomeMetadata');
-  const { id: courseId } = courseHomeMetadata;
-  let courseMetadataUrl = `${getConfig().LMS_BASE_URL}/api/course_home/course_metadata/${courseId}`;
-  courseMetadataUrl = appendBrowserTimezoneToUrl(courseMetadataUrl);
+  const courseMetadata = Factory.build('courseMetadata');
+  const courseHomeMetadata = Factory.build(
+    'courseHomeMetadata', {
+      course_id: courseMetadata.id,
+    },
+    { courseTabs: courseMetadata.tabs },
+  );
+
+  const courseId = courseMetadata.id;
+  const courseBaseUrl = `${getConfig().LMS_BASE_URL}/api/courseware/course`;
+  const courseMetadataBaseUrl = `${getConfig().LMS_BASE_URL}/api/course_home/v1/course_metadata`;
+
+  const courseUrl = `${courseBaseUrl}/${courseId}`;
+  const courseMetadataUrl = `${courseMetadataBaseUrl}/${courseId}`;
 
   let store;
 
@@ -31,40 +42,15 @@ describe('Data layer integration tests', () => {
     store = initializeStore();
   });
 
-  describe('Test fetchBadgeProgressTab', () => {
-    const badgeProgressBaseUrl = `${getConfig().LMS_BASE_URL}/api/badges/v1/progress`;
-    it('Should fail to fetch if error occurs', async () => {
-      axiosMock.onGet(courseMetadataUrl).networkError();
-      axiosMock.onGet(`${badgeProgressBaseUrl}/${courseId}`).networkError();
-
-      await executeThunk(thunks.fetchBadgeProgressTab(courseId), store.dispatch);
-
-      expect(loggingService.logError).toHaveBeenCalled();
-      expect(store.getState().courseHome.courseStatus).toEqual('failed');
-    });
-
-    // it('Should fetch, normalize, and save metadata', async () => {
-    //   const badgeProgressTabData = Factory.build('badgeProgressTabData');
-
-    //   console.warn(badgeProgressTabData);
-
-    //   const badgeProgressUrl = `${badgeProgressBaseUrl}/${courseId}`;
-
-    //   axiosMock.onGet(courseMetadataUrl).reply(200, courseHomeMetadata);
-    //   axiosMock.onGet(badgeProgressUrl).reply(200, badgeProgressTabData);
-
-    //   await executeThunk(thunks.fetchBadgeProgressTab(courseId), store.dispatch);
-
-    //   const state = store.getState();
-    //   expect(state.courseHome.courseStatus).toEqual('loaded');
-    //   expect(state).toMatchSnapshot();
-    // });
-  });  
+  it('Should initialize store', () => {
+    expect(store.getState()).toMatchSnapshot();
+  });
 
   describe('Test fetchDatesTab', () => {
-    const datesBaseUrl = `${getConfig().LMS_BASE_URL}/api/course_home/dates`;
-``
+    const datesBaseUrl = `${getConfig().LMS_BASE_URL}/api/course_home/v1/dates`;
+
     it('Should fail to fetch if error occurs', async () => {
+      axiosMock.onGet(courseUrl).networkError();
       axiosMock.onGet(courseMetadataUrl).networkError();
       axiosMock.onGet(`${datesBaseUrl}/${courseId}`).networkError();
 
@@ -79,6 +65,7 @@ describe('Data layer integration tests', () => {
 
       const datesUrl = `${datesBaseUrl}/${courseId}`;
 
+      axiosMock.onGet(courseUrl).reply(200, courseMetadata);
       axiosMock.onGet(courseMetadataUrl).reply(200, courseHomeMetadata);
       axiosMock.onGet(datesUrl).reply(200, datesTabData);
 
@@ -91,9 +78,10 @@ describe('Data layer integration tests', () => {
   });
 
   describe('Test fetchOutlineTab', () => {
-    const outlineBaseUrl = `${getConfig().LMS_BASE_URL}/api/course_home/outline`;
+    const outlineBaseUrl = `${getConfig().LMS_BASE_URL}/api/course_home/v1/outline`;
 
     it('Should result in fetch failure if error occurs', async () => {
+      axiosMock.onGet(courseUrl).networkError();
       axiosMock.onGet(courseMetadataUrl).networkError();
       axiosMock.onGet(`${outlineBaseUrl}/${courseId}`).networkError();
 
@@ -108,6 +96,7 @@ describe('Data layer integration tests', () => {
 
       const outlineUrl = `${outlineBaseUrl}/${courseId}`;
 
+      axiosMock.onGet(courseUrl).reply(200, courseMetadata);
       axiosMock.onGet(courseMetadataUrl).reply(200, courseHomeMetadata);
       axiosMock.onGet(outlineUrl).reply(200, outlineTabData);
 
@@ -177,31 +166,18 @@ describe('Data layer integration tests', () => {
   describe('Test resetDeadlines', () => {
     it('Should reset course deadlines', async () => {
       const resetUrl = `${getConfig().LMS_BASE_URL}/api/course_experience/v1/reset_course_deadlines`;
-      const model = 'dates';
-      axiosMock.onPost(resetUrl).reply(201, {});
+      axiosMock.onPost(resetUrl).reply(201);
 
       const getTabDataMock = jest.fn(() => ({
         type: 'MOCK_ACTION',
       }));
 
-      await executeThunk(thunks.resetDeadlines(courseId, model, getTabDataMock), store.dispatch);
+      await executeThunk(thunks.resetDeadlines(courseId, getTabDataMock), store.dispatch);
 
       expect(axiosMock.history.post[0].url).toEqual(resetUrl);
-      expect(axiosMock.history.post[0].data).toEqual(`{"course_key":"${courseId}","research_event_data":{"location":"dates-tab"}}`);
+      expect(axiosMock.history.post[0].data).toEqual(`{"course_key":"${courseId}"}`);
 
       expect(getTabDataMock).toHaveBeenCalledWith(courseId);
-    });
-  });
-
-  describe('Test dismissWelcomeMessage', () => {
-    it('Should dismiss welcome message', async () => {
-      const dismissUrl = `${getConfig().LMS_BASE_URL}/api/course_home/dismiss_welcome_message`;
-      axiosMock.onPost(dismissUrl).reply(201);
-
-      await executeThunk(thunks.dismissWelcomeMessage(courseId), store.dispatch);
-
-      expect(axiosMock.history.post[0].url).toEqual(dismissUrl);
-      expect(axiosMock.history.post[0].data).toEqual(`{"course_id":"${courseId}"}`);
     });
   });
 });

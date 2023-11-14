@@ -21,14 +21,14 @@ import OutlineTab from './course-home/outline-tab';
 import { CourseExit } from './courseware/course/course-exit';
 import CoursewareContainer from './courseware';
 import CoursewareRedirectLandingPage from './courseware/CoursewareRedirectLandingPage';
+import { BadgeProgressTab, BadgeLeaderboardTab } from './course-home/badges-tab';
 import DatesTab from './course-home/dates-tab';
 import GoalUnsubscribe from './course-home/goal-unsubscribe';
-import BadgeProgressTab from './course-home/badges-tab/BadgeProgressTab';
 import ProgressTab from './course-home/progress-tab/ProgressTab';
 import GlossaryTab from './course-home/glossary-tab';
 import { TabContainer } from './tab-page';
 
-import { fetchDatesTab, fetchOutlineTab, fetchProgressTab, fetchGlossaryTab, fetchBadgeProgressTab } from './course-home/data';
+import { fetchBadgeProgressTab, fetchBadgeLeaderboardTab, fetchDatesTab, fetchGlossaryTab, fetchOutlineTab, fetchProgressTab } from './course-home/data';
 import { fetchCourse } from './courseware/data';
 import initializeStore from './store';
 import NoticesProvider from './generic/notices';
@@ -37,28 +37,32 @@ import PathFixesProvider from './generic/path-fixes';
 subscribe(APP_READY, () => {
   ReactDOM.render(
     <AppProvider store={initializeStore()}>
-      <PathFixesProvider>
-        <NoticesProvider>
-          <UserMessagesProvider>
-            <Switch>
-              <PageRoute exact path="/goal-unsubscribe/:token" component={GoalUnsubscribe} />
-              <PageRoute path="/redirect" component={CoursewareRedirectLandingPage} />
-              <PageRoute path="/course/:courseId/home">
-                <TabContainer tab="outline" fetch={fetchOutlineTab} slice="courseHome">
-                  <OutlineTab />
-                </TabContainer>
-              </PageRoute>
-              <PageRoute path="/course/:courseId/badges/progress">
-                <TabContainer tab="badge-progress" fetch={fetchBadgeProgressTab} slice="courseHome">
-                  <BadgeProgressTab />
-                </TabContainer>
-              </PageRoute>
-              <PageRoute path="/course/:courseId/dates">
-                <TabContainer tab="dates" fetch={fetchDatesTab} slice="courseHome">
-                  <DatesTab />
-                </TabContainer>
-              </PageRoute>
-              <PageRoute
+      <NoticesProvider>
+        <UserMessagesProvider>
+          <Switch>
+            <PageRoute exact path="/goal-unsubscribe/:token" component={GoalUnsubscribe} />
+            <PageRoute path="/redirect" component={CoursewareRedirectLandingPage} />
+            <PageRoute path="/course/:courseId/home">
+              <TabContainer tab="outline" fetch={fetchOutlineTab} slice="courseHome">
+                <OutlineTab />
+              </TabContainer>
+            </PageRoute>
+            <PageRoute path="/course/:courseId/badges/progress">
+              <TabContainer tab="badges_progress" fetch={fetchBadgeProgressTab} slice="courseHome">
+                <BadgeProgressTab />
+              </TabContainer>
+            </PageRoute>
+            <PageRoute path="/course/:courseId/badges/leaderboard">
+              <TabContainer tab="badges_progress" fetch={fetchBadgeLeaderboardTab} slice="courseHome">
+                <BadgeLeaderboardTab />
+              </TabContainer>
+            </PageRoute>
+            <PageRoute path="/course/:courseId/dates">
+              <TabContainer tab="dates" fetch={fetchDatesTab} slice="courseHome">
+                <DatesTab />
+              </TabContainer>
+            </PageRoute>
+            <PageRoute
               path={[
                 '/course/:courseId/progress/:targetUserId/',
                 '/course/:courseId/progress',
@@ -114,7 +118,6 @@ subscribe(APP_READY, () => {
             </Switch>
           </UserMessagesProvider>
         </NoticesProvider>
-      </PathFixesProvider>
     </AppProvider>,
     document.getElementById('root'),
   );
