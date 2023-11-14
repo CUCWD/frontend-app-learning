@@ -1,5 +1,5 @@
 import { camelCaseObject, getConfig } from '@edx/frontend-platform';
-import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
+import { getAuthenticatedHttpClient, getAuthenticatedUser } from '@edx/frontend-platform/auth';
 import { logInfo } from '@edx/frontend-platform/logging';
 import { appendBrowserTimezoneToUrl } from '../../utils';
 
@@ -194,6 +194,32 @@ export async function getCourseHomeCourseMetadata(courseId, rootSlug) {
   url = appendBrowserTimezoneToUrl(url);
   const { data } = await getAuthenticatedHttpClient().get(url);
   return normalizeCourseHomeCourseMetadata(data, rootSlug);
+}
+
+export async function getBadgeProgressTabData(courseId) {
+  const { administrator, username } = getAuthenticatedUser();
+  const getProgressApiEndPoint = () => (
+    administrator
+      ? `${getConfig().LMS_BASE_URL}/api/badges/v1/progress/${courseId}`
+      : `${getConfig().LMS_BASE_URL}/api/badges/v1/progress/${courseId}/user/${username}`
+  );
+
+  try {
+    const { data } = await getAuthenticatedHttpClient().get(getProgressApiEndPoint());
+    return camelCaseObject(data);
+  } catch (error) {
+    const { httpErrorStatus } = error && error.customAttributes;
+    if (httpErrorStatus === 404) {
+      global.location.replace(`${getConfig().LMS_BASE_URL}/courses/${courseId}/badges/progress`);
+      return {};
+    }
+    if (httpErrorStatus === 401) {
+      // The backend sends this for unenrolled and unauthenticated learners, but we handle those cases by examining
+      // courseAccess in the metadata call, so just ignore this status for now.
+      return {};
+    }
+    throw error;
+  }
 }
 
 // For debugging purposes, you might like to see a fully loaded dates tab.

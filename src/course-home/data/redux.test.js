@@ -10,6 +10,7 @@ import { appendBrowserTimezoneToUrl, executeThunk } from '../../utils';
 
 import { initializeMockApp } from '../../setupTest';
 import initializeStore from '../../store';
+import { debug } from 'util';
 
 const { loggingService } = initializeMockApp();
 
@@ -30,9 +31,39 @@ describe('Data layer integration tests', () => {
     store = initializeStore();
   });
 
+  describe('Test fetchBadgeProgressTab', () => {
+    const badgeProgressBaseUrl = `${getConfig().LMS_BASE_URL}/api/badges/v1/progress`;
+    it('Should fail to fetch if error occurs', async () => {
+      axiosMock.onGet(courseMetadataUrl).networkError();
+      axiosMock.onGet(`${badgeProgressBaseUrl}/${courseId}`).networkError();
+
+      await executeThunk(thunks.fetchBadgeProgressTab(courseId), store.dispatch);
+
+      expect(loggingService.logError).toHaveBeenCalled();
+      expect(store.getState().courseHome.courseStatus).toEqual('failed');
+    });
+
+    // it('Should fetch, normalize, and save metadata', async () => {
+    //   const badgeProgressTabData = Factory.build('badgeProgressTabData');
+
+    //   console.warn(badgeProgressTabData);
+
+    //   const badgeProgressUrl = `${badgeProgressBaseUrl}/${courseId}`;
+
+    //   axiosMock.onGet(courseMetadataUrl).reply(200, courseHomeMetadata);
+    //   axiosMock.onGet(badgeProgressUrl).reply(200, badgeProgressTabData);
+
+    //   await executeThunk(thunks.fetchBadgeProgressTab(courseId), store.dispatch);
+
+    //   const state = store.getState();
+    //   expect(state.courseHome.courseStatus).toEqual('loaded');
+    //   expect(state).toMatchSnapshot();
+    // });
+  });  
+
   describe('Test fetchDatesTab', () => {
     const datesBaseUrl = `${getConfig().LMS_BASE_URL}/api/course_home/dates`;
-
+``
     it('Should fail to fetch if error occurs', async () => {
       axiosMock.onGet(courseMetadataUrl).networkError();
       axiosMock.onGet(`${datesBaseUrl}/${courseId}`).networkError();
