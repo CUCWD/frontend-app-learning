@@ -12,7 +12,7 @@ import { useModel } from '../../generic/model-store';
 import { debug } from 'util';
 
 import { BadgeTabsNavigation } from './badge-header';
-// import { BadgeProgressBanner, BadgeProgressCard, BadgeProgressCourseList } from './badge-progress';
+import { BadgeProgressBanner } from './badge-progress';
 
 // import { headingMapper } from './utils';
 
@@ -57,7 +57,7 @@ function BadgeProgressTab({ intl }) {
   }
 
   useEffect(() => {
-    let _badgeProgressState = checkBadgeProgressExists(badgeProgressState);
+    let _badgeProgressState = checkBadgeProgressExists(badgeProgressState.value);
 
     if ( _badgeProgressState.length ) {
       setProgress(_badgeProgressState);
@@ -114,6 +114,7 @@ function BadgeProgressTab({ intl }) {
       <>
         <div className="d-flex flex-column">
           <BadgeTabsNavigation className="mb-3 py-2" activeTabSlug={activeTabSlug} />
+          <BadgeProgressBanner hasProgress={(hasBadgeProgress || false)} hasRights={administrator} />
           <div className="container-fluid">
             <section>
               <div className="mb-4">
