@@ -54,63 +54,6 @@
   }
 }
 
-.badge-tabs-navigation {
-
-  border-bottom: solid 3px theme-color('dark', 400);
-  background-color: theme-color('gray', 200);
-
-  .badge-nav-tabs {
-
-    margin: 0 20px 0 20px;
-  
-    .dropdown-menu {
-      .nav-link {
-        display: block;
-      }
-    }
-    .nav-link {
-
-      display: inline-block;
-  
-      &.active {
-        background-color: theme-color('brand', 200);
-      }
-
-      &.disabled {
-        &:hover,
-        &:focus,
-        &.active {
-          background-color: none !important;
-          color: theme-color('light', 400);
-        }
-      }
-
-      &:hover,
-      &:focus {
-        background-color: theme-color('brand', 400);
-        color: white;
-      }
-
-    }
-  
-  }
-
-  .logo {
-    display: block;
-    box-sizing: content-box;
-    position: relative;
-    top: .10em;
-    height: 1.75rem;
-    margin-right: 1rem;
-    margin-top: 0.5rem;
-    img {
-      display: block;
-      height: 100%;
-    }
-  }
-
-}
-
 .nav-underline-tabs {
   margin: 0 0 -1px;
 
@@ -425,6 +368,7 @@
 @import "shared/streak-celebration/StreakCelebrationModal.scss";
 @import "courseware/course/content-tools/calculator/calculator.scss";
 @import "courseware/course/content-tools/contentTools.scss";
+@import 'course-home/badges-tab/badge-progress/BadgeProgressTab.scss';
 @import "course-home/dates-tab/timeline/Day.scss";
 @import "generic/upgrade-notification/UpgradeNotification.scss";
 @import "generic/upsell-bullets/UpsellBullets.scss";
