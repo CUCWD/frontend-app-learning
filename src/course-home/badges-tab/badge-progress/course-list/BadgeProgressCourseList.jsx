@@ -46,7 +46,7 @@ const BadgeProgressCourseList = (props) => {
           columns={headings}
           data={getProgressCourseListData()}
           rowHeaderColumnKey="username"
-          className={['badge-progress-course-list table-responsive thead-overflow-hidden']}
+          className="badge-progress-course-list table-responsive thead-overflow-hidden"
         />
       </div>
     </>
@@ -71,6 +71,7 @@ BadgeProgressCourseList.propTypes = {
     }),
     assertion: PropTypes.shape({
       issuedOn: PropTypes.string,
+      entityId: PropTypes.string,
       expires: PropTypes.string,
       revoked: PropTypes.bool,
       imageUrl: PropTypes.string,

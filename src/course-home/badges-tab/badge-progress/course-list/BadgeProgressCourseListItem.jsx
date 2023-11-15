@@ -24,6 +24,7 @@ BadgeProgressCourseListItem.propTypes = {
     }),
     assertion: PropTypes.shape({
       issuedOn: PropTypes.string,
+      entityId: PropTypes.string,
       expires: PropTypes.string,
       revoked: PropTypes.bool,
       imageUrl: PropTypes.string,

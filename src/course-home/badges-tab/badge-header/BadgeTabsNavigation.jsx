@@ -6,27 +6,8 @@ import classNames from 'classnames';
 
 import messages from './messages';
 import Tabs from '../../../generic/tabs/Tabs';
-
-import logo from './assets/logo-badgr-light.svg';
-
-function LinkedLogo({
-  href,
-  src,
-  alt,
-  ...attributes
-}) {
-  return (
-    <a href={href} {...attributes}>
-      <img className="d-block" src={src} alt={alt} />
-    </a>
-  );
-}
-
-LinkedLogo.propTypes = {
-  href: PropTypes.string.isRequired,
-  src: PropTypes.string.isRequired,
-  alt: PropTypes.string.isRequired,
-};
+import LinkedLogo from '../logos';
+import logo from '../assets/logo-badgr-black.svg';
 
 function BadgeTabsNavigation({
   activeTabSlug, className, intl,
