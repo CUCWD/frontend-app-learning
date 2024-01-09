@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 // import PropTypes from 'prop-types';
+import snakeCase from 'lodash.snakecase';
 import { useSelector } from 'react-redux';
 import { injectIntl, intlShape } from '@edx/frontend-platform/i18n';
 import { StatusAlert } from '@edx/paragon';
@@ -94,9 +95,13 @@ const renderBadgeProgress = () => {
               <div className="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                 {progress && (
                   <div className="row equal-col-height">
-                    {progress.map(learnerProgress => (
-                      <BadgeProgressCard key={learnerProgress.blockId} data={learnerProgress} />
-                    ))}
+                    {progress.map(learnerProgress => {
+                      const itemKey = snakeCase(`card ${learnerProgress.blockDisplayName} ${username}`);
+                      return (
+                        <BadgeProgressCard key={`${itemKey}`} data={learnerProgress} />
+                      )
+                    }
+                    )}
                   </div>
                 )}
               </div>
