@@ -163,6 +163,7 @@ function OutlineTab({ intl }) {
                 {courses[rootCourseId].sectionIds.map((sectionId) => (
                   <Section
                     key={sectionId}
+                    org={org}
                     courseId={courseId}
                     defaultOpen={sections[sectionId].resumeBlock}
                     expand={expandAll}

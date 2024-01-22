@@ -1,0 +1,87 @@
+
+/* BadgeProgressCourseList
+   --------------------------------------- */
+.badge-progress-course-list {
+
+    thead {
+        border-bottom: solid 3px theme-color('dark', 400);
+        background-color: theme-color('gray', 200);
+    }
+
+}
+
+.thead-overflow-hidden {
+
+    thead {
+  
+        th {
+            overflow: hidden visible;
+            overflow: -moz-hidden-unscrollable;
+            text-overflow: clip;
+            text-transform: uppercase;
+    
+            /* Controls the max-width of the badges in table view using table-responsive as well.
+            This is in change of using 'hasFixedColumnWidths' for the table.
+            */
+    
+            @media only screen and (min-width: 320px) {
+                max-width: 100px;
+            }
+            @media only screen and (min-width: 768px) {
+                max-width: 100px;
+            }
+            @media only screen and (min-width: 1024px) {
+                max-width: 100px;
+            }
+            @media only screen and (min-width: 1200px) {
+                max-width: 140px;
+            }
+            @media only screen and (min-width: 1400px) {
+                max-width: 140px;
+            }
+            @media only screen and (min-width: 2560px) {
+                max-width: 140px;
+            }
+        }
+  
+    }
+
+}
+
+/* BadgeProgressCourseListTable
+   --------------------------------------- */
+.progress-list-item {
+
+  .badge-name {
+
+    min-width: 400px;
+
+    img {
+      max-height: 50px;
+      max-width: 50px;
+    }
+
+    span {
+      display: inline-block;
+      margin-left: 20px;
+    }
+  }
+
+}
+
+.asserted {
+  color: rgba(0,0,0,1);
+}
+
+.not-asserted {
+  color: rgba(0,0,0,0.25);
+
+  .badge-name {
+
+    img {
+      opacity: 0.25;
+      filter: alpha(opacity=25);
+    }
+  }
+}
+

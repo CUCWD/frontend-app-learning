@@ -112,7 +112,7 @@
     border-radius: 0;
     border: solid 1px #eaeaea;
     border-left-width: 0;
-    position: relative;
+    position: relative; 
     font-weight: 400;
     padding: 0 0.375rem;
     height: 3rem;
@@ -368,6 +368,7 @@
 @import "shared/streak-celebration/StreakCelebrationModal.scss";
 @import "courseware/course/content-tools/calculator/calculator.scss";
 @import "courseware/course/content-tools/contentTools.scss";
+@import 'course-home/badges-tab/badge-progress/BadgeProgressTab.scss';
 @import "course-home/dates-tab/timeline/Day.scss";
 @import "generic/upgrade-notification/UpgradeNotification.scss";
 @import "generic/upsell-bullets/UpsellBullets.scss";
