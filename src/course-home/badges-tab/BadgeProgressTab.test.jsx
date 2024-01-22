@@ -3,16 +3,16 @@ import { Route } from 'react-router';
 import MockAdapter from 'axios-mock-adapter';
 import { Factory } from 'rosie';
 import { getConfig, history } from '@edx/frontend-platform';
-import { sendTrackEvent } from '@edx/frontend-platform/analytics';
+import { sendTrackEvent } from '@edx/frontend-platform/analytics'; // eslint-disable-line
 import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
 import { AppProvider } from '@edx/frontend-platform/react';
-import { waitForElementToBeRemoved } from '@testing-library/dom';
-import { render, screen, within } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { waitForElementToBeRemoved } from '@testing-library/dom'; // eslint-disable-line
+import { render, screen, within } from '@testing-library/react'; // eslint-disable-line
+import userEvent from '@testing-library/user-event'; // eslint-disable-line
 
 import BadgeProgressTab from './BadgeProgressTab';
 import { fetchBadgeProgressTab } from '../data';
-import { fireEvent, initializeMockApp, waitFor } from '../../setupTest';
+import { fireEvent, initializeMockApp, waitFor } from '../../setupTest'; // eslint-disable-line
 import initializeStore from '../../store';
 import { TabContainer } from '../../tab-page';
 import { appendBrowserTimezoneToUrl } from '../../utils';
@@ -50,14 +50,15 @@ describe('BadgeProgressTab', () => {
   let courseMetadataUrl = `${getConfig().LMS_BASE_URL}/api/course_home/course_metadata/${courseId}`;
   courseMetadataUrl = appendBrowserTimezoneToUrl(courseMetadataUrl);
 
-  function setMetadata(attributes, options) {
+  function setMetadata(attributes, options) { // eslint-disable-line
     courseMetadata = Factory.build('courseHomeMetadata', { id: courseId, ...attributes }, options);
     axiosMock.onGet(courseMetadataUrl).reply(200, courseMetadata);
   }
 
   // // The dates tab is largely repetitive non-interactive static data. Thus it's a little tough to follow
-  // // testing-library's advice around testing the way your user uses the site (i.e. can't find form elements by label or
-  // // anything). Instead, we find elements by printed date (which is what the user sees) and data-testid. Which is
+  // // testing-library's advice around testing the way your user uses the site
+  // // (i.e. can't find form elements by label or anything).
+  // // Instead, we find elements by printed date (which is what the user sees) and data-testid. Which is
   // // better than assuming anything about how the surrounding elements are organized by div and span or whatever. And
   // // better than adding non-style class names.
   // // Hence the following getDay query helper.
@@ -95,6 +96,7 @@ describe('BadgeProgressTab', () => {
     });
   });
 
+  /* eslint-disable */
   // describe('when receiving a full set of dates data', () => {
   //   beforeEach(() => {
   //     axiosMock.onGet(courseMetadataUrl).reply(200, courseMetadata);
@@ -178,7 +180,8 @@ describe('BadgeProgressTab', () => {
   //     axiosMock.onGet(datesUrl).reply(200, datesTabData);
   //     render(component);
 
-  //     await waitFor(() => expect(screen.getByText('We’ve built a suggested schedule to help you stay on track. But don’t worry—it’s flexible so you can learn at your own pace.')).toBeInTheDocument());
+  //     await waitFor(() => expect(screen.getByText('We’ve built a suggested schedule to help you stay on track. 
+  //     But don’t worry—it’s flexible so you can learn at your own pace.')).toBeInTheDocument());
   //   });
 
   //   it('renders UpgradeToCompleteAlert', async () => {
@@ -192,7 +195,8 @@ describe('BadgeProgressTab', () => {
   //     axiosMock.onGet(datesUrl).reply(200, datesTabData);
   //     render(component);
 
-  //     await waitFor(() => expect(screen.getByText('You are auditing this course, which means that you are unable to participate in graded assignments. To complete graded assignments as part of this course, you can upgrade today.')).toBeInTheDocument());
+  //     await waitFor(() => expect(screen.getByText('You are auditing this course, which means that you are unable to participate in graded assignments. 
+  //    To complete graded assignments as part of this course, you can upgrade today.')).toBeInTheDocument());
   //     expect(screen.getByRole('button', { name: 'Upgrade now' })).toBeInTheDocument();
   //   });
 
@@ -208,7 +212,8 @@ describe('BadgeProgressTab', () => {
   //     render(component);
 
   //     await waitFor(() => expect(screen.getByText('It looks like you missed some important deadlines based on our suggested schedule.')).toBeInTheDocument());
-  //     expect(screen.getByText('To keep yourself on track, you can update this schedule and shift the past due assignments into the future. Don’t worry—you won’t lose any of the progress you’ve made when you shift your due dates.')).toBeInTheDocument();
+  //     expect(screen.getByText('To keep yourself on track, you can update this schedule and shift the past due assignments into the future. 
+  //     Don’t worry—you won’t lose any of the progress you’ve made when you shift your due dates.')).toBeInTheDocument();
   //     expect(screen.getByRole('button', { name: 'Upgrade to shift due dates' })).toBeInTheDocument();
   //   });
 
@@ -224,7 +229,8 @@ describe('BadgeProgressTab', () => {
   //     render(component);
 
   //     await waitFor(() => expect(screen.getByText('It looks like you missed some important deadlines based on our suggested schedule.')).toBeInTheDocument());
-  //     expect(screen.getByText('To keep yourself on track, you can update this schedule and shift the past due assignments into the future. Don’t worry—you won’t lose any of the progress you’ve made when you shift your due dates.')).toBeInTheDocument();
+  //     expect(screen.getByText('To keep yourself on track, you can update this schedule and shift the past due assignments into the future. 
+  //     Don’t worry—you won’t lose any of the progress you’ve made when you shift your due dates.')).toBeInTheDocument();
   //     expect(screen.getByRole('button', { name: 'Shift due dates' })).toBeInTheDocument();
   //   });
 
@@ -367,4 +373,5 @@ describe('BadgeProgressTab', () => {
   //     expect(global.location.href).toEqual(`http://localhost/redirect/course-home/${courseMetadata.id}`);
   //   });
   // });
+  /* eslint-enable */
 });

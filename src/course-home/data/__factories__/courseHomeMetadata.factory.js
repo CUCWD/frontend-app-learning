@@ -1,5 +1,5 @@
 import { Factory } from 'rosie'; // eslint-disable-line import/no-extraneous-dependencies
-import courseMetadataBase from '../../../shared/data/__factories__/courseMetadataBase.factory';
+// import courseMetadataBase from '../../../shared/data/__factories__/courseMetadataBase.factory';
 
 Factory.define('courseHomeMetadata')
   .sequence(
@@ -15,7 +15,6 @@ Factory.define('courseHomeMetadata')
     title: 'Demonstration Course',
     is_self_paced: false,
     is_enrolled: false,
-    is_staff: false,
     can_load_courseware: true,
     celebrations: null,
     course_access: {
@@ -26,9 +25,7 @@ Factory.define('courseHomeMetadata')
       user_fragment: null,
       user_message: null,
     },
-    number: 'DemoX',
     original_user_is_staff: false,
-    org: 'edX',
     start: '2013-02-05T05:00:00Z',
     user_timezone: 'UTC',
     username: 'MockUser',

@@ -49,7 +49,7 @@ const BadgeProgressCourseList = (props) => {
           pageIndex: 0,
         }}
         itemCount={getLearnerCount()}
-        fetchData={(currentState) => console.log(`This function will be called with the value: ${JSON.stringify(currentState)}}`)}
+        fetchData={(currentState) => console.log(`This function will be called with the value: ${JSON.stringify(currentState)}}`)} // eslint-disable-line
         data={getProgressCourseListData()}
         columns={headings}
       >

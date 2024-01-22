@@ -13,7 +13,7 @@ import genericMessages from '../../generic/messages';
 import messages from './messages';
 
 function Section({
-  org,
+  org, // eslint-disable-line
   courseId,
   defaultOpen,
   expand,
@@ -73,12 +73,12 @@ function Section({
         {badgeProgress ? (
           <>
             {badgeProgressUrl && (
-                <span className="col-2 col-sm-auto p-3">
-                  <Button variant="brand" size="inline" href={badgeProgressUrl}>
-                    Badge Progress
-                  </Button>
-                </span>
-              )}
+              <span className="col-2 col-sm-auto p-3">
+                <Button variant="brand" size="inline" href={badgeProgressUrl}>
+                  Badge Progress
+                </Button>
+              </span>
+            )}
           </>
         ) : (
           <></>

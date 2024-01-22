@@ -28,11 +28,13 @@ import ProgressTab from './course-home/progress-tab/ProgressTab';
 import GlossaryTab from './course-home/glossary-tab';
 import { TabContainer } from './tab-page';
 
-import { fetchBadgeProgressTab, fetchBadgeLeaderboardTab, fetchDatesTab, fetchGlossaryTab, fetchOutlineTab, fetchProgressTab } from './course-home/data';
+import {
+  fetchBadgeProgressTab, fetchBadgeLeaderboardTab, fetchDatesTab, fetchGlossaryTab, fetchOutlineTab, fetchProgressTab,
+} from './course-home/data';
 import { fetchCourse } from './courseware/data';
 import initializeStore from './store';
 import NoticesProvider from './generic/notices';
-import PathFixesProvider from './generic/path-fixes';
+// import PathFixesProvider from './generic/path-fixes';
 
 subscribe(APP_READY, () => {
   ReactDOM.render(
@@ -76,48 +78,48 @@ subscribe(APP_READY, () => {
                   <ProgressTab />
                 </TabContainer>
               )}
-              />
-              <PageRoute path="/course/:courseId/dates">
-                <TabContainer tab="dates" fetch={fetchDatesTab} slice="courseHome">
-                  <DatesTab />
+            />
+            <PageRoute path="/course/:courseId/dates">
+              <TabContainer tab="dates" fetch={fetchDatesTab} slice="courseHome">
+                <DatesTab />
+              </TabContainer>
+            </PageRoute>
+            <PageRoute path="/course/:courseId/glossary">
+              <TabContainer tab="glossary" fetch={fetchGlossaryTab} slice="courseHome">
+                <GlossaryTab />
+              </TabContainer>
+            </PageRoute>
+            <PageRoute
+              path={[
+                '/course/:courseId/progress/:targetUserId/',
+                '/course/:courseId/progress',
+              ]}
+              render={({ match }) => (
+                <TabContainer
+                  tab="progress"
+                  fetch={(courseId) => fetchProgressTab(courseId, match.params.targetUserId)}
+                  slice="courseHome"
+                >
+                  <ProgressTab />
                 </TabContainer>
-              </PageRoute>
-              <PageRoute path="/course/:courseId/glossary">
-                <TabContainer tab="glossary" fetch={fetchGlossaryTab} slice="courseHome">
-                  <GlossaryTab />
-                </TabContainer>
-              </PageRoute>
-              <PageRoute
-                path={[
-                  '/course/:courseId/progress/:targetUserId/',
-                  '/course/:courseId/progress',
-                ]}
-                render={({ match }) => (
-                  <TabContainer
-                    tab="progress"
-                    fetch={(courseId) => fetchProgressTab(courseId, match.params.targetUserId)}
-                    slice="courseHome"
-                  >
-                    <ProgressTab />
-                  </TabContainer>
-                )}
-              />
-              <PageRoute path="/course/:courseId/course-end">
-                <TabContainer tab="courseware" fetch={fetchCourse} slice="courseware">
-                  <CourseExit />
-                </TabContainer>
-              </PageRoute>
-              <PageRoute
-                path={[
-                  '/course/:courseId/:sequenceId/:unitId',
-                  '/course/:courseId/:sequenceId',
-                  '/course/:courseId',
-                ]}
-                component={CoursewareContainer}
-              />
-            </Switch>
-          </UserMessagesProvider>
-        </NoticesProvider>
+              )}
+            />
+            <PageRoute path="/course/:courseId/course-end">
+              <TabContainer tab="courseware" fetch={fetchCourse} slice="courseware">
+                <CourseExit />
+              </TabContainer>
+            </PageRoute>
+            <PageRoute
+              path={[
+                '/course/:courseId/:sequenceId/:unitId',
+                '/course/:courseId/:sequenceId',
+                '/course/:courseId',
+              ]}
+              component={CoursewareContainer}
+            />
+          </Switch>
+        </UserMessagesProvider>
+      </NoticesProvider>
     </AppProvider>,
     document.getElementById('root'),
   );

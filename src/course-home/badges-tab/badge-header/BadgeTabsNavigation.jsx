@@ -6,8 +6,8 @@ import classNames from 'classnames';
 
 import messages from './messages';
 import Tabs from '../../../generic/tabs/Tabs';
-import LinkedLogo from '../logos';
-import logo from '../assets/logo-badgr-black.svg';
+// import LinkedLogo from '../logos';
+// import logo from '../assets/logo-badgr-black.svg';
 
 function BadgeTabsNavigation({
   activeTabSlug, className, intl,

@@ -1,6 +1,6 @@
 import { Factory } from 'rosie'; // eslint-disable-line import/no-extraneous-dependencies
 
-import '../../../courseware/data/__factories__/courseBlocks.factory';
+import '../../../courseware/data/__factories__/courseBlocks.factory';// eslint-disable-line
 
 Factory.define('outlineTabData')
   .option('courseId', 'course-v1:edX+DemoX+Demo_Course')
