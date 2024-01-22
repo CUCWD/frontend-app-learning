@@ -1,17 +1,23 @@
 import { Factory } from 'rosie'; // eslint-disable-line import/no-extraneous-dependencies
 
-import '../../../courseware/data/__factories__/courseBlocks.factory';// eslint-disable-line
+import { buildMinimalCourseBlocks } from '../../../shared/data/__factories__/courseBlocks.factory';
 
 Factory.define('outlineTabData')
   .option('courseId', 'course-v1:edX+DemoX+Demo_Course')
   .option('host', 'http://localhost:18000')
-  .attr('course_tools', ['host', 'courseId'], (host, courseId) => ({
-    analytics_id: 'edx.bookmarks',
-    title: 'Bookmarks',
-    url: `${host}/courses/${courseId}/bookmarks/`,
+  .option('date_blocks', [])
+  .attr('course_blocks', ['courseId'], courseId => {
+    const { courseBlocks } = buildMinimalCourseBlocks(courseId);
+    return {
+      blocks: courseBlocks.blocks,
+    };
+  })
+  .attr('dates_widget', ['date_blocks'], (dateBlocks) => ({
+    course_date_blocks: dateBlocks,
   }))
-  .attr('course_blocks', ['courseId'], courseId => ({
-    blocks: Factory.build('courseBlocks', { courseId }).blocks,
+  .attr('resume_course', ['host', 'courseId'], (host, courseId) => ({
+    has_visited_course: false,
+    url: `${host}/courses/${courseId}/jump_to/block-v1:edX+Test+Block@12345abcde`,
   }))
   .attr('verified_mode', ['host'], (host) => ({
     access_expiration_date: '2050-01-01T12:00:00',
