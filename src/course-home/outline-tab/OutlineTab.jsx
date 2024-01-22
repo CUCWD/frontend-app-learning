@@ -9,6 +9,7 @@ import { AlertList } from '../../generic/user-messages';
 
 import CourseDates from './widgets/CourseDates';
 import CourseHandouts from './widgets/CourseHandouts';
+import CourseRevision from './widgets/CourseRevision';
 import StartOrResumeCourseCard from './widgets/StartOrResumeCourseCard';
 import WeeklyLearningGoalCard from './widgets/WeeklyLearningGoalCard';
 import CourseTools from './widgets/CourseTools';
@@ -207,7 +208,12 @@ function OutlineTab({ intl }) {
               /** [MM-P2P] Experiment */
               mmp2p={MMP2P}
             />
-            <CourseHandouts />
+            <CourseHandouts
+              courseId={courseId}
+            />
+            <CourseRevision
+              courseId={courseId}
+            />
           </div>
         )}
       </div>
