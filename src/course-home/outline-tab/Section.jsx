@@ -101,6 +101,8 @@ function Section({
               key={sequenceId}
               id={sequenceId}
               courseId={courseId}
+              defaultOpen={sequences[sequenceId].resumeBlock}
+              expand={expand} 
               sequence={sequences[sequenceId]}
               first={index === 0}
             />

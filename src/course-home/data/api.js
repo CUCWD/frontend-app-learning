@@ -155,7 +155,7 @@ export function normalizeOutlineBlocks(courseId, blocks) {
           // link to the MFE ourselves).
           showLink: !!block.legacy_web_url,
           title: block.display_name,
-        };
+          };
         break;
 
       default:
@@ -346,6 +346,51 @@ export function getTimeOffsetMillis(headerDate, requestTime, responseTime) {
   return timeOffsetMillis;
 }
 
+function normalizeSequenceData(sequenceData) {
+  const items = {}
+  sequenceData.items.forEach(item => {
+    items[item.id] = {
+      id: item.id,
+      title: item.page_title,
+      complete: item.complete,  
+    }
+  })
+  return items
+}
+
+  
+export async function getSequenceData(sequenceId) {
+  const url = `${getConfig().LMS_BASE_URL}/api/courseware/sequence/${sequenceId}`;
+  let { sequenceData } = {}
+  try {
+    sequenceData = await getAuthenticatedHttpClient().get(url);
+  } catch (error) {
+    const { httpErrorStatus } = error && error.customAttributes;
+    if (httpErrorStatus === 404) {
+      // global.location.replace(`${getConfig().LMS_BASE_URL}/courses/${courseId}/course/`);
+      return {};  
+    }
+    throw error;
+  }
+  const {
+    data,
+  } = sequenceData
+
+  return normalizeSequenceData(data)
+}
+
+// function getUnitData(blocks) {
+//   const units = {};
+//   Object.values(blocks).forEach(block => {
+//     if (block.type == 'sequential') {
+//       units[block.id] = getSequenceData(block.id);
+//     }
+
+//   })
+
+//   return units;
+// }
+
 export async function getOutlineTabData(courseId) {
   const url = `${getConfig().LMS_BASE_URL}/api/course_home/outline/${courseId}`;
   let { tabData } = {};
@@ -369,6 +414,8 @@ export async function getOutlineTabData(courseId) {
     headers,
   } = tabData;
 
+
+  // const units = getUnitData(data.course_blocks.blocks)
   const accessExpiration = camelCaseObject(data.access_expiration);
   const canShowUpgradeSock = data.can_show_upgrade_sock;
   const certData = camelCaseObject(data.cert_data);
