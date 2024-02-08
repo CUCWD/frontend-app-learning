@@ -30,6 +30,7 @@ function Section({
     },
   } = useModel('outline', courseId);
 
+
   const [open, setOpen] = useState(defaultOpen);
 
   useEffect(() => {
@@ -104,7 +105,6 @@ function Section({
               defaultOpen={sequences[sequenceId].resumeBlock}
               expand={expand} 
               sequence={sequences[sequenceId]}
-              first={index === 0}
             />
           ))}
         </ol>

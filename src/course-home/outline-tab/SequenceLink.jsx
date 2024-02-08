@@ -25,15 +25,7 @@ import { useModel } from '../../generic/model-store';
 
 import genericMessages from '../../generic/messages';
 import messages from './messages';
-import './SequenceLink.scss';
-import { getSequenceMetadata } from '../../courseware/data/api';
-import { getSequenceData } from '../data/api';
 
-
-async function getUnitIds(id) {
-  return await getSequenceData(id)
-
-}
 
 
 function SequenceLink({
@@ -42,7 +34,6 @@ function SequenceLink({
   courseId,
   defaultOpen,
   expand,
-  first,
   sequence,
 }) {
   const {
@@ -52,9 +43,19 @@ function SequenceLink({
     legacyWebUrl,
     showLink,
     title,  
+    unitIds,
   } = sequence;
   const {
+    courseBlocks: {
+      units,
+    },
+  } = useModel('outline', courseId);
+
+  const {
     userTimezone,
+  } = useModel('outline', courseId);
+  const {
+    course
   } = useModel('outline', courseId);
   const {
     canLoadCourseware,
@@ -63,15 +64,8 @@ function SequenceLink({
   const timezoneFormatArgs = userTimezone ? { timeZone: userTimezone } : {};
 
   const [open, setOpen] = useState(defaultOpen);
-  const [unitIds, setUnitIds] = useState({});
-  const [inProcess, setInProcess] = useState(false)
   
   
-
-  useEffect(() => {
-    setOpen(expand);
-  }, [expand]);
-
   useEffect(() => {
     setOpen(defaultOpen);
   }, []);
@@ -151,15 +145,7 @@ function SequenceLink({
           <IconButton
             alt={intl.formatMessage(messages.openSection)}
             icon={faPlus}
-            onClick={() => { 
-              setOpen(true);
-              if (Object.keys(unitIds).length == 0 && !inProcess) {
-                getUnitIds(id).then((dataArray) => {
-                  console.log("Fetching")
-                  setInProcess(true)
-                  setUnitIds(dataArray) 
-                })
-            }}}
+            onClick={() => { setOpen(true); }}
             size="sm"
           />
         )}
@@ -173,19 +159,12 @@ function SequenceLink({
         )}
         >
           <ol className="list-unstyled">
-            <div>
-              {Object.keys(unitIds).length == 0 ? 
-              <div>
-                <div  class="pgn__spinner spinner-border sm"></div>
-                
-              </div>  : null}
-            </div>
-            {Object.values(unitIds).map((unit, index) => (
+            {unitIds.map((unitId, index) => (
               <UnitLink
-                key={unit.id}
-                id={unit.id}
-                unit={unit}
+                key={unitId}
+                id={unitId}
                 courseId={courseId}
+                unit={units[unitId]}
                 sequenceId={id}
                 first={index === 0}
               ></UnitLink>
@@ -202,7 +181,6 @@ SequenceLink.propTypes = {
   courseId: PropTypes.string.isRequired,
   defaultOpen: PropTypes.bool.isRequired,
   expand: PropTypes.bool.isRequired,
-  first: PropTypes.bool.isRequired,
   sequence: PropTypes.shape().isRequired,
 };
 

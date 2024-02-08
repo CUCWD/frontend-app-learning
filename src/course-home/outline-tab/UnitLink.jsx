@@ -22,7 +22,6 @@ import messages from './messages';
 function UnitLink({
   id,
   courseId,
-  sequenceId,
   unit,
   first,
   intl,
@@ -30,15 +29,12 @@ function UnitLink({
 
   const {
     complete,
-    // description,
-    // due,
-    // legacyWebUrl,
-    // showLink,
+    description,
+    due,
+    legacyWebUrl,
+    showLink,
     title,
   } = unit;
-  // TODO: Will always use the Url, could cause a bug
-  const showLink = true
-
   const {
     userTimezone,
   } = useModel('outline', courseId);
@@ -47,10 +43,9 @@ function UnitLink({
   } = useModel('courseHomeMeta', courseId);
   const timezoneFormatArgs = userTimezone ? { timeZone: userTimezone } : {};
 
-  // TODO: This needs to be reviewed as legacyWebUrl DNE at this point
   const coursewareUrl = (
     canLoadCourseware
-      ? <Link to={`/course/${courseId}/${sequenceId}/${id}`}>{title}</Link>
+      ? <Link to={`/course/${courseId}/${id}`}>{title}</Link>
       : <Hyperlink destination={legacyWebUrl}>{title}</Hyperlink>
   );
   const displayTitle = showLink ? coursewareUrl : title;
@@ -82,11 +77,11 @@ function UnitLink({
               <span className="align-middle">{displayTitle}</span>
               <span className="sr-only">
                 , {intl.formatMessage(complete ? messages.completedAssignment : messages.incompleteAssignment)}
-              </span>
-              {/* <EffortEstimate className="ml-3 align-middle" block={unit} /> */}
+              </span> 
+              <EffortEstimate className="ml-3 align-middle" block={unit} />
             </div>
           </div>
-          {/* {due && (
+          {due && (
             <div className="row w-100 m-0 ml-3 pl-3">
               <small className="text-body pl-2">
                 <FormattedMessage
@@ -110,7 +105,7 @@ function UnitLink({
                 />
               </small>
             </div>
-          )} */}
+          )}
         </div>
 
       </li>
@@ -126,7 +121,6 @@ UnitLink.propTypes = {
   id: PropTypes.string.isRequired,
   unit: PropTypes.shape().isRequired,
   courseId: PropTypes.string.isRequired,
-  sequenceId: PropTypes.string.isRequired,
   first: PropTypes.bool.isRequired,
   intl: intlShape.isRequired,
 };
