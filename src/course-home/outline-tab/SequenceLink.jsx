@@ -1,8 +1,5 @@
-import { getConfig } from '@edx/frontend-platform';
-import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
 import { Link } from 'react-router-dom';
 import { Collapsible, Hyperlink, IconButton } from '@edx/paragon';
 import {
@@ -11,10 +8,8 @@ import {
   injectIntl,
   intlShape,
 } from '@edx/frontend-platform/i18n';
-// import { faCheckCircle as fasCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import { faCheckCircle as fasCheckCircle, faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { faCheckCircle as farCheckCircle } from '@fortawesome/free-regular-svg-icons';
-import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import UnitLink from './UnitLink';
@@ -40,8 +35,8 @@ function SequenceLink({
     complete,
     description,
     due,
-    legacyWebUrl,
-    showLink,
+    // legacyWebUrl,
+    // showLink,
     title,  
     unitIds,
   } = sequence;
@@ -54,80 +49,99 @@ function SequenceLink({
   const {
     userTimezone,
   } = useModel('outline', courseId);
-  const {
-    course
-  } = useModel('outline', courseId);
-  const {
-    canLoadCourseware,
-  } = useModel('courseHomeMeta', courseId);
+
+  // const {
+  //   canLoadCourseware,
+  // } = useModel('courseHomeMeta', courseId);
 
   const timezoneFormatArgs = userTimezone ? { timeZone: userTimezone } : {};
 
+
   const [open, setOpen] = useState(defaultOpen);
   
-  
   useEffect(() => {
-    setOpen(defaultOpen);
-  }, []);
+    setOpen(expand);
+  }, [expand]);
+
+
 
   // canLoadCourseware is true if the Courseware MFE is enabled, false otherwise
-  const coursewareUrl = (
-    canLoadCourseware
-      ? <Link to={`/course/${courseId}/${id}`}>{title}</Link>
-      : <Hyperlink destination={legacyWebUrl}>{title}</Hyperlink>
-  );
-  const displayTitle = showLink ? coursewareUrl : title;
+  // const coursewareUrl = (
+  //   canLoadCourseware
+  //     ? <Link to={`/course/${courseId}/${id}`}>{title}</Link>
+  //     : <Hyperlink destination={legacyWebUrl}>{title}</Hyperlink>
+  // );
+  // const displayTitle = showLink ? coursewareUrl : title;
   const sequenceTitle = (
     <div className="row w-100 m-0">
-      <div className="col-auto p-0">
-        {complete ? (
-          <FontAwesomeIcon
-            icon={fasCheckCircle}
-            fixedWidth
-            className="float-left mt-1 text-success"
-            aria-hidden="true"
-            title={intl.formatMessage(messages.completedSection)}
-          />
-        ) : (
-          <FontAwesomeIcon
-            icon={farCheckCircle}
-            fixedWidth
-            className="float-left mt-1 text-gray-400"
-            aria-hidden="true"
-            title={intl.formatMessage(messages.incompleteSection)}
-          />
-        )}
-      </div>
-      <div className="col-10 ml-3 p-0 font-weight-bold text-dark-500">
-        <span className="align-middle">{displayTitle}</span>
-        <span className="sr-only">
-          , {intl.formatMessage(complete ? messages.completedAssignment : messages.incompleteAssignment)}
-        </span>
-        <EffortEstimate className="ml-3 align-middle" block={sequence} />      
-      </div>
-      {due && (
-          <div className="row w-100 m-0 ml-3 pl-3">
-            <small className="text-body pl-2">
-              <FormattedMessage
-                id="learning.outline.sequence-due"
-                defaultMessage="{description} due {assignmentDue}"
-                description="Used below an assignment title"
-                values={{
-                  assignmentDue: (
-                    <FormattedTime
-                      key={`${id}-due`}
-                      day="numeric"
-                      month="short"
-                      year="numeric"
-                      timeZoneName="short"
-                      value={due}
-                      {...timezoneFormatArgs}
-                    />
-                  ),
-                  description: description || '',
-                }}
+       { unitIds.length > 0 ? (
+          <div className="row w-100 m-0">
+          <div className="col-auto p-0">
+            {complete ? (
+              <FontAwesomeIcon
+                icon={fasCheckCircle}
+                fixedWidth
+                className="float-left mt-1 text-success"
+                aria-hidden="true"
+                title={intl.formatMessage(messages.completedSection)}
               />
-            </small>
+            ) : (
+              <FontAwesomeIcon
+                icon={farCheckCircle}
+                fixedWidth
+                className="float-left mt-1 text-gray-400"
+                aria-hidden="true"
+                title={intl.formatMessage(messages.incompleteSection)}
+              />
+            )}
+          </div>
+          <div className="col-10 ml-3 p-0 font-weight-bold text-dark-500">
+            <span className="align-middle">{title}</span>
+            <span className="sr-only">
+              , {intl.formatMessage(complete ? messages.completedAssignment : messages.incompleteAssignment)}
+            </span>
+            <EffortEstimate className="ml-3 align-middle" block={sequence} />      
+          </div>
+          {due && (
+              <div className="row w-100 m-0 ml-3 pl-3">
+                <small className="text-body pl-2">
+                  <FormattedMessage
+                    id="learning.outline.sequence-due"
+                    defaultMessage="{description} due {assignmentDue}"
+                    description="Used below an assignment title"
+                    values={{
+                      assignmentDue: (
+                        <FormattedTime
+                          key={`${id}-due`}
+                          day="numeric"
+                          month="short"
+                          year="numeric"
+                          timeZoneName="short"
+                          value={due}
+                          {...timezoneFormatArgs}
+                        />
+                      ),
+                      description: description || '',
+                    }}
+                  />
+                </small>
+              </div>
+            )}
+        </div>
+        ) : (
+          <div className="row w-100 m-0">
+            <div className="col-auto p-0">
+              <FontAwesomeIcon
+                  icon={farCheckCircle}
+                  fixedWidth
+                  className="float-left mt-1 text-gray-400"
+                  aria-hidden="true"
+                  title={intl.formatMessage(messages.incompleteSection)}
+                />
+            </div>
+            <div className="col-10 ml-3 p-0 font-weight-bold text-muted-500">
+              <span className="align-middle">{title} (No Units)</span>
+            </div>
           </div>
         )}
     </div>
