@@ -30,7 +30,6 @@ function Section({
     },
   } = useModel('outline', courseId);
 
-
   const [open, setOpen] = useState(defaultOpen);
 
   useEffect(() => {
@@ -97,13 +96,13 @@ function Section({
         )}
       >
         <ol className="list-unstyled">
-          {sequenceIds.map((sequenceId, index) => (
+          {sequenceIds.map((sequenceId) => (
             <SequenceLink
               key={sequenceId}
               id={sequenceId}
               courseId={courseId}
               defaultOpen={sequences[sequenceId].resumeBlock}
-              expand={expand} 
+              expand={expand}
               sequence={sequences[sequenceId]}
             />
           ))}

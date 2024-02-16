@@ -134,7 +134,6 @@ export async function getCourseMetadata(courseId) {
   return normalizeMetadata(metadata);
 }
 
-
 function normalizeSequenceMetadata(sequence) {
   return {
     sequence: {
@@ -181,7 +180,7 @@ export async function getSequenceMetadata(sequenceId) {
     .get(`${getConfig().LMS_BASE_URL}/api/courseware/sequence/${sequenceId}`, {});
 
   return normalizeSequenceMetadata(data);
-} 
+}
 
 const getSequenceHandlerUrl = (courseId, sequenceId) => `${getConfig().LMS_BASE_URL}/courses/${courseId}/xblock/${sequenceId}/handler`;
 

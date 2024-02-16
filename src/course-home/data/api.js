@@ -3,7 +3,6 @@ import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
 import { logInfo } from '@edx/frontend-platform/logging';
 import { appendBrowserTimezoneToUrl } from '../../utils';
 
-
 const calculateAssignmentTypeGrades = (points, assignmentWeight, numDroppable) => {
   let dropCount = numDroppable;
   // Drop the lowest grades
@@ -158,25 +157,26 @@ export function normalizeOutlineBlocks(courseId, blocks) {
           showLink: !!block.legacy_web_url,
           title: block.display_name,
           unitIds: block.children || [],
-          };
+        };
         break;
       case 'vertical':
-          models.units[block.id] = {
-            complete: block.complete,
-            description: block.description,
-            due: block.due,
-            effortActivities: block.effort_activities,
-            effortTime: block.effort_time,
-            icon: block.icon,
-            id: block.id,
-            legacyWebUrl: block.legacy_web_url,
-            // The presence of an legacy URL for the sequence indicates that we want this
-            // sequence to be a clickable link in the outline (even though, if the new
-            // courseware experience is active, we will ignore `legacyWebUrl` and build a
-            // link to the MFE ourselves).
-            showLink: !!block.legacy_web_url,
-            title: block.display_name,
-          }
+        models.units[block.id] = {
+          complete: block.complete,
+          description: block.description,
+          due: block.due,
+          effortActivities: block.effort_activities,
+          effortTime: block.effort_time,
+          icon: block.icon,
+          id: block.id,
+          legacyWebUrl: block.legacy_web_url,
+          // The presence of an legacy URL for the sequence indicates that we want this
+          // sequence to be a clickable link in the outline (even though, if the new
+          // courseware experience is active, we will ignore `legacyWebUrl` and build a
+          // link to the MFE ourselves).
+          showLink: !!block.legacy_web_url,
+          title: block.display_name,
+        };
+        break;
 
       default:
         logInfo(`Unexpected course block type: ${block.type} with ID ${block.id}.  Expected block types are course, chapter, and sequential.`);
@@ -376,9 +376,6 @@ export function getTimeOffsetMillis(headerDate, requestTime, responseTime) {
 
   return timeOffsetMillis;
 }
-
-
-
 
 export async function getOutlineTabData(courseId) {
   const url = `${getConfig().LMS_BASE_URL}/api/course_home/outline/${courseId}`;
