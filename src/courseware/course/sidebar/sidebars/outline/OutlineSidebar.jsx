@@ -24,6 +24,7 @@ function OutlineSidebar({ intl }) {
       showTitleBar={false}
     >
       <iframe
+        id="OutlineSidebar"
         src={`${outlineUrl}?inContext`}
         className="d-flex w-100 border-0"
         style={{ minHeight: '60rem' }}

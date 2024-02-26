@@ -2,6 +2,7 @@ import React from 'react';
 import { Factory } from 'rosie';
 import { sendTrackEvent } from '@edx/frontend-platform/analytics';
 import { breakpoints } from '@edx/paragon';
+import { act } from 'react-dom/test-utils';
 import {
   loadUnit, render, screen, fireEvent, waitFor, initializeTestStore,
 } from '../../../setupTest';
@@ -32,6 +33,7 @@ describe('Sequence', () => {
       previousSequenceHandler: () => {},
       toggleNotificationTray: () => {},
       setNotificationStatus: () => {},
+      sidebarNavigationClickHandler: () => {},
     };
   });
 
@@ -236,6 +238,7 @@ describe('Sequence', () => {
         unitNavigationHandler: jest.fn(),
         previousSequenceHandler: jest.fn(),
         nextSequenceHandler: jest.fn(),
+        sidebarNavigationClickHandler: jest.fn(),
       };
       render(<Sequence {...testData} />, { store: testStore });
       await waitFor(() => expect(screen.queryByText('Loading learning sequence...')).toBeInTheDocument());
@@ -246,6 +249,7 @@ describe('Sequence', () => {
 
       fireEvent.click(screen.getByRole('button', { name: /next/i }));
       expect(testData.nextSequenceHandler).not.toHaveBeenCalled();
+      expect(testData.sidebarNavigationClickHandler).not.toHaveBeenCalled();
       // As `previousSequenceHandler` and `nextSequenceHandler` are mocked, we aren't really changing the position here.
       // Therefore the next unit will still be `the initial one + 1`.
       expect(testData.unitNavigationHandler).toHaveBeenNthCalledWith(2, unitBlocks[unitNumber + 1].id);
@@ -260,6 +264,7 @@ describe('Sequence', () => {
         sequenceId: sequenceBlocks[0].id,
         unitNavigationHandler: jest.fn(),
         previousSequenceHandler: jest.fn(),
+        sidebarNavigationClickHandler: jest.fn(),
       };
       render(<Sequence {...testData} />, { store: testStore });
       loadUnit();
@@ -269,6 +274,7 @@ describe('Sequence', () => {
 
       expect(testData.previousSequenceHandler).not.toHaveBeenCalled();
       expect(testData.unitNavigationHandler).not.toHaveBeenCalled();
+      expect(testData.sidebarNavigationClickHandler).not.toHaveBeenCalled();
       expect(sendTrackEvent).not.toHaveBeenCalled();
     });
 
@@ -279,6 +285,7 @@ describe('Sequence', () => {
         sequenceId: sequenceBlocks[sequenceBlocks.length - 1].id,
         unitNavigationHandler: jest.fn(),
         nextSequenceHandler: jest.fn(),
+        sidebarNavigationClickHandler: jest.fn(),
       };
       render(<Sequence {...testData} />, { store: testStore });
       loadUnit();
@@ -288,6 +295,7 @@ describe('Sequence', () => {
 
       expect(testData.nextSequenceHandler).not.toHaveBeenCalled();
       expect(testData.unitNavigationHandler).not.toHaveBeenCalled();
+      expect(testData.sidebarNavigationClickHandler).not.toHaveBeenCalled();
       expect(sendTrackEvent).not.toHaveBeenCalled();
     });
 
@@ -320,6 +328,7 @@ describe('Sequence', () => {
         unitNavigationHandler: jest.fn(),
         previousSequenceHandler: jest.fn(),
         nextSequenceHandler: jest.fn(),
+        sidebarNavigationClickHandler: jest.fn(),
       };
 
       render(<Sequence {...testData} />, { store: innerTestStore });
@@ -329,10 +338,12 @@ describe('Sequence', () => {
       screen.getAllByRole('button', { name: /previous/i }).forEach(button => fireEvent.click(button));
       expect(testData.previousSequenceHandler).toHaveBeenCalledTimes(2);
       expect(testData.unitNavigationHandler).not.toHaveBeenCalled();
+      expect(testData.sidebarNavigationClickHandler).not.toHaveBeenCalled();
 
       screen.getAllByRole('button', { name: /next/i }).forEach(button => fireEvent.click(button));
       expect(testData.nextSequenceHandler).toHaveBeenCalledTimes(2);
       expect(testData.unitNavigationHandler).not.toHaveBeenCalled();
+      expect(testData.sidebarNavigationClickHandler).not.toHaveBeenCalled();
 
       expect(sendTrackEvent).toHaveBeenNthCalledWith(1, 'edx.ui.lms.sequence.previous_selected', {
         current_tab: 1,
@@ -417,5 +428,33 @@ describe('Sequence', () => {
       // unable to test the absence of 'Notifications' by finding it by text, using the class of the tray instead:
       expect(container).not.toHaveClass('notification-tray-container');
     });
+  });
+});
+
+describe('window.addEventListener', () => {
+  it('calls sidebarNavigationClickHandler with the correct argument', () => {
+    global.window = Object.create(window);
+    const sidebarNavigationClickHandler = jest.fn();
+
+    // Add Event listener.
+    window.addEventListener('message', event => {
+      if (event.data.message === 'outline_sidebar_navigation_started') {
+        sidebarNavigationClickHandler(event.data.subsection_id);
+      }
+    });
+
+    const event = {
+      data: {
+        message: 'outline_sidebar_navigation_started',
+        subsection_id: 'xBlockSubsectionId',
+      },
+    };
+
+    act(() => {
+      window.dispatchEvent(new MessageEvent('message', event));
+    });
+
+    // Assert that the sidebarNavigationClickHandler function was called with the correct argument
+    expect(sidebarNavigationClickHandler).toHaveBeenCalledWith('xBlockSubsectionId');
   });
 });

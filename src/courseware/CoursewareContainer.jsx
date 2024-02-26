@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { history } from '@edx/frontend-platform';
+import { history, getConfig } from '@edx/frontend-platform';
 import { createSelector } from '@reduxjs/toolkit';
 import { defaultMemoize as memoize } from 'reselect';
+import { postEventToIframe } from 'eventsHandler';
+import { SIDEBAREVENT } from 'constants';
 
 import {
   checkBlockCompletion,
@@ -269,6 +271,13 @@ class CoursewareContainer extends Component {
     if (nextSequence !== null) {
       history.push(`/course/${courseId}/${nextSequence.id}/first`);
 
+      // Function to send the event to Outline Navigation SIdebar.
+      postEventToIframe(
+        document.getElementById('OutlineSidebar'),
+        SIDEBAREVENT,
+        [getConfig().SIDEBAR_MFE_BASE_URL],
+      );
+
       const celebrateFirstSection = course && course.celebrations && course.celebrations.firstSection;
       if (celebrateFirstSection && sequence.sectionId !== nextSequence.sectionId) {
         handleNextSectionCelebration(sequenceId, nextSequence.id);
@@ -278,10 +287,29 @@ class CoursewareContainer extends Component {
 
   handlePreviousSequenceClick = () => {
     const { previousSequence, courseId } = this.props;
+
     if (previousSequence !== null) {
       history.push(`/course/${courseId}/${previousSequence.id}/last`);
+
+      // Function to send the event to Outline Navigation SIdebar.
+      postEventToIframe(
+        document.getElementById('OutlineSidebar'),
+        SIDEBAREVENT,
+        [getConfig().SIDEBAR_MFE_BASE_URL],
+      );
     }
   }
+
+  handleOutlineSidebarNavigationClick = (id) => {
+    const {
+      courseId,
+      sequenceId,
+    } = this.props;
+
+    if (id !== null && id !== sequenceId) {
+      history.push(`/course/${courseId}/${id}/first`);
+    }
+  };
 
   render() {
     const {
@@ -310,6 +338,7 @@ class CoursewareContainer extends Component {
           nextSequenceHandler={this.handleNextSequenceClick}
           previousSequenceHandler={this.handlePreviousSequenceClick}
           unitNavigationHandler={this.handleUnitNavigationClick}
+          sidebarNavigationClickHandler={this.handleOutlineSidebarNavigationClick}
         />
       </TabPage>
     );

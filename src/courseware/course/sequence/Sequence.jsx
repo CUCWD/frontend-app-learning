@@ -39,6 +39,7 @@ function Sequence({
   unitNavigationHandler,
   nextSequenceHandler,
   previousSequenceHandler,
+  sidebarNavigationClickHandler,
   intl,
   mmp2p,
 }) {
@@ -76,6 +77,20 @@ function Sequence({
   const handleNavigate = (destinationUnitId) => {
     unitNavigationHandler(destinationUnitId);
   };
+
+  function handleSidebarNavigation(event) {
+    if (event.data.message === 'outline_sidebar_navigation_started') {
+      sidebarNavigationClickHandler(event.data.subsection_id);
+    }
+  }
+  // Event Listener for frontend-app-sidebar-navigation
+  useEffect(() => {
+    window.addEventListener('message', handleSidebarNavigation);
+    // Cleanup eventListener
+    return () => {
+      window.removeEventListener('message', handleSidebarNavigation);
+    };
+  });
 
   const logEvent = (eventName, widgetPlacement, targetUnitId) => {
     // Note: tabs are tracked with a 1-indexed position
@@ -157,7 +172,6 @@ function Sequence({
 
   const defaultContent = (
     <div className="sequence-container d-inline-flex flex-row">
-      {isOutlineActive ? <Sidebar /> : null}
       <div className={classNames('sequence w-100', { 'position-relative': shouldDisplayNotificationTriggerInSequence })}>
         <SequenceNavigation
           sequenceId={sequenceId}
@@ -253,6 +267,7 @@ Sequence.propTypes = {
   unitNavigationHandler: PropTypes.func.isRequired,
   nextSequenceHandler: PropTypes.func.isRequired,
   previousSequenceHandler: PropTypes.func.isRequired,
+  sidebarNavigationClickHandler: PropTypes.func.isRequired,
   intl: intlShape.isRequired,
 
   /** [MM-P2P] Experiment */
