@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 import { history, getConfig } from '@edx/frontend-platform';
 import { createSelector } from '@reduxjs/toolkit';
 import { defaultMemoize as memoize } from 'reselect';
-import { postEventToIframe } from 'eventsHandler';
-import { SIDEBAREVENT } from 'constants';
+import { postEventToIframe } from '../eventsHandler';
+import { SIDEBAREVENT } from '../constants';
 
 import {
   checkBlockCompletion,

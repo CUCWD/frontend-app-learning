@@ -1,6 +1,6 @@
 import React from 'react';
-import { SIDEBAR_ORDER } from 'courseware/course/sidebar/sidebars';
-import TriggerButton from 'courseware/course/sidebar/TriggerButton';
+import { SIDEBAR_ORDER } from './sidebars';
+import TriggerButton from './TriggerButton';
 
 function SidebarTriggers() {
   return (

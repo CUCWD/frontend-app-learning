@@ -1,9 +1,9 @@
 import { ensureConfig, getConfig } from '@edx/frontend-platform';
 import { injectIntl, intlShape } from '@edx/frontend-platform/i18n';
 import React, { useContext } from 'react';
-import SidebarBase from 'courseware/course/sidebar/common/SidebarBase';
-import SidebarContext from 'courseware/course/sidebar/SidebarContext';
-import { ID } from 'courseware/course/sidebar/sidebars/outline/OutlineTrigger';
+import SidebarBase from '../../common/SidebarBase';
+import SidebarContext from '../../SidebarContext';
+import { ID } from './OutlineTrigger';
 
 import messages from './messages';
 

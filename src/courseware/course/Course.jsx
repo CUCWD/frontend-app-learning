@@ -5,8 +5,8 @@ import { useDispatch } from 'react-redux';
 import { getConfig } from '@edx/frontend-platform';
 import { breakpoints, useWindowSize } from '@edx/paragon';
 
-import OutlineSidebar from 'courseware/course/sidebar/sidebars/outline/OutlineSidebar';
-import SidebarOutlineTrigger from 'courseware/course/sidebar/SidebarOutlineTrigger';
+import OutlineSidebar from './sidebar/sidebars/outline/OutlineSidebar';
+import SidebarOutlineTrigger from './sidebar/SidebarOutlineTrigger';
 import { AlertList } from '../../generic/user-messages';
 
 import Sequence from './sequence';

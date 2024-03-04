@@ -14,8 +14,8 @@ import { history } from '@edx/frontend-platform';
 import SequenceExamWrapper from '@edx/frontend-lib-special-exams';
 import { breakpoints, useWindowSize } from '@edx/paragon';
 
-import SidebarContext from 'courseware/course/sidebar/SidebarContext';
-import { ID } from 'courseware/course/sidebar/sidebars/outline/OutlineTrigger';
+import SidebarContext from '../sidebar/SidebarContext';
+import { ID } from '../sidebar/sidebars/outline/OutlineTrigger';
 import PageLoading from '../../../generic/PageLoading';
 import { useModel } from '../../../generic/model-store';
 import { useSequenceBannerTextAlert, useSequenceEntranceExamAlert } from '../../../alerts/sequence-alerts/hooks';

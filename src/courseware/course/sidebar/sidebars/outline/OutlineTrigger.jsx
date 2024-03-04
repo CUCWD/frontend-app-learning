@@ -4,8 +4,8 @@ import { Icon } from '@edx/paragon';
 import { ExpandMore } from '@edx/paragon/icons';
 import PropTypes from 'prop-types';
 import React from 'react';
-import SidebarTriggerBase from 'courseware/course/sidebar/common/TriggerBase';
-import messages from 'courseware/course/sidebar/sidebars/outline/messages';
+import SidebarTriggerBase from '../../common/TriggerBase';
+import messages from './messages';
 
 ensureConfig(['SIDEBAR_MFE_BASE_URL']);
 export const ID = 'OUTLINE';

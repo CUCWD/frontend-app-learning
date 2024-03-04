@@ -1,6 +1,6 @@
-import * as outline from 'courseware/course/sidebar/sidebars/outline';
-import * as notifications from 'courseware/course/sidebar/sidebars/notifications';
-import * as discusssions from 'courseware/course/sidebar/sidebars/discussions';
+import * as outline from './outline';
+import * as notifications from './notifications';
+import * as discusssions from './discussions';
 
 export const SIDEBARS = {
   [outline.ID]: {
