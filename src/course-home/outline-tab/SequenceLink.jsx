@@ -142,42 +142,56 @@ function SequenceLink({
 
   return (
     <li>
-      <Collapsible
-        className="mb-2"
-        styling="card-lg"
-        title={sequenceTitle}
-        open={open}
-        onToggle={() => { setOpen(!open); }}
-        iconWhenClosed={(
-          <IconButton
-            alt={intl.formatMessage(messages.openSection)}
-            icon={faPlus}
-            onClick={() => { setOpen(true); }}
-            size="sm"
-          />
-      )}
-        iconWhenOpen={(
-          <IconButton
-            alt={intl.formatMessage(genericMessages.close)}
-            icon={faMinus}
-            onClick={() => { setOpen(false); }}
-            size="sm"
-          />
-      )}
-      >
-        <ol className="list-unstyled">
-          {unitIds.map((unitId, index) => (
-            <UnitLink
-              key={unitId}
-              id={unitId}
-              courseId={courseId}
-              unit={units[unitId]}
-              sequenceId={id}
-              first={index === 0}
+      { unitIds.length > 0 ? (
+        <Collapsible
+          className="mb-2"
+          styling="card-lg"
+          title={sequenceTitle}
+          open={open}
+          onToggle={() => { setOpen(!open); }}
+          iconWhenClosed={(
+            <IconButton
+              alt={intl.formatMessage(messages.openSection)}
+              icon={faPlus}
+              onClick={() => { setOpen(true); }}
+              size="sm"
             />
-          ))}
-        </ol>
-      </Collapsible>
+          )}
+          iconWhenOpen={(
+            <IconButton
+              alt={intl.formatMessage(genericMessages.close)}
+              icon={faMinus}
+              onClick={() => { setOpen(false); }}
+              size="sm"
+            />
+          )}
+        >
+          <ol className="list-unstyled">
+            {unitIds.map((unitId, index) => (
+              <UnitLink
+                key={unitId}
+                id={unitId}
+                courseId={courseId}
+                unit={units[unitId]}
+                sequenceId={id}
+                first={index === 0}
+              />
+            ))}
+          </ol>
+        </Collapsible>
+      ) : (
+        <Collapsible
+          styling="card-lg"
+          className="mb-2"
+          title={sequenceTitle}
+          iconWhenClosed={(
+            <div />
+          )}
+          iconWhenOpen={(
+            <div />
+          )}
+        />
+      )}
     </li>
   );
 }
