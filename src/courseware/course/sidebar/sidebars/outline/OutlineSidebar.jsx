@@ -9,12 +9,14 @@ import messages from './messages';
 
 ensureConfig(['SIDEBAR_MFE_BASE_URL']);
 
-function OutlineSidebar({ intl }) {
+function OutlineSidebar({
+  intl,
+}) {
   const {
     courseId,
+    unitId,
   } = useContext(SidebarContext);
-
-  const outlineUrl = `${getConfig().SIDEBAR_MFE_BASE_URL}/${courseId}`;
+  const outlineUrl = `${getConfig().SIDEBAR_MFE_BASE_URL}/${courseId}/${unitId}`;
   return (
     <SidebarBase
       title={intl.formatMessage(messages.outlineTitle)}
