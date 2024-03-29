@@ -10,6 +10,7 @@ initializeMockApp();
 describe('Outline Sidebar', () => {
   let mockData;
   let courseId;
+  let unitId;
 
   beforeEach(async () => {
     const store = await initializeTestStore({
@@ -18,9 +19,11 @@ describe('Outline Sidebar', () => {
     });
     const state = store.getState();
     courseId = state.courseware.courseId;
+    unitId = '';
 
     mockData = {
       courseId,
+      unitId,
       currentSidebar: 'OUTLINE',
     };
   });
@@ -38,6 +41,6 @@ describe('Outline Sidebar', () => {
     renderWithProvider();
     expect(screen.queryByTitle('Outline')).toBeInTheDocument();
     expect(screen.queryByTitle('Outline'))
-      .toHaveAttribute('src', `http://localhost:9090/${courseId}?inContext`);
+      .toHaveAttribute('src', `http://localhost:9090/${courseId}/${unitId}?inContext`);
   });
 });
