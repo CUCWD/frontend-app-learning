@@ -22,7 +22,7 @@ export default class PageLoading extends Component {
         <div
           className="d-flex justify-content-center align-items-center flex-column"
           style={{
-            height: '50vh',
+            height: '82vh',
           }}
         >
           <Spinner animation="border" variant="primary" role="status">
