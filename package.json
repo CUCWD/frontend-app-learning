@@ -36,7 +36,7 @@
     "@edx/frontend-component-header": "npm:@cucwd-prod/frontend-component-header@2.4.3-maple.3.2-no-cache",
     "@edx/frontend-enterprise-utils": "1.1.1",
     "@edx/frontend-lib-special-exams": "1.14.1",
-    "@edx/frontend-platform": "npm:@cucwd-prod/frontend-platform@1.14.4-maple.3.1-no-cache",
+    "@edx/frontend-platform": "npm:@cucwd-prod/frontend-platform@^1.14.4-maple.3.2-no-cache",
     "@edx/paragon": "16.19.0",
     "@fortawesome/fontawesome-svg-core": "1.2.36",
     "@fortawesome/free-brands-svg-icons": "5.15.4",
