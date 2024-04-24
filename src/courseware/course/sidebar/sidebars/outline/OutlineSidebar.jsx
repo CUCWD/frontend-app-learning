@@ -17,6 +17,15 @@ function OutlineSidebar({
     unitId,
   } = useContext(SidebarContext);
   const outlineUrl = `${getConfig().SIDEBAR_MFE_BASE_URL}/${courseId}/${unitId}`;
+  const savedScrollPosition = window.scrollY;
+  let allowScroll = true;
+  window.addEventListener('scroll', () => {
+    if (allowScroll) {
+      window.scrollTo(0, savedScrollPosition);
+    }
+    allowScroll = false;
+  });
+
   return (
     <SidebarBase
       title={intl.formatMessage(messages.outlineTitle)}
