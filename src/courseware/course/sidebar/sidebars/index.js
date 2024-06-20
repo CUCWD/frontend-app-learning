@@ -1,7 +1,13 @@
+import * as outline from './outline';
 import * as notifications from './notifications';
 import * as discusssions from './discussions';
 
 export const SIDEBARS = {
+  [outline.ID]: {
+    ID: outline.ID,
+    Sidebar: outline.Sidebar,
+    Trigger: outline.Trigger,
+  },
   [notifications.ID]: {
     ID: notifications.ID,
     Sidebar: notifications.Sidebar,

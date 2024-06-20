@@ -5,6 +5,8 @@ import { useDispatch } from 'react-redux';
 import { getConfig } from '@edx/frontend-platform';
 import { breakpoints, useWindowSize } from '@edx/paragon';
 
+import OutlineSidebar from './sidebar/sidebars/outline/OutlineSidebar';
+import SidebarOutlineTrigger from './sidebar/SidebarOutlineTrigger';
 import { AlertList } from '../../generic/user-messages';
 
 import Sequence from './sequence';
@@ -28,6 +30,7 @@ function Course({
   nextSequenceHandler,
   previousSequenceHandler,
   unitNavigationHandler,
+  sidebarNavigationClickHandler,
   windowWidth,
 }) {
   const course = useModel('coursewareMeta', courseId);
@@ -88,7 +91,7 @@ function Course({
       <Helmet>
         <title>{`${pageTitleBreadCrumbs.join(' | ')} | ${getConfig().SITE_NAME}`}</title>
       </Helmet>
-      <div className="position-relative d-flex align-items-start">
+      <section className="position-relative d-flex align-items-start">
         <CourseBreadcrumbs
           courseId={courseId}
           sectionId={section ? section.id : null}
@@ -101,19 +104,30 @@ function Course({
         {shouldDisplayTriggers && (
           <SidebarTriggers />
         )}
-      </div>
+      </section>
+      <section className="d-flex mr-auto p-2">
+        {shouldDisplayTriggers && (
+          <SidebarOutlineTrigger />
+        )}
+      </section>
 
       <AlertList topic="sequence" />
-      <Sequence
-        unitId={unitId}
-        sequenceId={sequenceId}
-        courseId={courseId}
-        unitNavigationHandler={unitNavigationHandler}
-        nextSequenceHandler={nextSequenceHandler}
-        previousSequenceHandler={previousSequenceHandler}
-        //* * [MM-P2P] Experiment */
-        mmp2p={MMP2P}
-      />
+      <section className="sequence-container d-inline-flex flex-row">
+        <OutlineSidebar />
+        <section className="sequence w-100">
+          <Sequence
+            unitId={unitId}
+            sequenceId={sequenceId}
+            courseId={courseId}
+            unitNavigationHandler={unitNavigationHandler}
+            nextSequenceHandler={nextSequenceHandler}
+            previousSequenceHandler={previousSequenceHandler}
+            sidebarNavigationClickHandler={sidebarNavigationClickHandler}
+            //* * [MM-P2P] Experiment */
+            mmp2p={MMP2P}
+          />
+        </section>
+      </section>
       <CelebrationModal
         courseId={courseId}
         isOpen={firstSectionCelebrationOpen}
@@ -139,6 +153,7 @@ Course.propTypes = {
   nextSequenceHandler: PropTypes.func.isRequired,
   previousSequenceHandler: PropTypes.func.isRequired,
   unitNavigationHandler: PropTypes.func.isRequired,
+  sidebarNavigationClickHandler: PropTypes.func,
   windowWidth: PropTypes.number.isRequired,
 };
 
@@ -146,6 +161,7 @@ Course.defaultProps = {
   courseId: null,
   sequenceId: null,
   unitId: null,
+  sidebarNavigationClickHandler: null,
 };
 
 function CourseWrapper(props) {

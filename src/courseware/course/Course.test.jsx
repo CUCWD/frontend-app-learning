@@ -189,6 +189,7 @@ describe('Course', () => {
     const nextSequenceHandler = jest.fn();
     const previousSequenceHandler = jest.fn();
     const unitNavigationHandler = jest.fn();
+    const sidebarNavigationClickHandler = jest.fn();
 
     const courseMetadata = Factory.build('courseMetadata');
     const unitBlocks = Array.from({ length: 3 }).map(() => Factory.build(
@@ -207,6 +208,7 @@ describe('Course', () => {
       nextSequenceHandler,
       previousSequenceHandler,
       unitNavigationHandler,
+      sidebarNavigationClickHandler,
     };
     render(<Course {...testData} />, { store: testStore });
 
@@ -219,6 +221,7 @@ describe('Course', () => {
     expect(previousSequenceHandler).not.toHaveBeenCalled();
     expect(nextSequenceHandler).not.toHaveBeenCalled();
     expect(unitNavigationHandler).toHaveBeenCalledTimes(4);
+    expect(sidebarNavigationClickHandler).not.toHaveBeenCalled();
   });
 
   describe('Sequence alerts display', () => {

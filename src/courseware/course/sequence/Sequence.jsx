@@ -1,6 +1,6 @@
 /* eslint-disable no-use-before-define */
 import React, {
-  useEffect, useState,
+  useEffect, useState, useContext,
 } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
@@ -14,6 +14,8 @@ import { history } from '@edx/frontend-platform';
 import SequenceExamWrapper from '@edx/frontend-lib-special-exams';
 import { breakpoints, useWindowSize } from '@edx/paragon';
 
+import SidebarContext from '../sidebar/SidebarContext';
+import { ID } from '../sidebar/sidebars/outline/OutlineTrigger';
 import PageLoading from '../../../generic/PageLoading';
 import { useModel } from '../../../generic/model-store';
 import { useSequenceBannerTextAlert, useSequenceEntranceExamAlert } from '../../../alerts/sequence-alerts/hooks';
@@ -37,6 +39,7 @@ function Sequence({
   unitNavigationHandler,
   nextSequenceHandler,
   previousSequenceHandler,
+  sidebarNavigationClickHandler,
   intl,
   mmp2p,
 }) {
@@ -74,6 +77,20 @@ function Sequence({
   const handleNavigate = (destinationUnitId) => {
     unitNavigationHandler(destinationUnitId);
   };
+
+  function handleSidebarNavigation(event) {
+    if (event.data.message === 'outline_sidebar_navigation_started') {
+      sidebarNavigationClickHandler(event.data.subsection_id);
+    }
+  }
+  // Event Listener for frontend-app-sidebar-navigation
+  useEffect(() => {
+    window.addEventListener('message', handleSidebarNavigation);
+    // Cleanup eventListener
+    return () => {
+      window.removeEventListener('message', handleSidebarNavigation);
+    };
+  });
 
   const logEvent = (eventName, widgetPlacement, targetUnitId) => {
     // Note: tabs are tracked with a 1-indexed position
@@ -148,6 +165,11 @@ function Sequence({
     history.push(`/course/${courseId}/course-end`);
   };
 
+  const {
+    currentSidebar,
+  } = useContext(SidebarContext);
+  const isOutlineActive = currentSidebar === ID;
+
   const defaultContent = (
     <div className="sequence-container d-inline-flex flex-row">
       <div className={classNames('sequence w-100', { 'position-relative': shouldDisplayNotificationTriggerInSequence })}>
@@ -202,7 +224,7 @@ function Sequence({
           )}
         </div>
       </div>
-      <Sidebar />
+      {isOutlineActive ? null : <Sidebar />}
 
       {/** [MM-P2P] Experiment */}
       {(mmp2p.state.isEnabled && mmp2p.flyover.isVisible) && (
@@ -245,6 +267,7 @@ Sequence.propTypes = {
   unitNavigationHandler: PropTypes.func.isRequired,
   nextSequenceHandler: PropTypes.func.isRequired,
   previousSequenceHandler: PropTypes.func.isRequired,
+  sidebarNavigationClickHandler: PropTypes.func.isRequired,
   intl: intlShape.isRequired,
 
   /** [MM-P2P] Experiment */
