@@ -147,8 +147,9 @@ describe('Outline Tab', () => {
         course_blocks: { blocks: courseBlocks.blocks },
       });
       await fetchAndRender();
-
-      const sequenceLink = screen.getByText('Title of Sequence');
+      const expandButton = screen.getByRole('button', { name: 'Expand all' });
+      userEvent.click(expandButton);
+      const sequenceLink = screen.getByText('Title of Unit');
       expect(sequenceLink.getAttribute('href')).toContain(`/courses/${courseId}`);
     });
 
@@ -161,8 +162,10 @@ describe('Outline Tab', () => {
         course_blocks: { blocks: courseBlocks.blocks },
       });
       await fetchAndRender();
+      const expandButton = screen.getByRole('button', { name: 'Expand all' });
+      userEvent.click(expandButton);
 
-      const sequenceLink = screen.getByText('Title of Sequence');
+      const sequenceLink = screen.getByText('Title of Unit');
       expect(sequenceLink.getAttribute('href')).toContain(`/course/${courseId}`);
     });
   });

@@ -96,13 +96,14 @@ function Section({
         )}
       >
         <ol className="list-unstyled">
-          {sequenceIds.map((sequenceId, index) => (
+          {sequenceIds.map((sequenceId) => (
             <SequenceLink
               key={sequenceId}
               id={sequenceId}
               courseId={courseId}
+              defaultOpen={sequences[sequenceId].resumeBlock}
+              expand={expand}
               sequence={sequences[sequenceId]}
-              first={index === 0}
             />
           ))}
         </ol>

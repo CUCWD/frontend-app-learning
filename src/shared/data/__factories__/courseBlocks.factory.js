@@ -106,9 +106,19 @@ export function buildSimpleCourseBlocks(courseId, title, options = {}) {
 }
 
 /**
- * Builds a course with a single chapter and sequence, but no units.
+ * Builds a course with a single chapter, sequence, and unit
  */
 export function buildMinimalCourseBlocks(courseId, title, options = {}) {
+  const unitBlocks = options.unitBlocks || [Factory.build(
+    'block',
+    {
+      display_name: 'Title of Unit',
+      effort_activities: 2,
+      effort_time: 15,
+      type: 'vertical',
+    },
+    { courseId },
+  )];
   const sequenceBlocks = options.sequenceBlocks || [Factory.build(
     'block',
     {
@@ -116,6 +126,7 @@ export function buildMinimalCourseBlocks(courseId, title, options = {}) {
       effort_activities: 2,
       effort_time: 15,
       type: 'sequential',
+      children: unitBlocks.map(block => block.id),
     },
     { courseId },
   )];
@@ -148,10 +159,10 @@ export function buildMinimalCourseBlocks(courseId, title, options = {}) {
         sequences: sequenceBlocks,
         sections: sectionBlocks,
         course: courseBlock,
-        units: [],
+        units: unitBlocks,
       },
     ),
-    unitBlocks: [],
+    unitBlocks,
     sequenceBlocks,
     sectionBlocks,
     courseBlock,

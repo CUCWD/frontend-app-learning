@@ -117,6 +117,7 @@ export function normalizeOutlineBlocks(courseId, blocks) {
     courses: {},
     sections: {},
     sequences: {},
+    units: {},
   };
   Object.values(blocks).forEach(block => {
     switch (block.type) {
@@ -141,6 +142,25 @@ export function normalizeOutlineBlocks(courseId, blocks) {
 
       case 'sequential':
         models.sequences[block.id] = {
+          complete: block.complete,
+          description: block.description,
+          due: block.due,
+          effortActivities: block.effort_activities,
+          effortTime: block.effort_time,
+          icon: block.icon,
+          id: block.id,
+          legacyWebUrl: block.legacy_web_url,
+          // The presence of an legacy URL for the sequence indicates that we want this
+          // sequence to be a clickable link in the outline (even though, if the new
+          // courseware experience is active, we will ignore `legacyWebUrl` and build a
+          // link to the MFE ourselves).
+          showLink: !!block.legacy_web_url,
+          title: block.display_name,
+          unitIds: block.children || [],
+        };
+        break;
+      case 'vertical':
+        models.units[block.id] = {
           complete: block.complete,
           description: block.description,
           due: block.due,
@@ -181,6 +201,17 @@ export function normalizeOutlineBlocks(courseId, blocks) {
           models.sequences[sequenceId].sectionId = section.id;
         } else {
           logInfo(`Section ${section.id} has child block ${sequenceId}, but that block is not in the list of sequences.`);
+        }
+      });
+    }
+  });
+  Object.values(models.sequences).forEach(sequence => {
+    if (Array.isArray(sequence.unitIds)) {
+      sequence.unitIds.forEach(unitId => {
+        if (unitId in models.units) {
+          models.units[unitId].sequenceId = sequence.id;
+        } else {
+          logInfo(`Section ${sequence.id} has child block ${unitId}, but that block is not in the list of sequences.`);
         }
       });
     }
