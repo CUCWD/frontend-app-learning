@@ -484,6 +484,7 @@ Object {
             "url": "https://example.com/bookmarks",
           },
         ],
+        "courseRevision": "2023.10",
         "datesBannerInfo": Object {
           "contentTypeGatingEnabled": false,
           "missedDeadlines": false,
