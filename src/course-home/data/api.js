@@ -116,6 +116,8 @@ export function normalizeOutlineBlocks(courseId, blocks) {
           title: block.display_name,
           sectionIds: block.children || [],
           hasScheduledContent: block.has_scheduled_content,
+          estimatedTime: block.estimated_time,
+          showEstimatedTime: block.show_estimated_time,
         };
         break;
 
@@ -127,6 +129,8 @@ export function normalizeOutlineBlocks(courseId, blocks) {
           title: block.display_name,
           resumeBlock: block.resume_block,
           sequenceIds: block.children || [],
+          estimatedTime: block.estimated_time,
+          showEstimatedTime: block.show_estimated_time,
         };
         break;
 
@@ -146,6 +150,8 @@ export function normalizeOutlineBlocks(courseId, blocks) {
           // link to the MFE ourselves).
           showLink: !!block.legacy_web_url,
           title: block.display_name,
+          estimatedTime: block.estimated_time,
+          showEstimatedTime: block.show_estimated_time,
         };
         break;
 
@@ -434,6 +440,7 @@ export async function getOutlineTabData(courseId) {
   const userHasPassingGrade = data.user_has_passing_grade;
   const verifiedMode = camelCaseObject(data.verified_mode);
   const welcomeMessageHtml = data.welcome_message_html;
+  const { estimatedTime } = courseBlocks.courses[Object.keys(courseBlocks.courses)[0]];
 
   return {
     accessExpiration,
@@ -456,6 +463,7 @@ export async function getOutlineTabData(courseId) {
     userHasPassingGrade,
     verifiedMode,
     welcomeMessageHtml,
+    estimatedTime,
   };
 }
 

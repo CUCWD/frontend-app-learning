@@ -405,11 +405,13 @@ Object {
         "courseBlocks": Object {
           "courses": Object {
             "block-v1:edX+DemoX+Demo_Course+type@course+block@bcdabcdabcdabcdabcdabcdabcdabcd3": Object {
+              "estimatedTime": undefined,
               "hasScheduledContent": false,
               "id": "course-v1:edX+DemoX+Demo_Course_1",
               "sectionIds": Array [
                 "block-v1:edX+DemoX+Demo_Course+type@chapter+block@bcdabcdabcdabcdabcdabcdabcdabcd2",
               ],
+              "showEstimatedTime": undefined,
               "title": "bcdabcdabcdabcdabcdabcdabcdabcd3",
             },
           },
@@ -418,11 +420,13 @@ Object {
               "badgeProgress": undefined,
               "complete": false,
               "courseId": "course-v1:edX+DemoX+Demo_Course_1",
+              "estimatedTime": undefined,
               "id": "block-v1:edX+DemoX+Demo_Course+type@chapter+block@bcdabcdabcdabcdabcdabcdabcdabcd2",
               "resumeBlock": false,
               "sequenceIds": Array [
                 "block-v1:edX+DemoX+Demo_Course+type@sequential+block@bcdabcdabcdabcdabcdabcdabcdabcd1",
               ],
+              "showEstimatedTime": undefined,
               "title": "Title of Section",
             },
           },
@@ -433,10 +437,12 @@ Object {
               "due": null,
               "effortActivities": 2,
               "effortTime": 15,
+              "estimatedTime": undefined,
               "icon": null,
               "id": "block-v1:edX+DemoX+Demo_Course+type@sequential+block@bcdabcdabcdabcdabcdabcdabcdabcd1",
               "legacyWebUrl": "http://localhost:18000/courses/course-v1:edX+DemoX+Demo_Course/jump_to/block-v1:edX+DemoX+Demo_Course+type@sequential+block@bcdabcdabcdabcdabcdabcdabcdabcd1?experience=legacy",
               "sectionId": "block-v1:edX+DemoX+Demo_Course+type@chapter+block@bcdabcdabcdabcdabcdabcdabcdabcd2",
+              "showEstimatedTime": undefined,
               "showLink": true,
               "title": "Title of Sequence",
             },
