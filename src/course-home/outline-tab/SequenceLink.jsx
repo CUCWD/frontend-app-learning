@@ -18,6 +18,7 @@ import { useModel } from '../../generic/model-store';
 
 import genericMessages from '../../generic/messages';
 import messages from './messages';
+import './SequenceLink.scss';
 
 function SequenceLink({
   id,

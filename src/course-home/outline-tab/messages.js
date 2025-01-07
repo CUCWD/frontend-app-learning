@@ -125,6 +125,10 @@ const messages = defineMessages({
     defaultMessage: 'Resume course',
     description: 'Anchor text for button that would resume course',
   },
+  revision: {
+    id: 'learning.outline.revision',
+    defaultMessage: 'Course Version',
+  },
   setGoal: {
     id: 'learning.outline.setGoal',
     defaultMessage: 'To start, set a course goal by selecting the option below that best describes your learning plan.',
